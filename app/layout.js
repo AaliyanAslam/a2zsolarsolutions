@@ -20,10 +20,8 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${inter.variable} font-sans h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-[#E9E9E9]" suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-white text-gray-900" suppressHydrationWarning>
         <Navbar />
-        {/* Spacer to offset fixed navbar height */}
-        <div className="pt-16 sm:pt-18" />
         {children}
       </body>
     </html>

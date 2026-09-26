@@ -10,12 +10,16 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(useGSAP);
 
 import { FaWhatsapp } from "react-icons/fa";
-import { HiOutlineSun } from "react-icons/hi2";
+
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
+  { label: "Services", href: "/#services" },
   { label: "Solar Calculator", href: "/#calculator" },
+  { label: "Reviews", href: "/#reviews" },
+  { label: "FAQs", href: "/#faqs" },
+  { label: "Videos", href: "/#videos" },
   { label: "About Us", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -25,7 +29,16 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20inte
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const drawerWrapperRef = useRef(null);
   const drawerRef = useRef(null);
@@ -121,7 +134,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#E9E9E9]/90 backdrop-blur-xl">
+      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white/90 backdrop-blur-xl shadow-md" : "bg-transparent py-2"}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-18">
             <Link href="/" className="flex items-center gap-2 shrink-0 group">
@@ -188,7 +201,7 @@ const Navbar = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-[1.5px] bg-linear-to-r from-transparent via-[#2CA518] to-transparent opacity-80" />
+        <div className={`absolute bottom-0 left-0 right-0 h-[1.5px] bg-linear-to-r from-transparent via-[#2CA518] to-transparent transition-opacity duration-300 ${isScrolled ? "opacity-80" : "opacity-0"}`} />
       </nav>
 
       <div
