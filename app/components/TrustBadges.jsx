@@ -29,7 +29,7 @@ const TrustBadges = () => {
   return (
     <section className="w-full bg-white border-t border-b border-gray-100 py-6 sm:py-8">
       {/* Label */}
-      <p className="text-center text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-gray-400 mb-5 sm:mb-6">
+      <p className="text-center text-[11px] sm:text-xs font-bold uppercase tracking-widest text-gray-500 mb-5 sm:mb-6">
         Our Trusted Certifications &amp; Partners
       </p>
 
