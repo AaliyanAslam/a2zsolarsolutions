@@ -161,7 +161,7 @@ const Navbar = () => {
               <FaYoutube className="text-base" />
               <span>@A2ZSolarSolutions</span>
             </a>
-            <div className="w-[1px] h-4 bg-gray-500" />
+            <div className="w-px h-4 bg-gray-500" />
             <div className="flex items-center gap-2 text-[#0fa353]">
               <FaPhoneAlt className="text-[#F47C20]" />
               <span>Uzair Khan: +92-321-4189298</span>
