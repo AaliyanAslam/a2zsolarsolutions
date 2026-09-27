@@ -3,7 +3,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[85svh] md:min-h-[90svh] flex items-start md:items-center pt-24 md:pt-20 pb-8 md:pb-0 overflow-hidden">
+    <section className="relative min-h-[100svh] md:min-h-[90svh] flex items-start md:items-center pt-24 md:pt-20 pb-8 md:pb-0 overflow-hidden">
       {/* Background Image: Responsive picture avoids downloading both images */}
       <div className="absolute inset-0 z-0">
         <picture>
