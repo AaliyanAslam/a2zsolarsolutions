@@ -55,7 +55,7 @@ const Hero = () => {
           sizes="100vw"
         />
         {/* Mobile Image — 60% height, right-aligned */}
-        <div className="block md:hidden absolute top-0 right-0 w-full h-[65%]">
+        <div className="block md:hidden absolute top-0 right-0 w-full h-[62%]">
           <Image
             src="/images/mobbackhero.webp"
             alt="A2Z Solar Solutions Karachi Mobile Background"
