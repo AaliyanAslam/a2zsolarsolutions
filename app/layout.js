@@ -1,9 +1,9 @@
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
 
-const inter = Inter({
-  variable: "--font-inter",
+const font = Plus_Jakarta_Sans({
+  variable: "--font-plus-jakarta",
   subsets: ["latin"],
 });
 
@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} font-sans h-full antialiased`}
+      className={`${font.variable} font-sans h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-white text-gray-900" suppressHydrationWarning>
         <Navbar />
