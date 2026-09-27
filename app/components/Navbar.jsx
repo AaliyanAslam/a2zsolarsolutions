@@ -159,7 +159,7 @@ const Navbar = () => {
                     ${
                       isActive(link.href)
                         ? "text-[#2CA518] underline decoration-2 underline-offset-[6px]"
-                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        : "text-black hover:bg-gray-50"
                     }
                   `}
                 >
@@ -256,7 +256,7 @@ const Navbar = () => {
                         ${
                           isActive(link.href)
                             ? "text-[#2CA518] underline decoration-2 underline-offset-[6px]"
-                            : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
+                            : "text-black hover:bg-gray-50"
                         }
                       `}
                       style={{ opacity: 0, visibility: "hidden" }}
