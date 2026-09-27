@@ -15,17 +15,55 @@ const BADGES = [
     src: "/images/badges/solis-badge.webp",
     alt: "Solis Authorized Partner",
   },
+  {
+    src: "/images/badges/inv-badge.webp",
+    alt: "Inverex Solar Energy",
+  },
+  {
+    src: "/images/badges/goodwe-badge.webp",
+    alt: "GoodWe Solar Inverters",
+  },
+  {
+    src: "/images/badges/longi-badge.webp",
+    alt: "LONGi Solar",
+  },
+  {
+    src: "/images/badges/dyness-badge.webp",
+    alt: "Dyness Energy Storage",
+  },
+  {
+    src: "/images/badges/saj-badge.webp",
+    alt: "SAJ Electric",
+  },
+  {
+    src: "/images/badges/coretech-badge.webp",
+    alt: "CoreTech Solutions",
+  },
+  {
+    src: "/images/badges/itel-badge.webp",
+    alt: "Itel Energy",
+  },
+  {
+    src: "/images/badges/zie-badge.webp",
+    alt: "Ziewnic Solar Energy",
+  },
+  {
+    src: "/images/badges/sunlife-badge.webp",
+    alt: "Sun Life Solar",
+  },
 ];
 
-const GROUP = [...BADGES, ...BADGES, ...BADGES, ...BADGES];
+const GROUP = [...BADGES, ...BADGES];
 
 const TrustBadges = () => {
   return (
-    <section className="w-full bg-white border-t border-b border-gray-100 py-6 sm:py-8">
-      {/* Label */}
-      <p className="text-center text-[11px] sm:text-xs font-bold uppercase tracking-widest text-gray-500 mb-5 sm:mb-6">
-        Our Trusted Certifications &amp; Partners
-      </p>
+    <section className="w-full bg-white border-t border-b border-gray-100 py-8 sm:py-10">
+      {/* Heading */}
+      <div className="text-center px-4 mb-6 sm:mb-8">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#39393e]">
+          Our Trusted Certifications &amp; Partners
+        </h2>
+      </div>
 
       {/* Marquee wrapper */}
       <div className="relative w-full overflow-hidden">
@@ -48,13 +86,13 @@ const TrustBadges = () => {
               key={`a${i}`}
               className="flex items-center justify-center shrink-0 px-8 sm:px-12"
             >
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+              <div className="relative w-16 h-16 sm:w-30 sm:h-20">
                 <Image
                   src={badge.src}
                   alt={badge.alt}
                   fill
                   className="object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
-                  sizes="80px"
+                  sizes="120px"
                 />
               </div>
             </div>
@@ -67,13 +105,13 @@ const TrustBadges = () => {
               aria-hidden="true"
               className="flex items-center justify-center shrink-0 px-8 sm:px-12"
             >
-              <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+              <div className="relative w-16 h-16 sm:w-30 sm:h-20">
                 <Image
                   src={badge.src}
                   alt={badge.alt}
                   fill
                   className="object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
-                  sizes="80px"
+                  sizes="120px"
                 />
               </div>
             </div>

@@ -11,7 +11,7 @@
 }
 
 .marquee-track {
-  animation: marquee 22s linear infinite;
+  animation: marquee 35s linear infinite;
   will-change: transform;
 }
 
