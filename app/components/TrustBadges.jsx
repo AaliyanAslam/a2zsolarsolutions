@@ -1,0 +1,95 @@
+"use client";
+
+import Image from "next/image";
+
+const BADGES = [
+  {
+    src: "/images/badges/fbr-badge.webp",
+    alt: "FBR Registered",
+    label: "FBR Registered",
+  },
+  {
+    src: "/images/badges/solax-badge.webp",
+    alt: "SolaX Authorized Dealer",
+    label: "SolaX Authorized Dealer",
+  },
+  {
+    src: "/images/badges/solis-badge.webp",
+    alt: "Solis Authorized Partner",
+    label: "Solis Authorized Partner",
+  },
+];
+
+// One "group" = repeat badges 4x so it is definitely wider than any screen.
+// We render 2 identical groups side-by-side.
+// CSS animates exactly -50% (= 1 group width) → seamless, no glitch.
+const GROUP = [...BADGES, ...BADGES, ...BADGES, ...BADGES];
+
+const TrustBadges = () => {
+  return (
+    <section className="w-full bg-white border-t border-b border-gray-100 py-6 sm:py-8">
+      {/* Label */}
+      <p className="text-center text-[11px] sm:text-xs font-semibold uppercase tracking-widest text-gray-400 mb-5 sm:mb-6">
+        Our Trusted Certifications &amp; Partners
+      </p>
+
+      {/* Marquee wrapper */}
+      <div className="relative w-full overflow-hidden">
+        {/* Left fade mask */}
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 z-10
+                        bg-gradient-to-r from-white to-transparent" />
+        {/* Right fade mask */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-28 z-10
+                        bg-gradient-to-l from-white to-transparent" />
+
+        {/* Track: Group A + Group B (identical). Animates -50% = exactly Group A width. */}
+        <div className="marquee-track flex w-max">
+          {/* Group A */}
+          {GROUP.map((badge, i) => (
+            <div
+              key={`a${i}`}
+              className="flex flex-col items-center gap-2 shrink-0 px-8 sm:px-12"
+            >
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+                <Image
+                  src={badge.src}
+                  alt={badge.alt}
+                  fill
+                  className="object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
+                  sizes="80px"
+                />
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-semibold text-gray-400 whitespace-nowrap">
+                {badge.label}
+              </span>
+            </div>
+          ))}
+
+          {/* Group B — exact clone, hidden from screen-readers */}
+          {GROUP.map((badge, i) => (
+            <div
+              key={`b${i}`}
+              aria-hidden="true"
+              className="flex flex-col items-center gap-2 shrink-0 px-8 sm:px-12"
+            >
+              <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+                <Image
+                  src={badge.src}
+                  alt={badge.alt}
+                  fill
+                  className="object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
+                  sizes="80px"
+                />
+              </div>
+              <span className="text-[10px] sm:text-[11px] font-semibold text-gray-400 whitespace-nowrap">
+                {badge.label}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default TrustBadges;

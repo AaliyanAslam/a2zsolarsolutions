@@ -136,7 +136,7 @@ const Navbar = () => {
       <div
         className={`hidden lg:block w-full bg-[#2A3439] py-2.5 transition-all duration-300 ${isScrolled ? "-translate-y-full absolute opacity-0 pointer-events-none" : "translate-y-0 relative opacity-100 shadow-md"}`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center text-[13px] font-medium tracking-wide">
+        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center text-[13px] font-medium tracking-wide">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 text-[#0fa353]">
               <FaMapMarkerAlt className="text-[#F47C20]" />
@@ -170,7 +170,7 @@ const Navbar = () => {
       <nav
         className={`w-full transition-all duration-300 ${isScrolled ? "bg-white shadow-md border-b border-gray-100" : "bg-transparent border-transparent"}`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 sm:h-20">
             <Link href="/" className="flex items-center gap-2 shrink-0 group">
               <div className="relative w-32 sm:w-40 h-10 sm:h-12 flex items-center">
