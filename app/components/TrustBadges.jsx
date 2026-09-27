@@ -6,23 +6,17 @@ const BADGES = [
   {
     src: "/images/badges/fbr-badge.webp",
     alt: "FBR Registered",
-    label: "FBR Registered",
   },
   {
     src: "/images/badges/solax-badge.webp",
     alt: "SolaX Authorized Dealer",
-    label: "SolaX Authorized Dealer",
   },
   {
     src: "/images/badges/solis-badge.webp",
     alt: "Solis Authorized Partner",
-    label: "Solis Authorized Partner",
   },
 ];
 
-// One "group" = repeat badges 4x so it is definitely wider than any screen.
-// We render 2 identical groups side-by-side.
-// CSS animates exactly -50% (= 1 group width) → seamless, no glitch.
 const GROUP = [...BADGES, ...BADGES, ...BADGES, ...BADGES];
 
 const TrustBadges = () => {
@@ -52,7 +46,7 @@ const TrustBadges = () => {
           {GROUP.map((badge, i) => (
             <div
               key={`a${i}`}
-              className="flex flex-col items-center gap-2 shrink-0 px-8 sm:px-12"
+              className="flex items-center justify-center shrink-0 px-8 sm:px-12"
             >
               <div className="relative w-16 h-16 sm:w-20 sm:h-20">
                 <Image
@@ -63,9 +57,6 @@ const TrustBadges = () => {
                   sizes="80px"
                 />
               </div>
-              <span className="text-[10px] sm:text-[11px] font-semibold text-gray-400 whitespace-nowrap">
-                {badge.label}
-              </span>
             </div>
           ))}
 
@@ -74,7 +65,7 @@ const TrustBadges = () => {
             <div
               key={`b${i}`}
               aria-hidden="true"
-              className="flex flex-col items-center gap-2 shrink-0 px-8 sm:px-12"
+              className="flex items-center justify-center shrink-0 px-8 sm:px-12"
             >
               <div className="relative w-16 h-16 sm:w-20 sm:h-20">
                 <Image
@@ -85,9 +76,6 @@ const TrustBadges = () => {
                   sizes="80px"
                 />
               </div>
-              <span className="text-[10px] sm:text-[11px] font-semibold text-gray-400 whitespace-nowrap">
-                {badge.label}
-              </span>
             </div>
           ))}
         </div>
