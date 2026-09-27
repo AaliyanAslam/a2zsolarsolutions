@@ -11,7 +11,7 @@
 }
 
 .marquee-track {
-  animation: marquee 35s linear infinite;
+  animation: marquee 25s linear infinite;
   will-change: transform;
 }
 
@@ -23,4 +23,38 @@
   .marquee-track {
     animation: none;
   }
+  .hero-animate-title,
+  .hero-animate-desc,
+  .hero-animate-buttons,
+  .hero-animate-metrics {
+    animation: none !important;
+  }
+}
+
+/* ── Hero Entrance Animation (Hardware-accelerated CSS, zero JS blocking) ── */
+@keyframes heroFadeUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 20px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.hero-animate-title {
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+.hero-animate-desc {
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.18s both;
+}
+
+.hero-animate-buttons {
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+}
+
+.hero-animate-metrics {
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.42s both;
 }

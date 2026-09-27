@@ -1,13 +1,9 @@
 "use client";
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-
-gsap.registerPlugin(useGSAP);
 
 import {
   FaWhatsapp,
@@ -45,88 +41,41 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
+  // Throttled scroll listener with passive: true for buttery 60fps scrolling
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setIsScrolled(window.scrollY > 30);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const drawerWrapperRef = useRef(null);
-  const drawerRef = useRef(null);
-  const overlayRef = useRef(null);
-  const navLinksRef = useRef([]);
-
-  const lockScroll = useCallback((lock) => {
-    document.body.style.overflow = lock ? "hidden" : "";
-  }, []);
-
-  const { contextSafe } = useGSAP({ scope: drawerWrapperRef });
-
-  const openDrawer = contextSafe(() => {
+  const openDrawer = () => {
     setIsOpen(true);
-    lockScroll(true);
+    document.body.style.overflow = "hidden";
+  };
 
-    const wrapper = drawerWrapperRef.current;
-    const drawer = drawerRef.current;
-    const overlay = overlayRef.current;
-    const links = navLinksRef.current.filter(Boolean);
-
-    if (!wrapper || !drawer || !overlay) return;
-
-    gsap.set(wrapper, { pointerEvents: "auto", visibility: "visible" });
-
-    // Simple fade-in overlay — no blur lag on low-end devices
-    gsap.fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 });
-
-    // Slide drawer in — shorter duration, linear-ish ease is smoother on low-end
-    gsap.fromTo(
-      drawer,
-      { x: "100%" },
-      { x: "0%", duration: 0.25, ease: "power2.out" },
-    );
-
-    // Stagger links — reduced delay & duration
-    if (links.length > 0) {
-      gsap.fromTo(
-        links,
-        { autoAlpha: 0 },
-        { autoAlpha: 1, duration: 0.2, stagger: 0.04, delay: 0.1 },
-      );
-    }
-  });
-
-  const closeDrawer = contextSafe(() => {
-    const wrapper = drawerWrapperRef.current;
-    const drawer = drawerRef.current;
-    const overlay = overlayRef.current;
-
-    if (!wrapper || !drawer || !overlay) return;
-
-    gsap.to(drawer, { x: "100%", duration: 0.2, ease: "power2.in" });
-
-    gsap.to(overlay, {
-      autoAlpha: 0,
-      duration: 0.2,
-      onComplete: () => {
-        gsap.set(wrapper, { pointerEvents: "none", visibility: "hidden" });
-        setIsOpen(false);
-        lockScroll(false);
-      },
-    });
-  });
+  const closeDrawer = () => {
+    setIsOpen(false);
+    document.body.style.overflow = "";
+  };
 
   useEffect(() => {
     return () => {
-      lockScroll(false);
+      document.body.style.overflow = "";
     };
-  }, [lockScroll]);
+  }, []);
 
-  // Close drawer only when the ROUTE changes — not when isOpen toggles
+  // Close drawer when route changes
   useEffect(() => {
-    if (isOpen) closeDrawer();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    closeDrawer();
   }, [pathname]);
 
   const isActive = (href) => {
@@ -272,24 +221,24 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* ═══════════ MOBILE DRAWER (always in DOM, hidden via GSAP) ═══════════ */}
+      {/* ═══════════ MOBILE DRAWER (Hardware-accelerated CSS) ═══════════ */}
       <div
-        ref={drawerWrapperRef}
-        className="fixed inset-0 z-60 lg:hidden"
-        style={{ pointerEvents: "none", visibility: "hidden" }}
+        className={`fixed inset-0 z-60 lg:hidden transition-all duration-300 ${
+          isOpen ? "pointer-events-auto visible" : "pointer-events-none invisible"
+        }`}
       >
         <div
-          ref={overlayRef}
-          className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+            isOpen ? "opacity-100" : "opacity-0"
+          }`}
           onClick={closeDrawer}
-          style={{ opacity: 0, visibility: "hidden" }}
           aria-hidden="true"
         />
 
         <div
-          ref={drawerRef}
-          className="absolute top-0 right-0 h-full w-[min(80vw,300px)] sm:w-[min(85vw,320px)] bg-white shadow-2xl flex flex-col"
-          style={{ transform: "translateX(100%)" }}
+          className={`absolute top-0 right-0 h-full w-[min(80vw,300px)] sm:w-[min(85vw,320px)] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
         >
           {/* Drawer header */}
           <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100 shrink-0">
@@ -313,14 +262,8 @@ const Navbar = () => {
           {/* Drawer nav links */}
           <nav className="flex-1 overflow-y-auto px-3 sm:px-4 py-3 sm:py-4">
             <ul className="space-y-0.5 sm:space-y-1">
-              {NAV_LINKS.map((link, i) => (
-                <li
-                  key={link.label}
-                  ref={(el) => {
-                    navLinksRef.current[i] = el;
-                  }}
-                  style={{ opacity: 0, visibility: "hidden" }}
-                >
+              {NAV_LINKS.map((link) => (
+                <li key={link.label}>
                   {link.dropdownItems ? (
                     <details className="group">
                       <summary

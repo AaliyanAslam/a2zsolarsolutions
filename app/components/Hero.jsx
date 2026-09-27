@@ -1,70 +1,24 @@
-"use client";
-
-import { useRef } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-import { FaPhoneAlt, FaCalculator } from "react-icons/fa";
-
-gsap.registerPlugin(useGSAP);
+import { FaPhoneAlt } from "react-icons/fa";
 
 const Hero = () => {
-  const containerRef = useRef(null);
-
-  useGSAP(
-    () => {
-      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      tl.fromTo(
-        ".hero-title",
-        { y: 30, autoAlpha: 0 },
-        { y: 0, autoAlpha: 1, duration: 0.8 },
-        0.2,
-      )
-        .fromTo(
-          ".hero-desc",
-          { y: 20, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.8 },
-          0.4,
-        )
-        .fromTo(
-          ".hero-buttons",
-          { y: 20, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.8 },
-          0.6,
-        );
-    },
-    { scope: containerRef },
-  );
-
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-[85svh] md:min-h-[90svh] flex items-start md:items-center pt-24 md:pt-20 pb-8 md:pb-0 overflow-hidden"
-    >
-      {/* Background Image */}
+    <section className="relative min-h-[85svh] md:min-h-[90svh] flex items-start md:items-center pt-24 md:pt-20 pb-8 md:pb-0 overflow-hidden">
+      {/* Background Image: Responsive picture avoids downloading both images */}
       <div className="absolute inset-0 z-0">
-        {/* Desktop Image */}
-        <Image
-          src="/images/herobg.webp"
-          alt="A2Z Solar Solutions Karachi Background"
-          fill
-          priority
-          className="hidden md:block object-cover object-right"
-          sizes="100vw"
-        />
-        {/* Mobile Image — 60% height, right-aligned */}
-        <div className="block md:hidden absolute top-0 right-0 w-full h-[62%]">
-          <Image
-            src="/images/mobbackhero.webp"
-            alt="A2Z Solar Solutions Karachi Mobile Background"
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="80vw"
+        <picture>
+          <source
+            media="(max-width: 767px)"
+            srcSet="/images/mobbackhero.webp"
           />
-        </div>
+          <img
+            src="/images/herobg.webp"
+            alt="A2Z Solar Solutions Karachi Background"
+            fetchPriority="high"
+            decoding="async"
+            className="absolute top-0 right-0 w-full h-[62%] md:h-full md:left-0 md:inset-0 object-cover object-center md:object-right"
+          />
+        </picture>
         {/* White Overlay for text legibility */}
         <div className="absolute inset-0 bg-linear-to-r from-white via-white/80 to-transparent" />
         <div className="absolute inset-0 bg-white/50 md:hidden" />
@@ -73,7 +27,7 @@ const Hero = () => {
       <div className="relative z-10 w-full max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-[90%] md:max-w-2xl">
           {/* Title */}
-          <h1 className="hero-title text-[28px] sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight mb-3 sm:mb-6">
+          <h1 className="hero-animate-title text-[28px] sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-[1.15] sm:leading-[1.1] tracking-tight mb-3 sm:mb-6">
             <span className="text-[#1a1c29]">Sustainable Power</span>
             <br />
             <span className="text-[#0fa353]">Made Simple &</span>
@@ -82,7 +36,7 @@ const Hero = () => {
           </h1>
 
           {/* Description */}
-          <p className="hero-desc text-sm sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-10 leading-relaxed">
+          <p className="hero-animate-desc text-sm sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-10 leading-relaxed">
             Eliminate up to{" "}
             <span className="font-bold text-[#0fa353]">
               90% of your K-Electric bills
@@ -91,7 +45,7 @@ const Hero = () => {
           </p>
 
           {/* Buttons */}
-          <div className="hero-buttons flex flex-col gap-3 sm:gap-4 w-full sm:max-w-md">
+          <div className="hero-animate-buttons flex flex-col gap-3 sm:gap-4 w-full sm:max-w-md">
             <Link
               href="/#calculator"
               className="w-full flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#0fa353] text-white text-[13px] sm:text-[15px] font-bold rounded-lg shadow-sm hover:bg-[#0c8a45] transition-colors duration-300"
@@ -109,7 +63,7 @@ const Hero = () => {
           </div>
 
           {/* Trust Metrics */}
-          <div className="hero-metrics mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8">
+          <div className="hero-animate-metrics mt-8 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-8">
             {/* Established Badge */}
             <div className="flex items-center gap-3">
               <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#0fa353]/10 text-[#0fa353] shrink-0">
