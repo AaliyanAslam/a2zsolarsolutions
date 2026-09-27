@@ -81,7 +81,11 @@ const Navbar = () => {
     gsap.fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.2 });
 
     // Slide drawer in — shorter duration, linear-ish ease is smoother on low-end
-    gsap.fromTo(drawer, { x: "100%" }, { x: "0%", duration: 0.25, ease: "power2.out" });
+    gsap.fromTo(
+      drawer,
+      { x: "100%" },
+      { x: "0%", duration: 0.25, ease: "power2.out" },
+    );
 
     // Stagger links — reduced delay & duration
     if (links.length > 0) {

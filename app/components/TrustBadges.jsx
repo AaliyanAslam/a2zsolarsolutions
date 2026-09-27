@@ -36,11 +36,15 @@ const TrustBadges = () => {
       {/* Marquee wrapper */}
       <div className="relative w-full overflow-hidden">
         {/* Left fade mask */}
-        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 z-10
-                        bg-gradient-to-r from-white to-transparent" />
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 z-10
+                        bg-gradient-to-r from-white to-transparent"
+        />
         {/* Right fade mask */}
-        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-28 z-10
-                        bg-gradient-to-l from-white to-transparent" />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-28 z-10
+                        bg-gradient-to-l from-white to-transparent"
+        />
 
         {/* Track: Group A + Group B (identical). Animates -50% = exactly Group A width. */}
         <div className="marquee-track flex w-max">
