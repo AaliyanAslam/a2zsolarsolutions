@@ -3,7 +3,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-[100svh] md:min-h-[90svh] flex items-start md:items-center pt-24 md:pt-20 pb-8 md:pb-0 overflow-hidden">
+    <section className="relative min-h-0 md:min-h-[90svh] flex items-start md:items-center pt-24 md:pt-20 pb-10 md:pb-0 overflow-hidden">
       {/* Background Image: Responsive picture avoids downloading both images */}
       <div className="absolute inset-0 z-0">
         <picture>
@@ -16,7 +16,7 @@ const Hero = () => {
             alt="A2Z Solar Solutions Karachi Background"
             fetchPriority="high"
             decoding="async"
-            className="absolute top-0 right-0 w-full h-[62%] md:h-full md:left-0 md:inset-0 object-cover object-center md:object-right"
+            className="absolute inset-0 w-full h-full object-cover object-center md:object-right"
           />
         </picture>
         {/* White Overlay for text legibility */}
