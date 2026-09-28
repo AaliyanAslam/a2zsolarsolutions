@@ -85,7 +85,7 @@ export default function YouTubeSection() {
   return (
     <section id="youtube" className="py-16 md:py-24 bg-white relative overflow-hidden">
       {/* Background Accents — matching Services */}
-      <div className="absolute top-0 right-0 w-full h-[500px] bg-gradient-to-b from-gray-50/50 to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-gray-50/50 to-transparent pointer-events-none" />
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -118,14 +118,14 @@ export default function YouTubeSection() {
               <button
                 onClick={() => scrollManual("left")}
                 aria-label="Previous video"
-                className="w-10 h-10 rounded-[6px] border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center transition-colors shadow-sm cursor-pointer"
+                className="w-10 h-10 rounded-md border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center transition-colors shadow-sm cursor-pointer"
               >
                 <FaChevronLeft className="text-xs" />
               </button>
               <button
                 onClick={() => scrollManual("right")}
                 aria-label="Next video"
-                className="w-10 h-10 rounded-[6px] border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center transition-colors shadow-sm cursor-pointer"
+                className="w-10 h-10 rounded-md border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 flex items-center justify-center transition-colors shadow-sm cursor-pointer"
               >
                 <FaChevronRight className="text-xs" />
               </button>
@@ -135,7 +135,7 @@ export default function YouTubeSection() {
               href={youtubeChannelData.channelUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-[6px] border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs sm:text-sm font-bold transition-all shadow-sm hover:scale-[1.02] whitespace-nowrap"
+              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-md border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs sm:text-sm font-bold transition-all shadow-sm hover:scale-[1.02] whitespace-nowrap"
             >
               <FaYoutube className="text-lg text-red-600 shrink-0" />
               <span>{youtubeChannelData.handle}</span>
@@ -151,9 +151,9 @@ export default function YouTubeSection() {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Gradient fades */}
-        <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-        <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
+        {/* linear fades */}
+        <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-16 bg-linear-to-r from-white to-transparent z-10 pointer-events-none" />
+        <div className="hidden sm:block absolute right-0 top-0 bottom-0 w-16 bg-linear-to-l from-white to-transparent z-10 pointer-events-none" />
 
         <div
           ref={scrollContainerRef}
@@ -162,7 +162,7 @@ export default function YouTubeSection() {
           onMouseDown={handleUserInteractionStart}
           onMouseUp={handleUserInteractionEnd}
           onWheel={handleUserInteractionStart}
-          className="flex gap-4 sm:gap-6 overflow-x-auto px-4 sm:px-8 py-4 cursor-grab active:cursor-grabbing select-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          className="flex gap-4 sm:gap-6 overflow-x-auto px-4 sm:px-8 py-4 cursor-grab active:cursor-grabbing select-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none"
           style={{ scrollBehavior: isUserInteracting ? "smooth" : "auto" }}
         >
           {videosList.map((video, idx) => (
@@ -178,7 +178,7 @@ export default function YouTubeSection() {
               role="button"
               tabIndex={0}
               aria-label={`Play video: ${video.title}`}
-              className="group relative w-[300px] sm:w-[380px] md:w-[460px] lg:w-[520px] aspect-video rounded-[6px] overflow-hidden shrink-0 border border-gray-200 hover:border-green-300 transition-all duration-300 cursor-pointer bg-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm hover:shadow-xl hover:shadow-green-500/10"
+              className="group relative w-75 sm:w-95 md:w-115 lg:w-130 aspect-video rounded-md overflow-hidden shrink-0 border border-gray-200 hover:border-green-300 transition-all duration-300 cursor-pointer bg-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm hover:shadow-xl hover:shadow-green-500/10"
             >
               {/* Thumbnail */}
               <img
@@ -190,8 +190,8 @@ export default function YouTubeSection() {
                 loading="lazy"
               />
 
-              {/* Gradient Scrim */}
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-950 via-gray-950/20 to-transparent group-hover:via-gray-950/40 transition-colors duration-300" />
+              {/* linear Scrim */}
+              <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/20 to-transparent group-hover:via-gray-950/40 transition-colors duration-300" />
 
               {/* Play Button */}
               <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
@@ -222,7 +222,7 @@ export default function YouTubeSection() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white rounded-[6px] max-w-4xl w-full overflow-hidden shadow-2xl relative border border-gray-200"
+            className="bg-white rounded-md max-w-4xl w-full overflow-hidden shadow-2xl relative border border-gray-200"
           >
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 sm:p-5 border-b border-gray-100">
@@ -242,7 +242,7 @@ export default function YouTubeSection() {
 
               <button
                 onClick={() => setActiveVideo(null)}
-                className="w-8 h-8 rounded-[6px] bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors cursor-pointer"
+                className="w-8 h-8 rounded-md bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors cursor-pointer"
                 aria-label="Close video player"
               >
                 <FaXmark className="text-sm" />
@@ -280,7 +280,7 @@ export default function YouTubeSection() {
                   )}%22%20and%20want%20to%20discuss%20a%20similar%20solar%20setup%20for%20my%20home.`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-[6px] bg-gray-50 hover:bg-[#25D366] text-gray-800 hover:text-white font-bold border border-gray-200 hover:border-[#25D366] text-xs sm:text-sm shadow-sm hover:shadow-md transition-all whitespace-nowrap group/btn"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-md bg-gray-50 hover:bg-[#25D366] text-gray-800 hover:text-white font-bold border border-gray-200 hover:border-[#25D366] text-xs sm:text-sm shadow-sm hover:shadow-md transition-all whitespace-nowrap group/btn"
                 >
                   <FaWhatsapp size={16} className="text-[#25D366] group-hover/btn:text-white transition-colors" />
                   Inquire for Similar Project

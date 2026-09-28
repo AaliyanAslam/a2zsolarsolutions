@@ -55,7 +55,7 @@ function EnergyBar({ label, units, maxUnits, color }) {
   return (
     <div className="flex items-center gap-2 sm:gap-3">
       <span className="text-[11px] sm:text-xs text-gray-400 w-20 sm:w-28 truncate shrink-0 text-right">{label}</span>
-      <div className="flex-1 h-2 sm:h-2.5 bg-[#2a3038] rounded-[6px] overflow-hidden">
+      <div className="flex-1 h-2 sm:h-2.5 bg-[#2a3038] rounded-md overflow-hidden">
         <div
           className="h-full"
           style={{
@@ -204,11 +204,8 @@ export default function SolarCalculator() {
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
 
-  /* ════════════════════════════════════════════════════
-     RESULTS PANEL (shared between mobile and desktop)
-     ════════════════════════════════════════════════════ */
   const ResultsPanel = ({ className = "" }) => (
-    <div className={`bg-[#1a1f22] rounded-[6px] text-white shadow-xl relative overflow-hidden ${className}`}>
+    <div className={`bg-[#1a1f22] rounded-md text-white shadow-xl relative overflow-hidden ${className}`}>
       {/* Ambient glow */}
       <div className="absolute top-0 right-0 w-48 h-48 bg-green-500 opacity-[0.04] rounded-full blur-3xl pointer-events-none" />
 
@@ -233,7 +230,7 @@ export default function SolarCalculator() {
       </div>
 
       {/* ── Energy Breakdown ── */}
-      <div className="bg-[#222930] rounded-[6px] p-3 mb-3">
+      <div className="bg-[#222930] rounded-md p-3 mb-3">
         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
           <FaBolt className="text-yellow-400" size={10} />
           Top Energy Consumers
@@ -252,22 +249,22 @@ export default function SolarCalculator() {
 
       {/* ── Summary Grid ── */}
       <div className="grid grid-cols-2 gap-2 mb-3">
-        <div className="bg-[#222930] rounded-[6px] p-2.5">
+        <div className="bg-[#222930] rounded-md p-2.5">
           <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-0.5">Daily Energy</p>
           <p className="text-base font-bold text-[#a3e635]">{totalDailyUnits.toFixed(1)}</p>
           <p className="text-[10px] text-gray-500">units/day</p>
         </div>
-        <div className="bg-[#222930] rounded-[6px] p-2.5">
+        <div className="bg-[#222930] rounded-md p-2.5">
           <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-0.5">Peak Load</p>
           <p className="text-base font-bold">{totalLoadW.toLocaleString()}</p>
           <p className="text-[10px] text-gray-500">watts</p>
         </div>
-        <div className="bg-[#222930] rounded-[6px] p-2.5">
+        <div className="bg-[#222930] rounded-md p-2.5">
           <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-0.5">Monthly Savings</p>
           <p className="text-base font-bold text-[#a3e635]">Rs {monthlySavings.toLocaleString()}</p>
           <p className="text-[10px] text-gray-500">estimated</p>
         </div>
-        <div className="bg-[#222930] rounded-[6px] p-2.5">
+        <div className="bg-[#222930] rounded-md p-2.5">
           <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-0.5">CO₂ Saved</p>
           <p className="text-base font-bold">{co2SavedTons}</p>
           <p className="text-[10px] text-gray-500">tons/year</p>
@@ -275,8 +272,8 @@ export default function SolarCalculator() {
       </div>
 
       {/* ── Yearly Savings ── */}
-      <div className="bg-gradient-to-r from-[#a3e635]/10 to-[#22c55e]/10 border border-[#a3e635]/10 rounded-[6px] p-3 mb-3 flex items-center gap-3">
-        <div className="w-9 h-9  rounded-[6px] flex items-center justify-center shrink-0">
+      <div className="bg-linear-to-r from-[#a3e635]/10 to-[#22c55e]/10 border border-[#a3e635]/10 rounded-md p-3 mb-3 flex items-center gap-3">
+        <div className="w-9 h-9  rounded-md flex items-center justify-center shrink-0">
           <Image src="/images/pkr.webp" alt="PKR" width={58} height={28} className="object-contain" />
         </div>
         <div>
@@ -298,7 +295,7 @@ export default function SolarCalculator() {
         href={buildWhatsAppUrl()}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full bg-[#a3e635] hover:bg-[#b0f244] text-[#1a1f22] font-bold py-3 rounded-[6px] transition-all duration-300 shadow-[0_0_24px_rgba(163,230,53,0.25)] hover:shadow-[0_0_32px_rgba(163,230,53,0.4)] hover:-translate-y-0.5 mb-1.5 text-sm flex items-center justify-center gap-2"
+        className="w-full bg-[#a3e635] hover:bg-[#b0f244] text-[#1a1f22] font-bold py-3 rounded-md transition-all duration-300 shadow-[0_0_24px_rgba(163,230,53,0.25)] hover:shadow-[0_0_32px_rgba(163,230,53,0.4)] hover:-translate-y-0.5 mb-1.5 text-sm flex items-center justify-center gap-2"
       >
         <FaWhatsapp size={16} />
         Get A Free Quote
@@ -323,7 +320,7 @@ export default function SolarCalculator() {
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center">
           {/* ════════════ Left Side: Appliances Form ════════════ */}
-          <div className="bg-white rounded-[6px] shadow-sm border border-gray-200 p-4 md:p-8 w-full lg:w-[58%]">
+          <div className="bg-white rounded-md shadow-sm border border-gray-200 p-4 md:p-8 w-full lg:w-[58%]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 md:mb-8 gap-3">
               <div>
                 <h3 className="text-lg md:text-xl font-bold text-gray-900">Your appliances</h3>
@@ -366,7 +363,7 @@ export default function SolarCalculator() {
                 return (
                   <div
                     key={app.id}
-                    className="group relative bg-gray-50 md:bg-transparent p-3 md:p-0 rounded-[6px] md:rounded-none border md:border-none border-gray-100"
+                    className="group relative bg-gray-50 md:bg-transparent p-3 md:p-0 rounded-md md:rounded-none border md:border-none border-gray-100"
                   >
                     {/* ── Mobile: compact 2-col grid ── */}
                     <div className="md:hidden">
@@ -374,7 +371,7 @@ export default function SolarCalculator() {
                         <select
                           value={app.name}
                           onChange={(e) => handleApplianceChange(app.id, "name", e.target.value)}
-                          className="flex-1 bg-white border border-gray-200 rounded-[6px] px-2 py-1.5 text-xs text-gray-800 outline-none appearance-none mr-2"
+                          className="flex-1 bg-white border border-gray-200 rounded-md px-2 py-1.5 text-xs text-gray-800 outline-none appearance-none mr-2"
                         >
                           {PRESET_APPLIANCES.map((p) => (
                             <option key={p.name} value={p.name}>{p.name}</option>
@@ -382,7 +379,7 @@ export default function SolarCalculator() {
                         </select>
                         <button
                           onClick={() => removeAppliance(app.id)}
-                          className="text-gray-400 hover:text-red-500 bg-gray-100 hover:bg-red-50 p-1.5 rounded-[6px] transition-colors shrink-0"
+                          className="text-gray-400 hover:text-red-500 bg-gray-100 hover:bg-red-50 p-1.5 rounded-md transition-colors shrink-0"
                         >
                           <FaTrash size={10} />
                         </button>
@@ -392,26 +389,26 @@ export default function SolarCalculator() {
                           <label className="text-[10px] font-semibold text-gray-400 mb-0.5 block">Qty</label>
                           <input type="number" min="1" value={app.qty}
                             onChange={(e) => handleApplianceChange(app.id, "qty", e.target.value)}
-                            className="w-full bg-white border border-gray-200 rounded-[6px] px-2 py-1 text-xs text-center text-gray-800 outline-none"
+                            className="w-full bg-white border border-gray-200 rounded-md px-2 py-1 text-xs text-center text-gray-800 outline-none"
                           />
                         </div>
                         <div>
                           <label className="text-[10px] font-semibold text-gray-400 mb-0.5 block">Watts</label>
                           <input type="number" min="0" value={app.watts}
                             onChange={(e) => handleApplianceChange(app.id, "watts", e.target.value)}
-                            className="w-full bg-white border border-gray-200 rounded-[6px] px-2 py-1 text-xs text-center text-gray-800 outline-none"
+                            className="w-full bg-white border border-gray-200 rounded-md px-2 py-1 text-xs text-center text-gray-800 outline-none"
                           />
                         </div>
                         <div>
                           <label className="text-[10px] font-semibold text-gray-400 mb-0.5 block">Hrs/Day</label>
                           <input type="number" min="0" max="24" value={app.hours}
                             onChange={(e) => handleApplianceChange(app.id, "hours", e.target.value)}
-                            className="w-full bg-white border border-gray-200 rounded-[6px] px-2 py-1 text-xs text-center text-gray-800 outline-none"
+                            className="w-full bg-white border border-gray-200 rounded-md px-2 py-1 text-xs text-center text-gray-800 outline-none"
                           />
                         </div>
                         <div>
                           <label className="text-[10px] font-semibold text-gray-400 mb-0.5 block">Units</label>
-                          <div className="bg-green-50 border border-green-200 rounded-[6px] px-2 py-1 text-xs text-center text-green-800 font-bold">
+                          <div className="bg-green-50 border border-green-200 rounded-md px-2 py-1 text-xs text-center text-green-800 font-bold">
                             {unitsPerDay}
                           </div>
                         </div>
@@ -423,7 +420,7 @@ export default function SolarCalculator() {
                       <div className="col-span-4">
                         <select value={app.name}
                           onChange={(e) => handleApplianceChange(app.id, "name", e.target.value)}
-                          className="w-full bg-white border border-gray-200 rounded-[6px] px-3 py-2 text-sm text-gray-800 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none appearance-none"
+                          className="w-full bg-white border border-gray-200 rounded-md px-3 py-2 text-sm text-gray-800 focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none appearance-none"
                         >
                           {PRESET_APPLIANCES.map((p) => (
                             <option key={p.name} value={p.name}>{p.name}</option>
@@ -433,25 +430,25 @@ export default function SolarCalculator() {
                       <div className="col-span-2">
                         <input type="number" min="1" value={app.qty}
                           onChange={(e) => handleApplianceChange(app.id, "qty", e.target.value)}
-                          className="w-full bg-gray-50 border border-gray-200 rounded-[6px] px-3 py-2 text-sm text-center text-gray-800 focus:bg-white outline-none"
+                          className="w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm text-center text-gray-800 focus:bg-white outline-none"
                         />
                       </div>
                       <div className="col-span-2">
                         <input type="number" min="0" value={app.watts}
                           onChange={(e) => handleApplianceChange(app.id, "watts", e.target.value)}
-                          className="w-full bg-gray-50 border border-gray-200 rounded-[6px] px-3 py-2 text-sm text-center text-gray-800 focus:bg-white outline-none"
+                          className="w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm text-center text-gray-800 focus:bg-white outline-none"
                         />
                       </div>
                       <div className="col-span-2">
                         <input type="number" min="0" max="24" value={app.hours}
                           onChange={(e) => handleApplianceChange(app.id, "hours", e.target.value)}
-                          className="w-full bg-gray-50 border border-gray-200 rounded-[6px] px-3 py-2 text-sm text-center text-gray-800 focus:bg-white outline-none"
+                          className="w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm text-center text-gray-800 focus:bg-white outline-none"
                         />
                       </div>
                       <div className="col-span-2 flex items-center justify-end gap-3">
                         <span className="font-bold text-gray-900 text-base">{unitsPerDay}</span>
                         <button onClick={() => removeAppliance(app.id)}
-                          className="text-gray-400 hover:text-red-500 bg-gray-100 hover:bg-red-50 p-2 rounded-[6px] transition-colors"
+                          className="text-gray-400 hover:text-red-500 bg-gray-100 hover:bg-red-50 p-2 rounded-md transition-colors"
                         >
                           <FaTrash size={12} />
                         </button>
@@ -465,7 +462,7 @@ export default function SolarCalculator() {
             {/* Add Appliance */}
             <div className="flex items-center justify-between mt-4 md:mt-6">
               <button onClick={addAppliance}
-                className="flex items-center gap-2 text-xs md:text-sm font-semibold text-green-700 bg-green-50 hover:bg-green-100 px-3 py-1.5 md:px-4 md:py-2 rounded-[6px] transition-colors"
+                className="flex items-center gap-2 text-xs md:text-sm font-semibold text-green-700 bg-green-50 hover:bg-green-100 px-3 py-1.5 md:px-4 md:py-2 rounded-md transition-colors"
               >
                 <FaPlus size={10} /> Add Appliance
               </button>
@@ -475,7 +472,7 @@ export default function SolarCalculator() {
                 <button
                   onClick={handleCalculate}
                   disabled={isCalculating}
-                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs md:text-sm px-4 md:px-6 py-2 rounded-[6px] transition-colors disabled:opacity-60"
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs md:text-sm px-4 md:px-6 py-2 rounded-md transition-colors disabled:opacity-60"
                 >
                   {isCalculating ? (
                     <>

@@ -134,7 +134,7 @@ const Navbar = () => {
         <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-20">
             <Link href="/" className="flex items-center gap-2 shrink-0 group">
-              <div className="relative w-[110px] sm:w-40 h-9 sm:h-12 flex items-center">
+              <div className="relative w-27.5 sm:w-40 h-9 sm:h-12 flex items-center">
                 <Image
                   src="/logo/a2zlogo.webp"
                   alt="A to Z Solar Solutions Logo"

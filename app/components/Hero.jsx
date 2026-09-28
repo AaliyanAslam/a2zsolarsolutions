@@ -26,7 +26,7 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 w-full max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-[310px] sm:max-w-none md:max-w-2xl">
+        <div className="max-w-77.5 sm:max-w-none md:max-w-2xl">
           {/* Title */}
           <h1 className="hero-animate-title text-[30px] sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-3.5 sm:mb-6">
             <span className="text-[#1a1c29]">Sustainable Power</span>
@@ -37,7 +37,7 @@ const Hero = () => {
           </h1>
 
           {/* Description */}
-          <p className="hero-animate-desc text-[14px] sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-10 leading-relaxed max-w-[330px] sm:max-w-xl">
+          <p className="hero-animate-desc text-[14px] sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-10 leading-relaxed max-w-82.5 sm:max-w-xl">
             Eliminate up to{" "}
             <span className="font-bold text-[#0fa353]">
               90% of your K-Electric bills

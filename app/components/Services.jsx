@@ -87,7 +87,7 @@ export default function Services() {
   return (
     <section id="services" className="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
       {/* Background Accents */}
-      <div className="absolute top-0 right-0 w-full h-[500px] bg-gradient-to-b from-white to-transparent pointer-events-none" />
+      <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-white to-transparent pointer-events-none" />
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
 
@@ -108,16 +108,16 @@ export default function Services() {
           {services.map((service, index) => (
             <div
               key={index}
-              className="group bg-white rounded-[6px] p-6 md:p-8 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-green-500/10 hover:border-green-200 transition-all duration-300 relative flex flex-col h-full"
+              className="group bg-white rounded-md p-6 md:p-8 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-green-500/10 hover:border-green-200 transition-all duration-300 relative flex flex-col h-full"
             >
               {/* Subtle top border indicator */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-green-400 to-green-600 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-t-[6px]" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-400 to-green-600 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-t-md" />
               
               <div className="flex items-center justify-between mb-6">
-                <div className="w-14 h-14 bg-green-50 rounded-[6px] flex items-center justify-center group-hover:scale-110 group-hover:bg-green-100 transition-transform duration-300">
+                <div className="w-14 h-14 bg-green-50 rounded-md flex items-center justify-center group-hover:scale-110 group-hover:bg-green-100 transition-transform duration-300">
                   {service.icon}
                 </div>
-                <span className="bg-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wider py-1 px-2.5 rounded-[6px] group-hover:bg-green-50 group-hover:text-green-700 transition-colors">
+                <span className="bg-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wider py-1 px-2.5 rounded-md group-hover:bg-green-50 group-hover:text-green-700 transition-colors">
                   {service.label}
                 </span>
               </div>
@@ -130,7 +130,7 @@ export default function Services() {
                 {service.description}
               </p>
 
-              <div className="mb-8 space-y-3 flex-grow">
+              <div className="mb-8 space-y-3 grow">
                 {service.bullets.map((bullet, i) => (
                   <div key={i} className="flex items-start gap-2.5">
                     <FaCheckCircle className="text-green-500 shrink-0 mt-0.5 text-sm" />
@@ -143,7 +143,7 @@ export default function Services() {
                 href={service.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full mt-auto flex items-center justify-center gap-2 bg-gray-50 hover:bg-[#25D366] text-gray-800 hover:text-white font-bold py-3.5 rounded-[6px] transition-all duration-300 border border-gray-200 hover:border-[#25D366] text-sm group/btn"
+                className="w-full mt-auto flex items-center justify-center gap-2 bg-gray-50 hover:bg-[#25D366] text-gray-800 hover:text-white font-bold py-3.5 rounded-md transition-all duration-300 border border-gray-200 hover:border-[#25D366] text-sm group/btn"
               >
                 <FaWhatsapp size={16} className="text-[#25D366] group-hover/btn:text-white transition-colors" />
                 Inquire Now

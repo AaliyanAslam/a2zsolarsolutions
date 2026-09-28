@@ -60,7 +60,7 @@ const TrustBadges = () => {
     <section className="w-full bg-white border-t border-b border-gray-100 py-8 sm:py-10">
       {/* Heading */}
       <div className="text-center px-4 mb-6 sm:mb-8">
-        <h2 className="text-[23px] sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1c29] leading-tight max-w-[340px] sm:max-w-none mx-auto">
+        <h2 className="text-[23px] sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1c29] leading-tight max-w-85 sm:max-w-none mx-auto">
           Our Trusted Certifications &amp; Partners
         </h2>
       </div>
