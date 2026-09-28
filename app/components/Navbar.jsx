@@ -33,7 +33,7 @@ const NAV_LINKS = [
   { label: "Contact", href: "/contact" },
 ];
 
-const WHATSAPP_NUMBER = "923001234567";
+const WHATSAPP_NUMBER = "923214189298";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20interested%20in%20solar%20solutions`;
 
 const Navbar = () => {

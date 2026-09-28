@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, useMemo, useRef } from "react";
-import { FaTrash, FaPlus, FaCheck, FaBolt } from "react-icons/fa";
+import Image from "next/image";
+import { FaTrash, FaPlus, FaCheck, FaBolt, FaWhatsapp } from "react-icons/fa";
+import confetti from "canvas-confetti";
+
+const WHATSAPP_NUMBER = "923214189298";
 
 const PRESET_APPLIANCES = [
   { name: "Ceiling fan (standard)", watts: 80, hours: 12 },
@@ -72,7 +76,7 @@ export default function SolarCalculator() {
   const [appliances, setAppliances] = useState([
     { id: 1, name: "Ceiling fan (standard)", qty: 1, watts: 80, hours: 12 },
   ]);
-  const [mobileShowResult, setMobileShowResult] = useState(false);
+  const [showResult, setShowResult] = useState(false);
   const [isCalculating, setIsCalculating] = useState(false);
   const resultRef = useRef(null);
 
@@ -135,18 +139,69 @@ export default function SolarCalculator() {
     setAppliances(appliances.filter((app) => app.id !== id));
   };
 
-  // ── Mobile Calculate handler with 1s loading ──
-  const handleMobileCalculate = () => {
+  // ── Calculate handler with 1s loading & Confetti ──
+  const handleCalculate = () => {
     setIsCalculating(true);
-    setMobileShowResult(false);
+    setShowResult(false);
     setTimeout(() => {
       setIsCalculating(false);
-      setMobileShowResult(true);
+      setShowResult(true);
+      
+      // Fire confetti from left and right
+      const duration = 2000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.8 },
+          colors: ['#a3e635', '#22c55e', '#ffffff']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.8 },
+          colors: ['#a3e635', '#22c55e', '#ffffff']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
+
       // Scroll to results after render
       setTimeout(() => {
         resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 50);
     }, 1200);
+  };
+
+  // ── Build WhatsApp message with all user data ──
+  const buildWhatsAppUrl = () => {
+    let msg = `🌞 *Solar Load Calculator — Quote Request*\n\n`;
+    msg += `📋 *Appliances Added:*\n`;
+    appliances.forEach((app, i) => {
+      const units = ((app.qty * app.watts * app.hours) / 1000).toFixed(1);
+      msg += `${i + 1}. ${app.name} — Qty: ${app.qty}, ${app.watts}W, ${app.hours}hrs/day (${units} units/day)\n`;
+    });
+    msg += `\n⚡ *Summary:*\n`;
+    msg += `• Total Load: ${totalLoadW.toLocaleString()} W\n`;
+    msg += `• Daily Energy: ${totalDailyUnits.toFixed(1)} units/day\n`;
+    msg += `• Phase: ${phase === "single" ? "Single" : "3"}-phase\n`;
+    msg += `\n🔋 *Recommended System:*\n`;
+    msg += `• System Size: ${systemSizeKW} kW\n`;
+    msg += `• Panels Needed: ${panelsNeeded} × 550W\n`;
+    msg += `• Capacity Used: ${utilizationPct}%\n`;
+    msg += `\n💰 *Estimated Savings:*\n`;
+    msg += `• Monthly: Rs ${monthlySavings.toLocaleString()}\n`;
+    msg += `• Yearly: Rs ${yearlySavings.toLocaleString()}\n`;
+    msg += `• CO₂ Saved: ${co2SavedTons} tons/year\n`;
+    msg += `\nI'm interested in getting a detailed quote. Please contact me!`;
+    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
 
   /* ════════════════════════════════════════════════════
@@ -220,9 +275,9 @@ export default function SolarCalculator() {
       </div>
 
       {/* ── Yearly Savings ── */}
-      <div className="bg-gradient-to-r from-[#a3e635]/10 to-[#22c55e]/10 border border-[#a3e635]/20 rounded-[6px] p-3 mb-3 flex items-center gap-3">
-        <div className="w-9 h-9 bg-[#a3e635]/20 rounded-[6px] flex items-center justify-center shrink-0">
-          <span className="text-base">💰</span>
+      <div className="bg-gradient-to-r from-[#a3e635]/10 to-[#22c55e]/10 border border-[#a3e635]/10 rounded-[6px] p-3 mb-3 flex items-center gap-3">
+        <div className="w-9 h-9  rounded-[6px] flex items-center justify-center shrink-0">
+          <Image src="/images/pkr.webp" alt="PKR" width={58} height={28} className="object-contain" />
         </div>
         <div>
           <p className="text-[10px] text-gray-400 font-medium">Estimated Yearly Savings</p>
@@ -239,9 +294,15 @@ export default function SolarCalculator() {
       </div>
 
       {/* ── CTA ── */}
-      <button className="w-full bg-[#a3e635] hover:bg-[#b0f244] text-[#1a1f22] font-bold py-3 rounded-[6px] transition-all duration-300 shadow-[0_0_24px_rgba(163,230,53,0.25)] hover:shadow-[0_0_32px_rgba(163,230,53,0.4)] hover:-translate-y-0.5 mb-1.5 text-sm">
+      <a
+        href={buildWhatsAppUrl()}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="w-full bg-[#a3e635] hover:bg-[#b0f244] text-[#1a1f22] font-bold py-3 rounded-[6px] transition-all duration-300 shadow-[0_0_24px_rgba(163,230,53,0.25)] hover:shadow-[0_0_32px_rgba(163,230,53,0.4)] hover:-translate-y-0.5 mb-1.5 text-sm flex items-center justify-center gap-2"
+      >
+        <FaWhatsapp size={16} />
         Get A Free Quote
-      </button>
+      </a>
       <p className="text-[10px] text-center text-gray-600 leading-relaxed">
         An indicative estimate. Your engineered quote follows a free site survey.
       </p>
@@ -409,38 +470,42 @@ export default function SolarCalculator() {
                 <FaPlus size={10} /> Add Appliance
               </button>
 
-              {/* Mobile: Calculate Button */}
-              <button
-                onClick={handleMobileCalculate}
-                disabled={isCalculating}
-                className="lg:hidden flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs px-4 py-2 rounded-[6px] transition-colors disabled:opacity-60"
-              >
-                {isCalculating ? (
-                  <>
-                    <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
-                    </svg>
-                    Calculating...
-                  </>
-                ) : (
-                  "Calculate →"
-                )}
-              </button>
+              {/* Calculate Button (Shown if results are hidden) */}
+              {!showResult && (
+                <button
+                  onClick={handleCalculate}
+                  disabled={isCalculating}
+                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs md:text-sm px-4 md:px-6 py-2 rounded-[6px] transition-colors disabled:opacity-60"
+                >
+                  {isCalculating ? (
+                    <>
+                      <svg className="animate-spin h-3.5 w-3.5" viewBox="0 0 24 24" fill="none">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+                      </svg>
+                      Calculating...
+                    </>
+                  ) : (
+                    "Calculate Savings →"
+                  )}
+                </button>
+              )}
             </div>
           </div>
 
-          {/* ════════════ Desktop: Results Panel (always visible) ════════════ */}
-          <div className="hidden lg:block w-[42%]">
-            <div className="lg:sticky lg:top-28">
-              <ResultsPanel className="p-5 md:p-6" />
+          {/* ════════════ Desktop: Results Panel ════════════ */}
+          {showResult && !isCalculating && (
+            <div className="hidden lg:block w-[42%] animate-[heroFadeUp_0.5s_ease-out]" ref={resultRef}>
+              <div className="lg:sticky lg:top-28">
+                <ResultsPanel className="p-5 md:p-6" />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* ════════════ Mobile: Results Panel (shown after calculate) ════════════ */}
+        {/* ════════════ Mobile & Desktop: Loading State ════════════ */}
         {isCalculating && (
-          <div className="lg:hidden mt-6 flex flex-col items-center justify-center py-12">
+          <div className="mt-8 flex flex-col items-center justify-center py-12 w-full lg:w-[42%] mx-auto">
             <svg className="animate-spin h-10 w-10 text-green-500 mb-4" viewBox="0 0 24 24" fill="none">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
@@ -449,8 +514,9 @@ export default function SolarCalculator() {
           </div>
         )}
 
-        {mobileShowResult && !isCalculating && (
-          <div ref={resultRef} className="lg:hidden mt-6">
+        {/* ════════════ Mobile: Results Panel ════════════ */}
+        {showResult && !isCalculating && (
+          <div className="lg:hidden mt-6 animate-[heroFadeUp_0.5s_ease-out]">
             <ResultsPanel className="p-4" />
           </div>
         )}
