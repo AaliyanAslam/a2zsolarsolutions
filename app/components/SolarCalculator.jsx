@@ -10,15 +10,15 @@ const WHATSAPP_NUMBER = "923214189298";
 const PRESET_APPLIANCES = [
   { name: "Ceiling fan (standard)", watts: 80, hours: 12 },
   { name: "Ceiling fan (inverter/DC)", watts: 35, hours: 12 },
-  { name: "LED bulb", watts: 12, hours: 6 },
-  { name: "1.5-ton inverter AC", watts: 1500, hours: 8 },
-  { name: "1.5-ton non-inverter AC", watts: 2200, hours: 8 },
-  { name: "Refrigerator (medium)", watts: 300, hours: 12 },
-  { name: "Deep freezer", watts: 400, hours: 12 },
-  { name: 'LED TV 43"', watts: 100, hours: 6 },
+  { name: "LED bulb", watts: 10, hours: 6 },
+  { name: "1.5-ton inverter AC", watts: 1200, hours: 8 },
+  { name: "1.5-ton non-inverter AC", watts: 2000, hours: 8 },
+  { name: "Refrigerator (medium)", watts: 225, hours: 12 },
+  { name: "Deep freezer", watts: 250, hours: 12 },
+  { name: 'LED TV 43"', watts: 80, hours: 6 },
   { name: "Water pump (1 HP)", watts: 750, hours: 1 },
-  { name: "Washing machine", watts: 500, hours: 1 },
-  { name: "Iron", watts: 1000, hours: 1 },
+  { name: "Washing machine", watts: 400, hours: 1 },
+  { name: "Iron", watts: 1200, hours: 1 },
   { name: "Wi-Fi router + CCTV", watts: 30, hours: 24 },
   { name: "Other (custom)", watts: 0, hours: 0 },
 ];
@@ -395,8 +395,8 @@ export default function SolarCalculator() {
                         <div>
                           <label className="text-[10px] font-semibold text-gray-400 mb-0.5 block">Watts</label>
                           <input type="number" min="0" value={app.watts}
-                            onChange={(e) => handleApplianceChange(app.id, "watts", e.target.value)}
-                            className="w-full bg-white border border-gray-200 rounded-md px-2 py-1 text-xs text-center text-gray-800 outline-none"
+                            readOnly
+                            className="w-full bg-gray-100 border border-gray-200 rounded-md px-2 py-1 text-xs text-center text-gray-500 outline-none cursor-not-allowed"
                           />
                         </div>
                         <div>
@@ -435,8 +435,8 @@ export default function SolarCalculator() {
                       </div>
                       <div className="col-span-2">
                         <input type="number" min="0" value={app.watts}
-                          onChange={(e) => handleApplianceChange(app.id, "watts", e.target.value)}
-                          className="w-full bg-gray-50 border border-gray-200 rounded-md px-3 py-2 text-sm text-center text-gray-800 focus:bg-white outline-none"
+                          readOnly
+                          className="w-full bg-gray-100 border border-gray-200 rounded-md px-3 py-2 text-sm text-center text-gray-500 outline-none cursor-not-allowed"
                         />
                       </div>
                       <div className="col-span-2">
