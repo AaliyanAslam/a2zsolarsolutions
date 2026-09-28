@@ -41,6 +41,11 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
+  // Hide main navbar on admin routes
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   // Throttled scroll listener with passive: true for buttery 60fps scrolling
   useEffect(() => {
     let ticking = false;
