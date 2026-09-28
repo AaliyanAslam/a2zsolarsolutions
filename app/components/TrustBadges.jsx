@@ -60,21 +60,20 @@ const TrustBadges = () => {
     <section className="w-full bg-white border-t border-b border-gray-100 py-8 sm:py-10">
       {/* Heading */}
       <div className="text-center px-4 mb-6 sm:mb-8">
-        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#39393e]">
+        <h2 className="text-[23px] sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1c29] leading-tight max-w-[340px] sm:max-w-none mx-auto">
           Our Trusted Certifications &amp; Partners
         </h2>
       </div>
 
       {/* Marquee wrapper */}
       <div className="relative w-full overflow-hidden">
-        {/* Left fade mask */}
+        {/* Subtle Edge fade masks (small on mobile so logos are fully visible) */}
         <div
-          className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-28 z-10
+          className="pointer-events-none absolute inset-y-0 left-0 w-4 sm:w-20 z-10
                         bg-linear-to-r from-white to-transparent"
         />
-        {/* Right fade mask */}
         <div
-          className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-28 z-10
+          className="pointer-events-none absolute inset-y-0 right-0 w-4 sm:w-20 z-10
                         bg-linear-to-l from-white to-transparent"
         />
 
@@ -84,16 +83,16 @@ const TrustBadges = () => {
           {GROUP.map((badge, i) => (
             <div
               key={`a${i}`}
-              className="flex items-center justify-center shrink-0 px-8 sm:px-12"
+              className="flex items-center justify-center shrink-0 px-4 sm:px-8"
             >
-              <div className="relative w-16 h-16 sm:w-30 sm:h-20">
+              <div className="relative w-24 h-12 sm:w-32 sm:h-16">
                 <Image
                   src={badge.src}
                   alt={badge.alt}
                   fill
                   loading="lazy"
-                  className="object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
-                  sizes="120px"
+                  className="object-contain grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+                  sizes="(max-width: 640px) 96px, 128px"
                 />
               </div>
             </div>
@@ -104,16 +103,16 @@ const TrustBadges = () => {
             <div
               key={`b${i}`}
               aria-hidden="true"
-              className="flex items-center justify-center shrink-0 px-8 sm:px-12"
+              className="flex items-center justify-center shrink-0 px-4 sm:px-8"
             >
-              <div className="relative w-16 h-16 sm:w-30 sm:h-20">
+              <div className="relative w-24 h-12 sm:w-32 sm:h-16">
                 <Image
                   src={badge.src}
                   alt={badge.alt}
                   fill
                   loading="lazy"
-                  className="object-contain grayscale hover:grayscale-0 opacity-60 hover:opacity-100 transition-all duration-300"
-                  sizes="120px"
+                  className="object-contain grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+                  sizes="(max-width: 640px) 96px, 128px"
                 />
               </div>
             </div>

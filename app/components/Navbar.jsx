@@ -75,7 +75,11 @@ const Navbar = () => {
 
   // Close drawer when route changes
   useEffect(() => {
-    closeDrawer();
+    if (isOpen) {
+      // eslint-disable-next-line
+      closeDrawer();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const isActive = (href) => {
@@ -121,12 +125,16 @@ const Navbar = () => {
 
       {/* ── Main Navbar ── */}
       <nav
-        className={`w-full transition-all duration-300 ${isScrolled ? "bg-white shadow-md border-b border-gray-100" : "bg-transparent border-transparent"}`}
+        className={`w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-gray-100/80 lg:backdrop-blur-none ${
+          isScrolled
+            ? "shadow-sm border-b border-gray-100 bg-white"
+            : "lg:bg-transparent lg:border-transparent"
+        }`}
       >
         <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 sm:h-20">
+          <div className="flex items-center justify-between h-14 sm:h-20">
             <Link href="/" className="flex items-center gap-2 shrink-0 group">
-              <div className="relative w-32 sm:w-40 h-10 sm:h-12 flex items-center">
+              <div className="relative w-[110px] sm:w-40 h-9 sm:h-12 flex items-center">
                 <Image
                   src="/logo/a2zlogo.webp"
                   alt="A to Z Solar Solutions Logo"
