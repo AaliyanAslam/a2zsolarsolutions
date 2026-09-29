@@ -1,7 +1,8 @@
 import Hero from "./components/Hero";
 import TrustBadges from "./components/TrustBadges";
-import WhySolar from "./components/WhySolar";
 import SolarCalculator from "./components/SolarCalculator";
+import WhySolar from "./components/WhySolar";
+import HowWeDeliver from "./components/HowWeDeliver";
 import Services from "./components/Services";
 import YouTubeSection from "./components/YouTubeSection";
 
@@ -12,6 +13,7 @@ export default function Home() {
       <TrustBadges />
       <SolarCalculator />
       <WhySolar />
+      <HowWeDeliver />
       <Services />
       <YouTubeSection />
     </main>
