@@ -1,6 +1,7 @@
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 const font = Plus_Jakarta_Sans({
   variable: "--font-plus-jakarta",
@@ -25,7 +26,8 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
       >
         <Navbar />
-        {children}
+        <div className="flex-1">{children}</div>
+        <Footer />
       </body>
     </html>
   );
