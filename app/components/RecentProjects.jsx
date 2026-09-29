@@ -103,7 +103,7 @@ export default function RecentProjects() {
   };
 
   return (
-    <section suppressHydrationWarning id="projects" className="py-14 sm:py-20 md:py-24 bg-white relative overflow-hidden">
+    <section suppressHydrationWarning id="projects" className="scroll-mt-20 py-14 sm:py-20 md:py-24 bg-white relative overflow-hidden">
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-100/30 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#0fa353]/5 rounded-full blur-[100px] pointer-events-none" />
 

@@ -292,7 +292,7 @@ export default function SolarCalculator() {
   );
 
   return (
-    <section id="calculator" className="py-12 sm:py-16 md:py-24 bg-gray-50 overflow-hidden">
+    <section id="calculator" className="scroll-mt-20 py-12 sm:py-16 md:py-24 bg-gray-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6 sm:mb-8 md:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-2 md:mb-4 tracking-tight">

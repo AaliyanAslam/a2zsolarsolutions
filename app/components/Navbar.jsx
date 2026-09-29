@@ -19,15 +19,17 @@ import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "About Us", href: "/about" },
-  { label: "Solar Solutions", href: "/#solutions" },
+  { label: "Solar Solutions", href: "/#services" },
+  { label: "Recent Projects", href: "/#projects" },
   {
     label: "More",
     href: "#",
     dropdownItems: [
-      { label: "Our Services", href: "/#services" },
-      { label: "Client Reviews", href: "/#reviews" },
-      { label: "Videos", href: "/#videos" },
-      { label: "FAQs", href: "/#faqs" },
+      { label: "Solar Calculator", href: "/#calculator" },
+      { label: "Why Solar?", href: "/#why-solar" },
+      { label: "How We Deliver", href: "/#process" },
+      { label: "Video Showcase", href: "/#videos" },
+      { label: "Certifications", href: "/#certifications" },
     ],
   },
   { label: "Contact", href: "/contact" },
@@ -83,8 +85,52 @@ const Navbar = () => {
     }
   }, [pathname]);
 
+  // Handle smooth scroll when navigating to hash from another page
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash) {
+      const id = window.location.hash.replace("#", "");
+      const elem = document.getElementById(id);
+      if (elem) {
+        const timer = setTimeout(() => {
+          elem.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [pathname]);
+
+  const handleNavClick = (e, href) => {
+    if (isOpen) {
+      closeDrawer();
+    }
+
+    if (href === "#") {
+      e.preventDefault();
+      return;
+    }
+
+    if (href.startsWith("/#") && pathname === "/") {
+      e.preventDefault();
+      const targetId = href.replace("/#", "");
+      const elem = document.getElementById(targetId);
+      if (elem) {
+        elem.scrollIntoView({ behavior: "smooth" });
+        window.history.pushState(null, "", href);
+      }
+      return;
+    }
+
+    if (href === "/" && pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.history.pushState(null, "", "/");
+      return;
+    }
+  };
+
   const isActive = (href) => {
     if (href === "/") return pathname === "/";
+    if (href.startsWith("/#") || href === "#") return false;
     return pathname.startsWith(href);
   };
 
@@ -132,7 +178,11 @@ const Navbar = () => {
       >
         <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14 sm:h-20">
-            <Link href="/" className="flex items-center gap-2 shrink-0 group">
+            <Link
+              href="/"
+              onClick={(e) => handleNavClick(e, "/")}
+              className="flex items-center gap-2 shrink-0 group"
+            >
               <div className="relative w-27.5 sm:w-40 h-9 sm:h-12 flex items-center">
                 <Image
                   src="/logo/a2zlogo.webp"
@@ -149,10 +199,11 @@ const Navbar = () => {
                 <div key={link.label} className="relative group py-2">
                   <Link
                     href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
                     className={`
                       flex items-center gap-1 text-[14px] xl:text-[15px] font-semibold transition-colors duration-200
                       ${
-                        isActive(link.href) && link.href !== "#"
+                        isActive(link.href)
                           ? "text-[#0fa353]"
                           : "text-gray-800 group-hover:text-[#0fa353]"
                       }
@@ -166,11 +217,12 @@ const Navbar = () => {
 
                   {link.dropdownItems && (
                     <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                      <div className="w-48 bg-white shadow-xl rounded-xl border border-gray-100 py-2 flex flex-col">
+                      <div className="w-52 bg-white shadow-xl rounded-xl border border-gray-100 py-2 flex flex-col">
                         {link.dropdownItems.map((item) => (
                           <Link
                             key={item.label}
                             href={item.href}
+                            onClick={(e) => handleNavClick(e, item.href)}
                             className="px-4 py-2.5 text-[14px] font-medium text-gray-700 hover:bg-emerald-50 hover:text-[#0fa353] transition-colors"
                           >
                             {item.label}
@@ -195,7 +247,8 @@ const Navbar = () => {
               </a>
               <Link
                 href="/#calculator"
-                className="flex items-center gap-2 px-5 py-2 text-[14px] font-bold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-md shadow-md shadow-green-600/20 transition-all active:scale-95"
+                onClick={(e) => handleNavClick(e, "/#calculator")}
+                className="flex items-center gap-2 px-5 py-2 text-[14px] font-bold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-md shadow-md shadow-green-600/20 transition-all active:scale-95 cursor-pointer"
               >
                 <HiOutlineSparkles className="text-yellow-300" />
                 Get Free Quote
@@ -269,7 +322,7 @@ const Navbar = () => {
                   {link.dropdownItems ? (
                     <details className="group">
                       <summary
-                        className={`flex items-center justify-between px-3 sm:px-4 py-3 sm:py-3.5 text-[14px] sm:text-[15px] font-semibold rounded-lg transition-colors text-gray-800 hover:bg-gray-50 cursor-pointer list-none [&::-webkit-details-marker]:hidden`}
+                        className="flex items-center justify-between px-3 sm:px-4 py-3 sm:py-3.5 text-[14px] sm:text-[15px] font-semibold rounded-lg transition-colors text-gray-800 hover:bg-gray-50 cursor-pointer list-none [&::-webkit-details-marker]:hidden"
                       >
                         {link.label}
                         <FaChevronDown className="text-xs text-gray-400 group-open:rotate-180 transition-transform" />
@@ -279,7 +332,7 @@ const Navbar = () => {
                           <Link
                             key={item.label}
                             href={item.href}
-                            onClick={closeDrawer}
+                            onClick={(e) => handleNavClick(e, item.href)}
                             className="block px-3 sm:px-4 py-2 sm:py-2.5 text-[13px] sm:text-[14px] font-medium text-gray-600 rounded-lg hover:text-[#0fa353] hover:bg-emerald-50/50 transition-colors"
                           >
                             {item.label}
@@ -290,11 +343,11 @@ const Navbar = () => {
                   ) : (
                     <Link
                       href={link.href}
-                      onClick={closeDrawer}
+                      onClick={(e) => handleNavClick(e, link.href)}
                       className={`
                         flex items-center justify-between px-3 sm:px-4 py-3 sm:py-3.5 text-[14px] sm:text-[15px] font-semibold rounded-lg transition-colors
                         ${
-                          isActive(link.href) && link.href !== "#"
+                          isActive(link.href)
                             ? "text-[#0fa353] bg-emerald-50/50"
                             : "text-gray-800 hover:bg-gray-50"
                         }
@@ -311,8 +364,8 @@ const Navbar = () => {
           <div className="px-3 sm:px-4 pb-5 sm:pb-6 pt-3 sm:pt-4 border-t border-gray-100 shrink-0 space-y-2 sm:space-y-3">
             <Link
               href="/#calculator"
-              onClick={closeDrawer}
-              className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 text-[13px] sm:text-[15px] font-bold text-white bg-[#0fa353] rounded-md shadow-md shadow-green-600/20 active:scale-[0.98] transition-transform"
+              onClick={(e) => handleNavClick(e, "/#calculator")}
+              className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 text-[13px] sm:text-[15px] font-bold text-white bg-[#0fa353] rounded-md shadow-md shadow-green-600/20 active:scale-[0.98] transition-transform cursor-pointer"
             >
               <HiOutlineSparkles className="text-yellow-300 text-lg" />
               Get Free Quote

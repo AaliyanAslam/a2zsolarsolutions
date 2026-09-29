@@ -38,7 +38,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-white text-gray-800 pb-12 mt-24 sm:mt-28 md:mt-32 border-t border-gray-100 z-20 overflow-x-clip">
+    <footer id="contact" className="scroll-mt-20 relative bg-white text-gray-800 pb-12 mt-24 sm:mt-28 md:mt-32 border-t border-gray-100 z-20 overflow-x-clip">
       {/* ── 1. Floating Newsletter / CTA Banner with Protruding 3D Graphic ── */}
       <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8 -mt-20 sm:-mt-24 md:-mt-28 relative z-30 mb-14 sm:mb-18 md:mb-20">
         <div className="relative rounded-sm bg-linear-to-r from-[#0fa353] via-[#0d8e48] to-[#0a753b] text-white p-6 sm:p-8 md:p-12 shadow-2xl shadow-green-950/20 overflow-visible">

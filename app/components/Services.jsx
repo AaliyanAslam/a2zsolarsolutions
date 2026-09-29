@@ -85,7 +85,8 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-12 sm:py-16 md:py-24 bg-gray-50 relative overflow-hidden">
+    <section id="services" className="scroll-mt-20 py-12 sm:py-16 md:py-24 bg-gray-50 relative overflow-hidden">
+      <div id="solutions" className="absolute -top-24 left-0 pointer-events-none" />
       <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-white to-transparent pointer-events-none" />
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />

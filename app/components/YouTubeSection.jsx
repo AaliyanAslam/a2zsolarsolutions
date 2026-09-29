@@ -123,7 +123,8 @@ export default function YouTubeSection() {
   }, [activeVideo]);
 
   return (
-    <section id="youtube" className="py-12 sm:py-16 md:py-24 bg-white relative overflow-hidden">
+    <section id="videos" className="scroll-mt-20 py-12 sm:py-16 md:py-24 bg-white relative overflow-hidden">
+      <div id="youtube" className="absolute -top-24 left-0 pointer-events-none" />
       <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-gray-50/50 to-transparent pointer-events-none" />
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />

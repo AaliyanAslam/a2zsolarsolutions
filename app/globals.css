@@ -4,7 +4,12 @@
   --font-sans: var(--font-plus-jakarta), ui-sans-serif, system-ui, sans-serif;
 }
 
-/* ── Prevent unwanted horizontal overflow on mobile viewports ── */
+/* ── Enable smooth scrolling & prevent unwanted horizontal overflow ── */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
+}
+
 html,
 body {
   overflow-x: hidden;
