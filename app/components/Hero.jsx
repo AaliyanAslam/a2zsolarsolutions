@@ -40,20 +40,21 @@ const Hero = () => {
             with premium On-Grid, Hybrid &amp; Custom Solar Systems.
           </p>
 
-          <div className="hero-animate-buttons flex flex-col sm:flex-row gap-2.5 sm:gap-4 w-full sm:max-w-md">
+          <div className="hero-animate-buttons flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">
             <Link
               href="/#calculator"
-              className="w-full h-11 sm:h-auto flex items-center justify-center gap-2 px-5 py-2.5 sm:px-8 sm:py-3.5 bg-[#0fa353] text-white text-xs sm:text-sm md:text-[15px] font-bold rounded-lg shadow-md shadow-green-600/15 hover:bg-[#0c8a45] active:scale-[0.99] transition-all duration-200"
+              className="w-full sm:w-auto whitespace-nowrap flex items-center justify-center gap-2 px-5 py-3 sm:px-7 sm:py-3.5 bg-[#0fa353] text-white text-xs sm:text-sm md:text-[15px] font-bold rounded-lg shadow-md shadow-green-600/15 hover:bg-[#0c8a45] active:scale-[0.99] transition-all duration-200"
             >
-              Calculate Solar Savings &rarr;
+              <span>Calculate Solar Savings</span>
+              <span>&rarr;</span>
             </Link>
 
             <a
               href="tel:03214189298"
-              className="w-full h-11 sm:h-auto flex items-center justify-center gap-2 px-5 py-2.5 sm:px-8 sm:py-3.5 bg-white border border-gray-200/90 text-[#1a1c29] text-xs sm:text-sm md:text-[15px] font-bold rounded-lg shadow-xs hover:bg-gray-50 active:scale-[0.99] transition-all duration-200"
+              className="w-full sm:w-auto whitespace-nowrap flex items-center justify-center gap-2 px-5 py-3 sm:px-6 sm:py-3.5 bg-white border border-gray-200/90 text-[#1a1c29] text-xs sm:text-sm md:text-[15px] font-bold rounded-lg shadow-xs hover:bg-gray-50 active:scale-[0.99] transition-all duration-200"
             >
-              <FaPhoneAlt className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#0fa353]" />
-              Call Now — 0321-4189298
+              <FaPhoneAlt className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#0fa353] shrink-0" />
+              <span>Call Now — 0321-4189298</span>
             </a>
           </div>
 
