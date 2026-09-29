@@ -154,8 +154,8 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Bottom Graphic Mockup */}
-            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-gradient-to-t from-red-50/80 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
-              <div className="w-full h-24 bg-gradient-to-r from-red-500 to-rose-600 rounded-t-xl shadow-md p-3 text-white flex flex-col justify-between transform group-hover:scale-102 transition-transform">
+            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-linear-to-t from-red-50/80 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
+              <div className="w-full h-24 bg-linear-to-r from-red-500 to-rose-600 rounded-t-xl shadow-md p-3 text-white flex flex-col justify-between transform group-hover:scale-102 transition-transform">
                 <span className="text-[10px] font-black uppercase tracking-widest opacity-80 flex items-center gap-1.5 whitespace-nowrap">
                   <FaYoutube size={14} /> Showcase Library
                 </span>
@@ -165,7 +165,7 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Card 2: Documents & PDFs */}
-          <div className="bg-gradient-to-b from-[#f0fdf4] to-[#dcfce7] border border-green-100 rounded-2xl p-5 flex flex-col justify-between h-72 shadow-xs relative overflow-hidden group hover:border-green-200 transition-all">
+          <div className="bg-linear-to-b from-[#f0fdf4] to-[#dcfce7] border border-green-100 rounded-2xl p-5 flex flex-col justify-between h-72 shadow-xs relative overflow-hidden group hover:border-green-200 transition-all">
             <div className="space-y-3 z-10">
               <p className="text-[13px] font-medium text-gray-800 leading-snug">
                 Upload solar panel brochures, inverter manuals, and net-metering sanction letters.
@@ -201,7 +201,7 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Illustration */}
-            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-gradient-to-t from-emerald-50/70 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
+            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-linear-to-t from-emerald-50/70 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
               <div className="flex items-center gap-3">
                 <div className="w-24 h-24 bg-white rounded-lg border border-emerald-200/80 p-2 flex flex-col items-center justify-center shadow-xs">
                   <FaSolarPanel className="text-2xl text-green-600" />

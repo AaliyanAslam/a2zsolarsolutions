@@ -115,7 +115,7 @@ export default function HowWeDeliver() {
           })}
 
           {/* 6th Card: Process Delivery Quote & Website Link */}
-          <div className="bg-gradient-to-br from-[#122116] via-[#162a1c] to-[#0d1a11] text-white rounded-sm p-5 sm:p-7 shadow-lg flex flex-col justify-between relative overflow-hidden border border-emerald-900/60">
+          <div className="bg-linear-to-br from-[#122116] via-[#162a1c] to-[#0d1a11] text-white rounded-sm p-5 sm:p-7 shadow-lg flex flex-col justify-between relative overflow-hidden border border-emerald-900/60">
             <div className="absolute top-0 right-0 w-36 h-36 bg-[#0fa353]/20 rounded-full blur-2xl pointer-events-none" />
 
             <div>

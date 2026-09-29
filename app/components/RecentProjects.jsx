@@ -136,7 +136,7 @@ export default function RecentProjects() {
             Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={`init-skeleton-${i}`}
-                className="relative aspect-[3/4] sm:aspect-[4/5] bg-gray-900/95 rounded-sm overflow-hidden border-2 border-emerald-900/40 shadow-sm animate-pulse select-none"
+                className="relative aspect-3/4 sm:aspect-4/5 bg-gray-900/95 rounded-sm overflow-hidden border-2 border-emerald-900/40 shadow-sm animate-pulse select-none"
               >
                 <div className="absolute top-2 sm:top-2.5 left-0 z-10">
                   <div className="w-12 sm:w-14 h-5 sm:h-6 bg-[#e02424]/50 rounded-r-sm" />
@@ -163,7 +163,7 @@ export default function RecentProjects() {
                   key={key}
                   suppressHydrationWarning
                   onClick={() => setActiveProject(proj)}
-                  className="group relative aspect-[3/4] sm:aspect-[4/5] bg-gray-900 rounded-sm overflow-hidden border-2 border-[#0fa353] hover:border-[#0c8a45] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer select-none"
+                  className="group relative aspect-3/4 sm:aspect-4/5 bg-gray-900 rounded-sm overflow-hidden border-2 border-[#0fa353] hover:border-[#0c8a45] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer select-none"
                 >
                   {/* Photo (Rendered once client is mounted to avoid extension mismatch) */}
                   {mounted ? (
@@ -178,7 +178,7 @@ export default function RecentProjects() {
                   )}
 
                   {/* Dark Gradient Overlay for Badges Readability */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40 group-hover:from-black/90 transition-colors duration-300 pointer-events-none" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-black/40 group-hover:from-black/90 transition-colors duration-300 pointer-events-none" />
 
                   {/* ── Top-Left Red Ribbon Badge (Capacity KW) ── */}
                   <div className="absolute top-2 sm:top-2.5 left-0 z-10">
@@ -210,7 +210,7 @@ export default function RecentProjects() {
             Array.from({ length: 5 }).map((_, i) => (
               <div
                 key={`more-skeleton-${i}`}
-                className="relative aspect-[3/4] sm:aspect-[4/5] bg-gray-900/95 rounded-sm overflow-hidden border-2 border-emerald-900/50 shadow-sm animate-pulse select-none"
+                className="relative aspect-3/4 sm:aspect-4/5 bg-gray-900/95 rounded-sm overflow-hidden border-2 border-emerald-900/50 shadow-sm animate-pulse select-none"
               >
                 <div className="absolute top-2 sm:top-2.5 left-0 z-10">
                   <div className="w-12 sm:w-14 h-5 sm:h-6 bg-[#e02424]/50 rounded-r-sm" />
@@ -266,7 +266,7 @@ export default function RecentProjects() {
         )}
 
         {/* ── 250+ Milestone Banner & Corporate Vision ── */}
-        <div className="relative rounded-sm bg-gradient-to-br from-[#122116] via-[#162a1c] to-[#0d1a11] text-white p-5 sm:p-8 md:p-10 border border-emerald-900/60 shadow-xl overflow-hidden mb-8 sm:mb-12">
+        <div className="relative rounded-sm bg-linear-to-br from-[#122116] via-[#162a1c] to-[#0d1a11] text-white p-5 sm:p-8 md:p-10 border border-emerald-900/60 shadow-xl overflow-hidden mb-8 sm:mb-12">
           <div className="absolute top-0 right-0 w-80 h-80 bg-[#0fa353]/15 rounded-full blur-3xl pointer-events-none" />
 
           <div className="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 lg:gap-10">
@@ -342,7 +342,7 @@ export default function RecentProjects() {
             </div>
 
             {/* Modal Image */}
-            <div className="relative aspect-[4/3] w-full bg-gray-900">
+            <div className="relative aspect-4/3 w-full bg-gray-900">
               <img
                 src={activeProject.imageUrl || activeProject.image}
                 alt={`${activeProject.capacity} at ${activeProject.location}`}

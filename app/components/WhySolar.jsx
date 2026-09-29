@@ -106,7 +106,7 @@ export default function WhySolar() {
           })}
 
           {/* 6th Card: Official Quote & Website Highlight */}
-          <div className="bg-gradient-to-br from-[#1a3821] via-[#152a1a] to-[#0f1f13] text-white rounded-sm p-5 sm:p-7 shadow-lg flex flex-col justify-between relative overflow-hidden border border-emerald-800/40">
+          <div className="bg-linear-to-br from-[#1a3821] via-[#152a1a] to-[#0f1f13] text-white rounded-sm p-5 sm:p-7 shadow-lg flex flex-col justify-between relative overflow-hidden border border-emerald-800/40">
             <div className="absolute top-0 right-0 w-36 h-36 bg-[#0fa353]/20 rounded-full blur-2xl pointer-events-none" />
 
             <div>

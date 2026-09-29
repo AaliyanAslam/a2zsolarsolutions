@@ -143,9 +143,7 @@ const LOCATIONS = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-white text-gray-900 pb-20 overflow-x-hidden selection:bg-emerald-100 selection:text-emerald-900">
-      {/* ── 1. Hero Header Section with about-hero-bg ── */}
       <section className="relative min-h-0 md:min-h-[85svh] flex flex-col justify-start md:justify-center pt-24 sm:pt-32 md:pt-40 pb-10 sm:pb-16 md:pb-20 overflow-hidden mb-10 sm:mb-16 bg-white">
-        {/* Background Image & Light Overlay - Hidden on mobile for performance and clean layout */}
         <div className="absolute inset-0 z-0 hidden md:block">
           <picture>
             <img
@@ -156,14 +154,11 @@ export default function AboutPage() {
               className="absolute inset-0 w-full h-full object-cover object-[82%_center] md:object-right"
             />
           </picture>
-          {/* Soft Left Gradient Overlay for text readability */}
           <div className="absolute inset-0 bg-linear-to-r from-white via-white/95 to-transparent md:via-white/85" />
-          {/* Subtle Bottom Fade into section below */}
           <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/20 to-white" />
         </div>
 
         <div className="relative z-10 w-full max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Breadcrumb Navigation */}
           <nav
             aria-label="Breadcrumb"
             className="flex items-center gap-2 text-[11px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 sm:mb-6"
@@ -176,7 +171,6 @@ export default function AboutPage() {
           </nav>
 
           <div className="max-w-2xl lg:max-w-3xl space-y-3.5 sm:space-y-6">
-            {/* FBR Registered Pill - Fixed to never break awkwardly on mobile */}
             <div className="inline-flex items-center gap-1.5 sm:gap-2 py-1 sm:py-1.5 px-3 sm:px-4 rounded-full bg-emerald-50/70 sm:bg-white/90 sm:backdrop-blur-md border border-emerald-200/90 text-emerald-800 text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-wider shadow-2xs max-w-full">
               <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#0fa353] animate-pulse shrink-0" />
               <span className="truncate sm:overflow-visible">FBR Registered Renewable Energy Company</span>
@@ -184,12 +178,10 @@ export default function AboutPage() {
               <span className="text-emerald-700 font-semibold shrink-0">Est. 2015</span>
             </div>
 
-            {/* Main Title */}
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#1a1c29] tracking-tight leading-[1.15] sm:leading-[1.1] break-words">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#1a1c29] tracking-tight leading-[1.15] sm:leading-[1.1] wrap-break-word">
               About Our <span className="text-[#0fa353]">Company</span>
             </h1>
 
-            {/* Lead Paragraph */}
             <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed font-normal">
               Founded in 2015,{" "}
               <strong className="text-[#1a1c29] font-bold">
@@ -204,8 +196,7 @@ export default function AboutPage() {
               residential, commercial, and industrial applications.
             </p>
 
-            {/* Official Tagline Banner */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between w-full max-w-400 p-2.5 sm:p-2.5 rounded-xl border border-[#9ab596] bg-gradient-to-r from-[#cfe1cb] to-[#b7ceb4] shadow-sm gap-3 sm:gap-4 mt-3 sm:mt-4">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between w-full max-w-400 p-2.5 sm:p-2.5 rounded-xl border border-[#9ab596] bg-linear-to-r from-[#cfe1cb] to-[#b7ceb4] shadow-sm gap-3 sm:gap-4 mt-3 sm:mt-4">
               <div className="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border border-[#9ab596] flex items-center justify-center shrink-0 shadow-2xs">
                   <FaBolt className="text-[#1a3821] text-xs sm:text-base" />
@@ -220,7 +211,6 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* ── Stats Cards Grid ── */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-0 mt-8 sm:mt-14 pt-6 sm:pt-10 border-t border-gray-200/80">
             {STATS.map((stat, i) => {
               const Icon = stat.icon;
@@ -230,7 +220,7 @@ export default function AboutPage() {
                   className={`p-3.5 sm:p-5 lg:p-6 rounded-xl sm:rounded-none bg-white border ${stat.border} shadow-2xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group`}
                 >
                   <div
-                    className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${stat.bg}`}
+                    className={`absolute top-0 left-0 right-0 h-1 bg-linear-to-r ${stat.bg}`}
                   />
                   <div className="flex items-center justify-between mb-2.5 sm:mb-4">
                     <div
@@ -263,17 +253,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 2. Company Story & Capabilities ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Left Column: Narrative */}
           <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed">
             <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200/80">
               <FaAward className="text-[#0fa353] text-xs sm:text-sm" />
               Over A Decade Of Experience
             </div>
 
-            <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#1a1c29] tracking-tight leading-snug break-words">
+            <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#1a1c29] tracking-tight leading-snug wrap-break-word">
               Engineering Excellence, Reliability & Innovation Since 2015
             </h2>
 
@@ -297,7 +285,6 @@ export default function AboutPage() {
               and energy-independent future.
             </p>
 
-            {/* Feature Checklist */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 pt-1 sm:pt-2">
               {[
                 "FBR Registered & Compliant Entity",
@@ -314,7 +301,7 @@ export default function AboutPage() {
                   <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-[10px] mt-0.5">
                     <FaCheck size={8} />
                   </div>
-                  <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-snug break-words">
+                  <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-snug wrap-break-word">
                     {item}
                   </span>
                 </div>
@@ -322,7 +309,6 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Right Column: Expertise Cards */}
           <div className="lg:col-span-5 grid grid-cols-1 gap-0 mt-4 lg:mt-0">
             <div className="flex items-center justify-between px-1 mb-1.5">
               <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-gray-400">
@@ -345,7 +331,7 @@ export default function AboutPage() {
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
-                      <h3 className="text-xs sm:text-base font-bold text-[#1a1c29] break-words">
+                      <h3 className="text-xs sm:text-base font-bold text-[#1a1c29] wrap-break-word">
                         {area.title}
                       </h3>
                       <span className="text-[9px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 sm:px-2 py-0.5 rounded border border-emerald-200/80 shrink-0">
@@ -363,10 +349,8 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 3. Core Philosophy Highlight Banner ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
-        <div className="relative rounded-2xl sm:rounded-3xl bg-gradient-to-br from-[#f8faf8] via-white to-[#f0f5ec] p-5 sm:p-10 md:p-14 lg:p-16 overflow-hidden shadow-sm border border-emerald-100">
-          {/* Subtle Graphic Glows */}
+        <div className="relative rounded-2xl sm:rounded-3xl bg-linear-to-br from-[#f8faf8] via-white to-[#f0f5ec] p-5 sm:p-10 md:p-14 lg:p-16 overflow-hidden shadow-sm border border-emerald-100">
           <div className="absolute top-0 right-0 w-80 sm:w-96 h-80 sm:h-96 bg-emerald-100/50 rounded-full blur-[80px] pointer-events-none" />
           <div className="absolute -bottom-20 -left-20 w-64 sm:w-80 h-64 sm:h-80 bg-[#0fa353]/5 rounded-full blur-[80px] pointer-events-none" />
 
@@ -375,7 +359,7 @@ export default function AboutPage() {
               <FaQuoteLeft className="text-base sm:text-2xl" />
             </div>
 
-            <blockquote className="text-base sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight leading-snug sm:leading-tight text-[#1a2e22] break-words">
+            <blockquote className="text-base sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight leading-snug sm:leading-tight text-[#1a2e22] wrap-break-word">
               “At A2Z Solar Solutions., we don’t just install solar panels — we
               build long-term energy independence for our clients.”
             </blockquote>
@@ -393,7 +377,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 4. Vision & Mission Cards Grid ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
           <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200/80 inline-block mb-1.5 sm:mb-2">
@@ -409,7 +392,6 @@ export default function AboutPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-          {/* Vision Card */}
           <div className="p-4 sm:p-7 lg:p-9 rounded-2xl sm:rounded-3xl bg-white border border-emerald-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-400 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
             <div className="space-y-3 sm:space-y-4 relative z-10">
               <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-emerald-50 text-[#0fa353] flex items-center justify-center shadow-2xs border border-emerald-100">
@@ -447,7 +429,6 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Mission Card */}
           <div className="p-4 sm:p-7 lg:p-9 rounded-2xl sm:rounded-3xl bg-white border border-green-200/90 shadow-2xs hover:shadow-xl hover:border-green-400 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
             <div className="space-y-3 sm:space-y-4 relative z-10">
               <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-green-50 text-[#0fa353] flex items-center justify-center shadow-2xs border border-green-100">
@@ -488,7 +469,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 5. Cities of Operation (Karachi & Lahore) ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
           <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200/80 inline-block mb-1.5 sm:mb-2">
@@ -555,7 +535,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 6. Why Choose Us (Pillars Grid) ── */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
         <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
           <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200/80 inline-block mb-1.5 sm:mb-2">
@@ -588,7 +567,7 @@ export default function AboutPage() {
                     </span>
                   </div>
 
-                  <h3 className="text-xs sm:text-base font-bold text-[#1a1c29] mb-1.5 sm:mb-2 leading-snug break-words">
+                  <h3 className="text-xs sm:text-base font-bold text-[#1a1c29] mb-1.5 sm:mb-2 leading-snug wrap-break-word">
                     {pillar.title}
                   </h3>
                   <p className="text-[11px] sm:text-[13px] text-gray-600 leading-relaxed font-normal">
@@ -606,26 +585,21 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── 7. Call To Action & Website Banner ── */}
       <section className="w-full bg-[#f8f9fa] py-14 sm:py-24 mt-12 sm:mt-16 border-t border-gray-100">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-          {/* Top Pill */}
           <div className="inline-flex items-center justify-center px-3.5 py-1 rounded-full bg-[#1a1c29] text-white text-[11px] sm:text-xs font-semibold mb-4 sm:mb-6 shadow-xs tracking-wide">
             Get started
           </div>
 
-          {/* Heading */}
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-medium text-[#1a1c29] tracking-tight mb-3 sm:mb-5 leading-tight">
             Ready to Build Your Energy Independence?
           </h2>
 
-          {/* Subtitle */}
           <p className="text-xs sm:text-base md:text-[17px] text-gray-500 max-w-2xl mx-auto leading-relaxed mb-6 sm:mb-10 font-normal">
             Get a tailored load audit, calculate your electricity bill reduction,
             and receive a customized solar system proposal from our certified engineers.
           </p>
 
-          {/* Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4 w-full sm:w-auto">
             <a
               href="tel:03214189298"
