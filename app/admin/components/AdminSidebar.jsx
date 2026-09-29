@@ -11,6 +11,7 @@ import {
   FaStar,
   FaGear,
   FaArrowRightFromBracket,
+  FaSolarPanel,
 } from "react-icons/fa6";
 
 export default function AdminSidebar({ mobileMenuOpen, setMobileMenuOpen }) {
@@ -26,9 +27,9 @@ export default function AdminSidebar({ mobileMenuOpen, setMobileMenuOpen }) {
 
   const navItems = [
     { label: "Dashboard", href: "/admin/dashboard", icon: FaHouse },
+    { label: "Recent Projects", href: "/admin/projects", icon: FaSolarPanel, color: "text-emerald-500" },
     { label: "YouTube Videos", href: "/admin/videos", icon: FaYoutube, color: "text-red-500" },
     { label: "Documents & PDFs", href: "/admin/documents", icon: FaFilePdf, color: "text-amber-500" },
-    { label: "Leads & Inquiries", href: "/admin/inquiries", icon: FaEnvelopeOpenText, color: "text-emerald-500" },
     { label: "Testimonials", href: "/admin/testimonials", icon: FaStar, color: "text-yellow-500" },
     { label: "Settings", href: "/admin/settings", icon: FaGear, color: "text-gray-500" },
   ];

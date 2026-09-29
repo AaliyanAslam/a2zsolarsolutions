@@ -186,29 +186,26 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* Card 3: Leads & Inquiries */}
+          {/* Card 3: Recent Projects */}
           <div className="bg-white border border-gray-200/80 rounded-2xl p-5 flex flex-col justify-between h-72 shadow-xs relative overflow-hidden group hover:border-gray-300 transition-all">
             <div className="space-y-3 z-10">
               <p className="text-[13px] font-medium text-gray-800 leading-snug">
-                Review solar calculator estimations and customer consultation inquiries.
+                Upload real installation photos with KW capacity and location name for the homepage gallery.
               </p>
               <Link
-                href="/admin/inquiries"
+                href="/admin/projects"
                 className="bg-white hover:bg-gray-50 text-gray-800 border border-gray-200/80 text-xs font-medium px-4 py-2 rounded-lg transition-colors shadow-2xs inline-flex items-center justify-center whitespace-nowrap shrink-0"
               >
-                View Leads
+                Manage Projects
               </Link>
             </div>
 
             {/* Illustration */}
-            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-gradient-to-t from-gray-50 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
+            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-gradient-to-t from-emerald-50/70 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
               <div className="flex items-center gap-3">
-                <div className="w-20 h-24 bg-gray-100 rounded-lg border border-gray-200/70 p-2 flex flex-col items-center justify-center shadow-xs">
-                  <FaSolarPanel className="text-xl text-green-600" />
-                  <span className="text-[9px] font-bold text-gray-600 mt-1 whitespace-nowrap">Solar Calc</span>
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-green-600 text-white flex items-center justify-center shadow-md">
-                  <FaEnvelopeOpenText size={16} />
+                <div className="w-24 h-24 bg-white rounded-lg border border-emerald-200/80 p-2 flex flex-col items-center justify-center shadow-xs">
+                  <FaSolarPanel className="text-2xl text-green-600" />
+                  <span className="text-[9px] font-bold text-gray-800 mt-1 whitespace-nowrap">Projects</span>
                 </div>
               </div>
             </div>
