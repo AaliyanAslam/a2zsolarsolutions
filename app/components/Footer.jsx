@@ -38,13 +38,15 @@ export default function Footer() {
   };
 
   return (
-    <footer className="relative bg-white text-gray-800 pb-12 mt-24 sm:mt-28 md:mt-32 border-t border-gray-100 z-20 overflow-visible">
+    <footer className="relative bg-white text-gray-800 pb-12 mt-24 sm:mt-28 md:mt-32 border-t border-gray-100 z-20 overflow-x-clip">
       {/* ── 1. Floating Newsletter / CTA Banner with Protruding 3D Graphic ── */}
       <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8 -mt-20 sm:-mt-24 md:-mt-28 relative z-30 mb-14 sm:mb-18 md:mb-20">
         <div className="relative rounded-sm bg-linear-to-r from-[#0fa353] via-[#0d8e48] to-[#0a753b] text-white p-6 sm:p-8 md:p-12 shadow-2xl shadow-green-950/20 overflow-visible">
-          {/* Subtle Ambient Light Glows */}
-          <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-10 left-1/3 w-64 h-64 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none" />
+          {/* Subtle Ambient Light Glows - Contained to prevent horizontal document overflow */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none rounded-sm">
+            <div className="absolute top-0 right-0 w-80 h-80 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-10 left-1/3 w-64 h-64 bg-emerald-400/20 rounded-full blur-2xl pointer-events-none" />
+          </div>
 
           {/* ── Protruding 3D Solar Illustration (Pops out of top edge) ── */}
           <div className="hidden md:block absolute -top-12 md:-top-16 lg:-top-20 xl:-top-24 left-4 md:left-6 lg:left-10 xl:left-12 w-56 md:w-64 lg:w-80 xl:w-96 select-none pointer-events-none z-20">

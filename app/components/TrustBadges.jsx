@@ -57,7 +57,7 @@ const GROUP = BADGES;
 
 const TrustBadges = () => {
   return (
-    <section className="w-full bg-white border-t border-b border-gray-100 py-6 sm:py-10">
+    <section className="w-full bg-white border-t border-b border-gray-100 py-6 sm:py-10 overflow-hidden">
       {/* Heading */}
       <div className="text-center px-4 mb-5 sm:mb-8">
         <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1c29] leading-tight max-w-xl mx-auto">

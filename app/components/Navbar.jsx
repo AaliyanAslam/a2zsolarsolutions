@@ -236,7 +236,7 @@ const Navbar = () => {
 
       {/* ═══════════ MOBILE DRAWER (Hardware-accelerated CSS) ═══════════ */}
       <div
-        className={`fixed inset-0 z-60 lg:hidden transition-all duration-300 ${
+        className={`fixed inset-0 z-60 lg:hidden overflow-hidden transition-all duration-300 ${
           isOpen ? "pointer-events-auto visible" : "pointer-events-none invisible"
         }`}
       >

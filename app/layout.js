@@ -19,14 +19,14 @@ export default function RootLayout({ children }) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${font.variable} font-sans h-full antialiased`}
+      className={`${font.variable} font-sans h-full antialiased overflow-x-hidden`}
     >
       <body
-        className="min-h-full flex flex-col bg-white text-gray-900"
+        className="min-h-full flex flex-col bg-white text-gray-900 overflow-x-hidden w-full relative"
         suppressHydrationWarning
       >
         <Navbar />
-        <div className="flex-1">{children}</div>
+        <div className="flex-1 w-full overflow-x-hidden">{children}</div>
         <Footer />
       </body>
     </html>

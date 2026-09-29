@@ -6,12 +6,12 @@ import YouTubeSection from "./components/YouTubeSection";
 
 export default function Home() {
   return (
-    <>
+    <main className="w-full overflow-x-hidden">
       <Hero />
       <TrustBadges />
       <SolarCalculator />
       <Services />
       <YouTubeSection />
-    </>
+    </main>
   );
 }

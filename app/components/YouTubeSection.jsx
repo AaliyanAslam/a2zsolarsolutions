@@ -192,7 +192,7 @@ export default function YouTubeSection() {
 
       {/* ── Continuous Horizontal Video Gallery ── */}
       <div
-        className="relative w-full"
+        className="relative w-full overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
