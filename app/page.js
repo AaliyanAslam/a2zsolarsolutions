@@ -5,6 +5,7 @@ import WhySolar from "./components/WhySolar";
 import HowWeDeliver from "./components/HowWeDeliver";
 import Services from "./components/Services";
 import RecentProjects from "./components/RecentProjects";
+import ClientsFeedback from "./components/ClientsFeedback";
 import YouTubeSection from "./components/YouTubeSection";
 
 export default function Home() {
@@ -17,6 +18,7 @@ export default function Home() {
       <HowWeDeliver />
       <Services />
       <RecentProjects />
+      <ClientsFeedback />
       <YouTubeSection />
     </main>
   );

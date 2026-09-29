@@ -25,6 +25,7 @@ const NAV_LINKS = [
     label: "More",
     href: "#",
     dropdownItems: [
+      { label: "Clients Feedback", href: "/#reviews" },
       { label: "Solar Calculator", href: "/#calculator" },
       { label: "Why Solar?", href: "/#why-solar" },
       { label: "How We Deliver", href: "/#process" },

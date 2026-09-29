@@ -15,6 +15,7 @@ import {
   FaFilePdf,
   FaEnvelopeOpenText,
   FaSolarPanel,
+  FaStar,
 } from "react-icons/fa6";
 
 export default function AdminDashboardPage() {
@@ -137,56 +138,34 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* 3 Recommended Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {/* Card 1: YouTube Video Showcase */}
+        {/* 4 Recommended Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Card 1: Customer Testimonials */}
           <div className="bg-white border border-gray-200/80 rounded-2xl p-5 flex flex-col justify-between h-72 shadow-xs relative overflow-hidden group hover:border-gray-300 transition-all">
             <div className="space-y-3 z-10">
               <p className="text-[13px] font-medium text-gray-800 leading-snug">
-                Publish and manage your latest rooftop solar system videos on the website homepage.
+                Upload client reviews with photo, address, star rating, and customer feedback.
               </p>
               <Link
-                href="/admin/videos"
-                className="bg-gray-950 hover:bg-black text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors inline-flex items-center justify-center whitespace-nowrap shrink-0"
+                href="/admin/testimonials"
+                className="bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors inline-flex items-center justify-center whitespace-nowrap shrink-0 shadow-xs"
               >
-                Manage Videos
-              </Link>
-            </div>
-
-            {/* Bottom Graphic Mockup */}
-            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-linear-to-t from-red-50/80 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
-              <div className="w-full h-24 bg-linear-to-r from-red-500 to-rose-600 rounded-t-xl shadow-md p-3 text-white flex flex-col justify-between transform group-hover:scale-102 transition-transform">
-                <span className="text-[10px] font-black uppercase tracking-widest opacity-80 flex items-center gap-1.5 whitespace-nowrap">
-                  <FaYoutube size={14} /> Showcase Library
-                </span>
-                <div className="text-xs font-bold truncate whitespace-nowrap">YouTube Video Management</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: Documents & PDFs */}
-          <div className="bg-linear-to-b from-[#f0fdf4] to-[#dcfce7] border border-green-100 rounded-2xl p-5 flex flex-col justify-between h-72 shadow-xs relative overflow-hidden group hover:border-green-200 transition-all">
-            <div className="space-y-3 z-10">
-              <p className="text-[13px] font-medium text-gray-800 leading-snug">
-                Upload solar panel brochures, inverter manuals, and net-metering sanction letters.
-              </p>
-              <Link
-                href="/admin/documents"
-                className="bg-white hover:bg-gray-50 text-gray-800 border border-gray-200/80 text-xs font-medium px-4 py-2 rounded-lg transition-colors shadow-2xs inline-flex items-center justify-center whitespace-nowrap shrink-0"
-              >
-                Upload PDFs
+                Upload Reviews
               </Link>
             </div>
 
             {/* Graphic Illustration */}
-            <div className="mt-4 -mx-5 -mb-5 flex items-center justify-center relative h-32">
-              <div className="w-16 h-16 rounded-2xl bg-white/95 border border-green-200 shadow-lg flex items-center justify-center text-green-600 relative group-hover:scale-105 transition-transform">
-                <FaFilePdf size={28} />
+            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-linear-to-t from-yellow-50/80 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
+              <div className="w-full h-24 bg-linear-to-r from-amber-400 to-yellow-500 rounded-t-xl shadow-md p-3 text-white flex flex-col justify-between transform group-hover:scale-102 transition-transform">
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-90 flex items-center gap-1.5 whitespace-nowrap">
+                  <FaStar size={13} /> Client Feedback
+                </span>
+                <div className="text-xs font-bold truncate whitespace-nowrap">Star Ratings & Reviews</div>
               </div>
             </div>
           </div>
 
-          {/* Card 3: Recent Projects */}
+          {/* Card 2: Recent Projects */}
           <div className="bg-white border border-gray-200/80 rounded-2xl p-5 flex flex-col justify-between h-72 shadow-xs relative overflow-hidden group hover:border-gray-300 transition-all">
             <div className="space-y-3 z-10">
               <p className="text-[13px] font-medium text-gray-800 leading-snug">
@@ -207,6 +186,53 @@ export default function AdminDashboardPage() {
                   <FaSolarPanel className="text-2xl text-green-600" />
                   <span className="text-[9px] font-bold text-gray-800 mt-1 whitespace-nowrap">Projects</span>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 3: YouTube Video Showcase */}
+          <div className="bg-white border border-gray-200/80 rounded-2xl p-5 flex flex-col justify-between h-72 shadow-xs relative overflow-hidden group hover:border-gray-300 transition-all">
+            <div className="space-y-3 z-10">
+              <p className="text-[13px] font-medium text-gray-800 leading-snug">
+                Publish and manage your latest rooftop solar system videos on the website homepage.
+              </p>
+              <Link
+                href="/admin/videos"
+                className="bg-gray-950 hover:bg-black text-white text-xs font-medium px-4 py-2 rounded-lg transition-colors inline-flex items-center justify-center whitespace-nowrap shrink-0"
+              >
+                Manage Videos
+              </Link>
+            </div>
+
+            {/* Bottom Graphic Mockup */}
+            <div className="mt-4 pt-2 -mx-5 -mb-5 bg-linear-to-t from-red-50/80 to-transparent p-4 flex items-end justify-center relative h-32 overflow-hidden">
+              <div className="w-full h-24 bg-linear-to-r from-red-500 to-rose-600 rounded-t-xl shadow-md p-3 text-white flex flex-col justify-between transform group-hover:scale-102 transition-transform">
+                <span className="text-[10px] font-black uppercase tracking-widest opacity-80 flex items-center gap-1.5 whitespace-nowrap">
+                  <FaYoutube size={14} /> Showcase Library
+                </span>
+                <div className="text-xs font-bold truncate whitespace-nowrap">YouTube Videos</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Card 4: Documents & PDFs */}
+          <div className="bg-linear-to-b from-[#f0fdf4] to-[#dcfce7] border border-green-100 rounded-2xl p-5 flex flex-col justify-between h-72 shadow-xs relative overflow-hidden group hover:border-green-200 transition-all">
+            <div className="space-y-3 z-10">
+              <p className="text-[13px] font-medium text-gray-800 leading-snug">
+                Upload solar panel brochures, inverter manuals, and net-metering sanction letters.
+              </p>
+              <Link
+                href="/admin/documents"
+                className="bg-white hover:bg-gray-50 text-gray-800 border border-gray-200/80 text-xs font-medium px-4 py-2 rounded-lg transition-colors shadow-2xs inline-flex items-center justify-center whitespace-nowrap shrink-0"
+              >
+                Upload PDFs
+              </Link>
+            </div>
+
+            {/* Graphic Illustration */}
+            <div className="mt-4 -mx-5 -mb-5 flex items-center justify-center relative h-32">
+              <div className="w-16 h-16 rounded-2xl bg-white/95 border border-green-200 shadow-lg flex items-center justify-center text-green-600 relative group-hover:scale-105 transition-transform">
+                <FaFilePdf size={28} />
               </div>
             </div>
           </div>

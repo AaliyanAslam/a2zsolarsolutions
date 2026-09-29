@@ -359,8 +359,9 @@ export default function AboutPage() {
             </div>
 
             <blockquote className="text-base sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight leading-snug sm:leading-tight text-[#1a2e22] wrap-break-word">
-              “At A2Z Solar Solutions., we don’t just install solar panels — we
-              build long-term energy independence for our clients.”
+              “At A2Z Solar Solutions., we don’t just install solar systems — we
+              build lasting energy partnerships that empower you to enjoy clean,
+              dependable, and affordable power for years to come.”
             </blockquote>
 
             <div className="pt-1 sm:pt-2">
