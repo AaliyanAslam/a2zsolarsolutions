@@ -116,12 +116,8 @@ export default function Footer() {
                 </button>
               </div>
 
-              <p className="text-[11px] text-green-100/80 mt-2.5">
-                You will be able to unsubscribe at any time. Read our{" "}
-                <Link href="/about" className="underline hover:text-white font-medium">
-                  privacy policy here
-                </Link>
-                .
+              <p className="text-[11px] text-green-100/90 mt-2.5">
+                100% free load calculation &amp; system survey. Zero spam guaranteed.
               </p>
             </form>
           </div>
@@ -145,10 +141,10 @@ export default function Footer() {
             </Link>
 
             <p className="text-xs sm:text-sm text-gray-500 leading-relaxed max-w-sm">
-              Founded in 2015, A2Z Solar Solutions is an FBR registered renewable energy company headquartered in Karachi, delivering high-performance solar solutions across Karachi and Lahore.
+              Founded in 2015, A2Z Solar Solutions is an FBR registered renewable energy company headquartered in Karachi, delivering high-performance turnkey solar solutions across Karachi and Lahore.
             </p>
 
-            {/* Social Icons matching the screenshot */}
+            {/* Social Icons */}
             <div className="flex items-center gap-2.5 pt-2">
               <a
                 href="https://facebook.com"
@@ -198,12 +194,17 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Column 2: Company */}
+          {/* Column 2: Quick Links */}
           <div className="lg:col-span-2 space-y-3">
             <h4 className="text-sm font-bold text-gray-900 tracking-tight">
               Company
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-600">
+              <li>
+                <Link href="/" className="hover:text-[#0fa353] transition-colors">
+                  Home
+                </Link>
+              </li>
               <li>
                 <Link href="/about" className="hover:text-[#0fa353] transition-colors">
                   About Us
@@ -211,95 +212,71 @@ export default function Footer() {
               </li>
               <li>
                 <Link href="/#services" className="hover:text-[#0fa353] transition-colors">
-                  Our Services
+                  Solar Solutions
                 </Link>
               </li>
               <li>
-                <Link href="/#youtube" className="hover:text-[#0fa353] transition-colors">
-                  Project Videos
+                <Link href="/#projects" className="hover:text-[#0fa353] transition-colors">
+                  Recent Projects
                 </Link>
               </li>
               <li>
                 <Link href="/#reviews" className="hover:text-[#0fa353] transition-colors">
-                  Testimonials
+                  Clients Feedback
+                </Link>
+              </li>
+              <li>
+                <Link href="/#videos" className="hover:text-[#0fa353] transition-colors">
+                  Project Videos
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 3: Support */}
-          <div className="lg:col-span-2 space-y-3">
+          {/* Column 3: Solar Tools & Info */}
+          <div className="lg:col-span-3 space-y-3">
             <h4 className="text-sm font-bold text-gray-900 tracking-tight">
-              Support
-            </h4>
-            <ul className="space-y-2 text-xs sm:text-sm text-gray-600">
-              <li>
-                <a
-                  href="https://wa.me/923214189298"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="hover:text-[#0fa353] transition-colors"
-                >
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <Link href="/#faqs" className="hover:text-[#0fa353] transition-colors">
-                  FAQs
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-[#0fa353] transition-colors">
-                  FBR Registered
-                </Link>
-              </li>
-              <li>
-                <Link href="/#calculator" className="hover:text-[#0fa353] transition-colors">
-                  Solar Audit Feedback
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Column 4: Links */}
-          <div className="lg:col-span-2 space-y-3">
-            <h4 className="text-sm font-bold text-gray-900 tracking-tight">
-              Links
+              Solar Tools &amp; Solutions
             </h4>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-600">
               <li>
                 <Link href="/#calculator" className="hover:text-[#0fa353] transition-colors">
-                  Solar Calculator
+                  Solar Savings Calculator
                 </Link>
               </li>
               <li>
-                <Link href="/#solutions" className="hover:text-[#0fa353] transition-colors">
-                  Hybrid Systems
+                <Link href="/#why-solar" className="hover:text-[#0fa353] transition-colors">
+                  Why Choose Solar?
                 </Link>
               </li>
               <li>
-                <Link href="/#solutions" className="hover:text-[#0fa353] transition-colors">
-                  Net Metering Guide
+                <Link href="/#process" className="hover:text-[#0fa353] transition-colors">
+                  How We Deliver
                 </Link>
               </li>
               <li>
-                <Link href="/" className="hover:text-[#0fa353] transition-colors">
-                  All in One Solar
+                <Link href="/#certifications" className="hover:text-[#0fa353] transition-colors">
+                  Certifications &amp; Standards
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-[#0fa353] transition-colors">
+                  Contact Our Engineers
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Column 5: Contact Us */}
-          <div className="lg:col-span-2 space-y-3">
+          {/* Column 4: Contact Us & Offices */}
+          <div className="lg:col-span-3 space-y-3">
             <h4 className="text-sm font-bold text-gray-900 tracking-tight">
-              Contact Us
+              Contact &amp; Offices
             </h4>
             <ul className="space-y-2.5 text-xs sm:text-sm text-gray-600">
               <li className="flex items-center gap-2">
                 <FaPhone className="text-[#0fa353] text-xs shrink-0" />
                 <a href="tel:03214189298" className="hover:text-gray-900 font-semibold transition-colors">
-                  (92) 321 4189 298
+                  +92 321 4189298
                 </a>
               </li>
               <li className="flex items-center gap-2">
@@ -308,35 +285,51 @@ export default function Footer() {
                   solarwala2023@gmail.com
                 </a>
               </li>
-              <li className="flex items-start gap-2 pt-1">
+              <li className="flex items-start gap-2 pt-0.5">
                 <FaLocationDot className="text-[#F47C20] text-xs shrink-0 mt-0.5" />
-                <span className="text-[11px] leading-relaxed text-gray-500">
-                  Shop No.2, Korangi No.6, Karachi
+                <span className="text-[11px] leading-relaxed text-gray-600">
+                  <strong className="text-gray-800 font-semibold">Karachi HQ:</strong> Shop No.2, Korangi No.6, Karachi
                 </span>
+              </li>
+              <li className="flex items-start gap-2 pt-0.5">
+                <FaLocationDot className="text-[#0fa353] text-xs shrink-0 mt-0.5" />
+                <span className="text-[11px] leading-relaxed text-gray-600">
+                  <strong className="text-gray-800 font-semibold">Lahore Office:</strong> Active Branch Operations
+                </span>
+              </li>
+              <li className="pt-1">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0fa353] hover:text-[#0c8a45] transition-colors"
+                >
+                  <span>Visit Contact Us Page</span>
+                  <FaArrowRight size={10} />
+                </Link>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* ── 3. Bottom Bar ── */}
+        {/* ── 3. Bottom Bar (Cleaned - No Legal or Sitemap) ── */}
         <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-gray-500">
           <p>
             &copy; {new Date().getFullYear()} A2Z Solar Solutions. All rights reserved. “Lighting the Nation with Clean Energy.”
           </p>
 
           <div className="flex items-center gap-4 sm:gap-6 font-medium text-gray-600">
-            <Link href="/about" className="hover:text-[#0fa353] transition-colors">
-              Privacy Policy
+            <Link href="/" className="hover:text-[#0fa353] transition-colors">
+              Home
             </Link>
             <Link href="/about" className="hover:text-[#0fa353] transition-colors">
-              Terms of Use
+              About Us
             </Link>
-            <Link href="/about" className="hover:text-[#0fa353] transition-colors">
-              Legal
+            <Link href="/contact" className="hover:text-[#0fa353] transition-colors">
+              Contact
             </Link>
-            <Link href="/#solutions" className="hover:text-[#0fa353] transition-colors">
-              Site Map
-            </Link>
+            <span className="text-gray-300 hidden sm:inline">|</span>
+            <span className="text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-0.5 rounded-sm border border-emerald-200/60">
+              FBR Registered
+            </span>
           </div>
         </div>
       </div>
