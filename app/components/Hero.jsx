@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { FaPhoneAlt } from "react-icons/fa";
 
@@ -5,19 +6,22 @@ const Hero = () => {
   return (
     <section className="relative min-h-0 md:min-h-[90svh] flex items-start md:items-center pt-20 md:pt-20 pb-8 md:pb-0 overflow-hidden">
       <div className="absolute inset-0 z-0">
-        <picture>
-          <source
-            media="(max-width: 767px)"
-            srcSet="/images/mobbackhero.webp"
-          />
-          <img
-            src="/images/herobg.webp"
-            alt="A2Z Solar Solutions Karachi Background"
-            fetchPriority="high"
-            decoding="async"
-            className="absolute inset-0 w-full h-full object-cover object-[82%_center] md:object-right"
-          />
-        </picture>
+        <Image
+          src="/images/mobbackhero.webp"
+          alt="A2Z Solar Solutions Karachi Background"
+          fill
+          priority
+          sizes="100vw"
+          className="md:hidden object-cover object-[82%_center]"
+        />
+        <Image
+          src="/images/herobg.webp"
+          alt="A2Z Solar Solutions Karachi Background"
+          fill
+          priority
+          sizes="100vw"
+          className="hidden md:block object-cover object-right"
+        />
         <div className="absolute inset-0 bg-linear-to-r from-white via-white/90 to-transparent md:via-white/80" />
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/20 to-white md:hidden" />
       </div>

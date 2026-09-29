@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import {
   FaLocationDot,
@@ -156,11 +157,12 @@ export default function RecentProjects() {
                   className="group relative aspect-3/4 sm:aspect-4/5 bg-gray-900 rounded-sm overflow-hidden border-2 border-[#0fa353] hover:border-[#0c8a45] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer select-none"
                 >
                   {mounted ? (
-                    <img
+                    <Image
                       src={imgSrc}
                       alt={`${proj.capacity} Solar Installation - ${proj.location}`}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                   ) : (
                     <div className="w-full h-full bg-gray-900" />
@@ -321,10 +323,12 @@ export default function RecentProjects() {
             </div>
 
             <div className="relative aspect-4/3 w-full bg-gray-900">
-              <img
+              <Image
                 src={activeProject.imageUrl || activeProject.image}
                 alt={`${activeProject.capacity} at ${activeProject.location}`}
-                className="w-full h-full object-contain"
+                fill
+                sizes="(max-width: 768px) 100vw, 672px"
+                className="object-contain"
               />
             </div>
 

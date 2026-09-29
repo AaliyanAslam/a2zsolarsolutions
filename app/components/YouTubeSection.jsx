@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import {
   FaYoutube,
   FaPlay,
@@ -228,13 +229,12 @@ export default function YouTubeSection() {
                 aria-label={`Play video: ${video.title}`}
                 className="group relative w-68 sm:w-95 md:w-115 lg:w-130 aspect-video rounded-xl overflow-hidden shrink-0 border border-gray-200 hover:border-green-300 transition-all duration-300 cursor-pointer bg-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm hover:shadow-xl hover:shadow-green-500/10"
               >
-                <img
+                <Image
                   src={video.thumbnailUrl}
                   alt={`${video.title} - Solar Video Demonstration Karachi`}
-                  width={480}
-                  height={270}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 640px) 272px, (max-width: 768px) 380px, 460px"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
 
                 <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/20 to-transparent group-hover:via-gray-950/40 transition-colors duration-300" />

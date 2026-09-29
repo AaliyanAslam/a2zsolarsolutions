@@ -145,15 +145,14 @@ export default function AboutPage() {
     <main className="min-h-screen bg-white text-gray-900 pb-20 overflow-x-hidden selection:bg-emerald-100 selection:text-emerald-900">
       <section className="relative min-h-0 md:min-h-[85svh] flex flex-col justify-start md:justify-center pt-24 sm:pt-32 md:pt-40 pb-10 sm:pb-16 md:pb-20 overflow-hidden mb-10 sm:mb-16 bg-white">
         <div className="absolute inset-0 z-0 hidden md:block">
-          <picture>
-            <img
-              src="/images/about-hero-bg.webp"
-              alt="A2Z Solar Solutions About Us Background"
-              fetchPriority="high"
-              decoding="async"
-              className="absolute inset-0 w-full h-full object-cover object-[82%_center] md:object-right"
-            />
-          </picture>
+          <Image
+            src="/images/about-hero-bg.webp"
+            alt="A2Z Solar Solutions About Us Background"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-[82%_center] md:object-right"
+          />
           <div className="absolute inset-0 bg-linear-to-r from-white via-white/95 to-transparent md:via-white/85" />
           <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/20 to-white" />
         </div>

@@ -211,11 +211,12 @@ export default function AdminProjectsPage() {
                 className="group relative aspect-3/4 sm:aspect-4/5 bg-gray-900 rounded-sm overflow-hidden border-2 border-[#0fa353] shadow-sm hover:shadow-xl transition-all duration-300"
               >
                 {/* Photo */}
-                <img
+                <Image
                   src={proj.imageUrl || proj.image}
                   alt={`${proj.capacity} - ${proj.location}`}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  loading="lazy"
+                  fill
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 20vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
 
                 {/* Scrim Overlay */}
@@ -327,10 +328,12 @@ export default function AdminProjectsPage() {
 
                 {imagePreview ? (
                   <div className="relative aspect-4/3 rounded-sm overflow-hidden border border-emerald-300 bg-gray-900 mb-2">
-                    <img
+                    <Image
                       src={imagePreview}
                       alt="Preview"
-                      className="w-full h-full object-cover"
+                      fill
+                      unoptimized
+                      className="object-cover"
                     />
                     <button
                       type="button"

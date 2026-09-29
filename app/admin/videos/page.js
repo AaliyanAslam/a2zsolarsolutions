@@ -301,10 +301,12 @@ export default function AdminVideos() {
 
                 {thumbnailPreview ? (
                   <div className="relative w-full h-36 rounded-xl overflow-hidden border border-gray-200 group mb-2">
-                    <img
+                    <Image
                       src={thumbnailPreview}
                       alt="Thumbnail preview"
-                      className="w-full h-full object-cover"
+                      fill
+                      unoptimized
+                      className="object-cover"
                     />
                     <button
                       type="button"
