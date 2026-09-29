@@ -85,56 +85,56 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-16 md:py-24 bg-gray-50 relative overflow-hidden">
+    <section id="services" className="py-12 sm:py-16 md:py-24 bg-gray-50 relative overflow-hidden">
       {/* Background Accents */}
       <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-white to-transparent pointer-events-none" />
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-16 md:mb-20">
-          <span className="inline-block py-1.5 px-4 rounded-full bg-green-100 text-green-700 text-xs font-bold uppercase tracking-widest mb-4">
+        <div className="text-center mb-10 sm:mb-16 md:mb-20">
+          <span className="inline-block py-1 px-3 sm:py-1.5 sm:px-4 rounded-full bg-green-100 text-green-700 text-[11px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
             Our Expertise
           </span>
-          <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight mb-5">
+          <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-gray-900 tracking-tight mb-2.5 sm:mb-5">
             Premium <span className="text-green-600">Solar Services</span>
           </h2>
-          <p className="text-sm md:text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
             From industrial megawatt installations to residential K-Electric net metering, we deliver turnkey energy solutions engineered for maximum ROI.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
           {services.map((service, index) => (
             <div
               key={index}
-              className="group bg-white rounded-md p-6 md:p-8 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-green-500/10 hover:border-green-200 transition-all duration-300 relative flex flex-col h-full"
+              className="group bg-white rounded-2xl md:rounded-md p-5 sm:p-7 md:p-8 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-green-500/10 hover:border-green-200 transition-all duration-300 relative flex flex-col h-full"
             >
               {/* Subtle top border indicator */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-400 to-green-600 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-t-md" />
+              <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-400 to-green-600 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-t-2xl md:rounded-t-md" />
               
-              <div className="flex items-center justify-between mb-6">
-                <div className="w-14 h-14 bg-green-50 rounded-md flex items-center justify-center group-hover:scale-110 group-hover:bg-green-100 transition-transform duration-300">
+              <div className="flex items-center justify-between mb-4 sm:mb-6">
+                <div className="w-12 h-12 sm:w-14 sm:h-14 bg-green-50 rounded-xl md:rounded-md flex items-center justify-center group-hover:scale-110 group-hover:bg-green-100 transition-transform duration-300">
                   {service.icon}
                 </div>
-                <span className="bg-gray-100 text-gray-500 text-[10px] font-bold uppercase tracking-wider py-1 px-2.5 rounded-md group-hover:bg-green-50 group-hover:text-green-700 transition-colors">
+                <span className="bg-gray-100 text-gray-500 text-[9px] sm:text-[10px] font-bold uppercase tracking-wider py-1 px-2.5 rounded-md group-hover:bg-green-50 group-hover:text-green-700 transition-colors">
                   {service.label}
                 </span>
               </div>
               
-              <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors">
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-green-700 transition-colors">
                 {service.title}
               </h3>
               
-              <p className="text-sm text-gray-500 leading-relaxed mb-6">
+              <p className="text-xs sm:text-sm text-gray-500 leading-relaxed mb-4 sm:mb-6">
                 {service.description}
               </p>
 
-              <div className="mb-8 space-y-3 grow">
+              <div className="mb-6 sm:mb-8 space-y-2.5 sm:space-y-3 grow">
                 {service.bullets.map((bullet, i) => (
                   <div key={i} className="flex items-start gap-2.5">
-                    <FaCheckCircle className="text-green-500 shrink-0 mt-0.5 text-sm" />
-                    <span className="text-xs md:text-sm text-gray-600 leading-snug">{bullet}</span>
+                    <FaCheckCircle className="text-green-500 shrink-0 mt-0.5 text-xs sm:text-sm" />
+                    <span className="text-xs sm:text-sm text-gray-600 leading-snug">{bullet}</span>
                   </div>
                 ))}
               </div>
@@ -143,9 +143,9 @@ export default function Services() {
                 href={service.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full mt-auto flex items-center justify-center gap-2 bg-gray-50 hover:bg-[#25D366] text-gray-800 hover:text-white font-bold py-3.5 rounded-md transition-all duration-300 border border-gray-200 hover:border-[#25D366] text-sm group/btn"
+                className="w-full mt-auto flex items-center justify-center gap-2 bg-gray-50 hover:bg-[#25D366] text-gray-800 hover:text-white font-bold py-3 sm:py-3.5 rounded-lg md:rounded-md transition-all duration-300 border border-gray-200 hover:border-[#25D366] text-xs sm:text-sm group/btn"
               >
-                <FaWhatsapp size={16} className="text-[#25D366] group-hover/btn:text-white transition-colors" />
+                <FaWhatsapp size={15} className="text-[#25D366] group-hover/btn:text-white transition-colors" />
                 Inquire Now
               </a>
             </div>

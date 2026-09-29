@@ -26,50 +26,50 @@ const Hero = () => {
       </div>
 
       <div className="relative z-10 w-full max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-77.5 sm:max-w-none md:max-w-2xl">
+        <div className="w-full max-w-xl md:max-w-2xl">
           {/* Title */}
-          <h1 className="hero-animate-title text-[30px] sm:text-4xl md:text-5xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-3.5 sm:mb-6">
-            <span className="text-[#1a1c29]">Sustainable Power</span>
-            <br />
-            <span className="text-[#0fa353]">Made Simple &</span>
-            <br />
+          <h1 className="hero-animate-title text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black leading-[1.18] sm:leading-[1.1] tracking-tight mb-3 sm:mb-6">
+            <span className="text-[#1a1c29]">Sustainable Power</span>{" "}
+            <br className="hidden sm:inline" />
+            <span className="text-[#0fa353]">Made Simple &amp;</span>{" "}
+            <br className="hidden sm:inline" />
             <span className="text-[#0fa353]">Reliable.</span>
           </h1>
 
           {/* Description */}
-          <p className="hero-animate-desc text-[14px] sm:text-lg md:text-xl text-gray-600 mb-6 sm:mb-10 leading-relaxed max-w-82.5 sm:max-w-xl">
+          <p className="hero-animate-desc text-xs sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-8 md:mb-10 leading-relaxed max-w-lg sm:max-w-xl">
             Eliminate up to{" "}
             <span className="font-bold text-[#0fa353]">
               90% of your K-Electric bills
             </span>{" "}
-            with premium On-Grid, Hybrid & Custom Solar Systems.
+            with premium On-Grid, Hybrid &amp; Custom Solar Systems.
           </p>
 
           {/* Action Buttons */}
-          <div className="hero-animate-buttons flex flex-col gap-3 sm:gap-4 w-full sm:max-w-md">
+          <div className="hero-animate-buttons flex flex-col sm:flex-row gap-2.5 sm:gap-4 w-full sm:max-w-md">
             <Link
               href="/#calculator"
-              className="w-full h-12 sm:h-auto flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-[#0fa353] text-white text-[14px] sm:text-[15px] font-bold rounded-lg shadow-md shadow-green-600/15 hover:bg-[#0c8a45] active:scale-[0.99] transition-all duration-200"
+              className="w-full h-11 sm:h-auto flex items-center justify-center gap-2 px-5 py-2.5 sm:px-8 sm:py-3.5 bg-[#0fa353] text-white text-xs sm:text-sm md:text-[15px] font-bold rounded-lg shadow-md shadow-green-600/15 hover:bg-[#0c8a45] active:scale-[0.99] transition-all duration-200"
             >
               Calculate Solar Savings &rarr;
             </Link>
 
             <a
               href="tel:03214189298"
-              className="w-full h-11 sm:h-auto flex items-center justify-center gap-2 px-6 py-3 sm:px-8 sm:py-4 bg-white border border-gray-200/90 text-[#1a1c29] text-[14px] sm:text-[15px] font-bold rounded-lg shadow-xs hover:bg-gray-50 active:scale-[0.99] transition-all duration-200"
+              className="w-full h-11 sm:h-auto flex items-center justify-center gap-2 px-5 py-2.5 sm:px-8 sm:py-3.5 bg-white border border-gray-200/90 text-[#1a1c29] text-xs sm:text-sm md:text-[15px] font-bold rounded-lg shadow-xs hover:bg-gray-50 active:scale-[0.99] transition-all duration-200"
             >
-              <FaPhoneAlt className="w-3.5 h-3.5 text-[#0fa353]" />
+              <FaPhoneAlt className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#0fa353]" />
               Call Now — 0321-4189298
             </a>
           </div>
 
           {/* Trust Metrics */}
-          <div className="hero-animate-metrics mt-6 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-3.5 sm:gap-8">
+          <div className="hero-animate-metrics mt-6 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-8 pt-2">
             {/* Established Badge */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#0fa353]/10 text-[#0fa353] shrink-0">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#0fa353]/10 text-[#0fa353] shrink-0">
                 <svg
-                  className="w-5 h-5 sm:w-6 sm:h-6"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -84,20 +84,20 @@ const Hero = () => {
                 </svg>
               </div>
               <div>
-                <p className="text-xs sm:text-sm font-bold text-gray-900">
+                <p className="text-[11px] sm:text-sm font-bold text-gray-900 leading-tight">
                   Established 2015
                 </p>
-                <p className="text-[11px] sm:text-xs text-gray-600">
+                <p className="text-[10px] sm:text-xs text-gray-500 leading-tight mt-0.5">
                   10+ Years Market Experience
                 </p>
               </div>
             </div>
 
             {/* Installations Metric */}
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#0fa353]/10 text-[#0fa353] shrink-0">
+            <div className="flex items-center gap-2.5 sm:gap-3">
+              <div className="flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#0fa353]/10 text-[#0fa353] shrink-0">
                 <svg
-                  className="w-5 h-5 sm:w-6 sm:h-6"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -112,10 +112,10 @@ const Hero = () => {
                 </svg>
               </div>
               <div>
-                <p className="text-xs sm:text-sm font-bold text-gray-900">
+                <p className="text-[11px] sm:text-sm font-bold text-gray-900 leading-tight">
                   250+ Successful Installs
                 </p>
-                <p className="text-[11px] sm:text-xs text-gray-600">
+                <p className="text-[10px] sm:text-xs text-gray-500 leading-tight mt-0.5">
                   Across Pakistan
                 </p>
               </div>

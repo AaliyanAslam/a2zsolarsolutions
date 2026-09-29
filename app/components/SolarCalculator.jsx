@@ -250,42 +250,42 @@ export default function SolarCalculator() {
       {/* ── Summary Grid ── */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="bg-[#222930] rounded-md p-2.5">
-          <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-0.5">Daily Energy</p>
-          <p className="text-base font-bold text-[#a3e635]">{totalDailyUnits.toFixed(1)}</p>
+          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Daily Energy</p>
+          <p className="text-sm sm:text-base font-bold text-[#a3e635]">{totalDailyUnits.toFixed(1)}</p>
           <p className="text-[10px] text-gray-500">units/day</p>
         </div>
         <div className="bg-[#222930] rounded-md p-2.5">
-          <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-0.5">Peak Load</p>
-          <p className="text-base font-bold">{totalLoadW.toLocaleString()}</p>
+          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Peak Load</p>
+          <p className="text-sm sm:text-base font-bold">{totalLoadW.toLocaleString()}</p>
           <p className="text-[10px] text-gray-500">watts</p>
         </div>
         <div className="bg-[#222930] rounded-md p-2.5">
-          <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-0.5">Monthly Savings</p>
-          <p className="text-base font-bold text-[#a3e635]">Rs {monthlySavings.toLocaleString()}</p>
+          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Monthly Savings</p>
+          <p className="text-sm sm:text-base font-bold text-[#a3e635]">Rs {monthlySavings.toLocaleString()}</p>
           <p className="text-[10px] text-gray-500">estimated</p>
         </div>
         <div className="bg-[#222930] rounded-md p-2.5">
-          <p className="text-[10px] text-gray-500 font-semibold uppercase tracking-wider mb-0.5">CO₂ Saved</p>
-          <p className="text-base font-bold">{co2SavedTons}</p>
+          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">CO₂ Saved</p>
+          <p className="text-sm sm:text-base font-bold">{co2SavedTons}</p>
           <p className="text-[10px] text-gray-500">tons/year</p>
         </div>
       </div>
 
       {/* ── Yearly Savings ── */}
-      <div className="bg-linear-to-r from-[#a3e635]/10 to-[#22c55e]/10 border border-[#a3e635]/10 rounded-md p-3 mb-3 flex items-center gap-3">
-        <div className="w-9 h-9  rounded-md flex items-center justify-center shrink-0">
+      <div className="bg-linear-to-r from-[#a3e635]/10 to-[#22c55e]/10 border border-[#a3e635]/10 rounded-md p-2.5 sm:p-3 mb-3 flex items-center gap-2.5 sm:gap-3">
+        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-md flex items-center justify-center shrink-0">
           <Image src="/images/pkr.webp" alt="PKR" width={58} height={28} className="object-contain" />
         </div>
         <div>
           <p className="text-[10px] text-gray-400 font-medium">Estimated Yearly Savings</p>
-          <p className="text-lg font-black text-[#a3e635]">Rs {yearlySavings.toLocaleString()}</p>
+          <p className="text-base sm:text-lg font-black text-[#a3e635]">Rs {yearlySavings.toLocaleString()}</p>
         </div>
       </div>
 
       {/* ── Status ── */}
       <div className="flex gap-2 items-start mb-3 px-0.5">
         <FaCheck className="text-[#a3e635] mt-0.5 shrink-0" size={11} />
-        <p className="text-xs text-gray-400 leading-relaxed">
+        <p className="text-[11px] sm:text-xs text-gray-400 leading-relaxed">
           A <strong className="text-gray-200">{phase === "single" ? "single" : "3"}-phase</strong> inverter comfortably handles this load.
         </p>
       </div>
@@ -295,9 +295,9 @@ export default function SolarCalculator() {
         href={buildWhatsAppUrl()}
         target="_blank"
         rel="noopener noreferrer"
-        className="w-full bg-[#a3e635] hover:bg-[#b0f244] text-[#1a1f22] font-bold py-3 rounded-md transition-all duration-300 shadow-[0_0_24px_rgba(163,230,53,0.25)] hover:shadow-[0_0_32px_rgba(163,230,53,0.4)] hover:-translate-y-0.5 mb-1.5 text-sm flex items-center justify-center gap-2"
+        className="w-full bg-[#a3e635] hover:bg-[#b0f244] text-[#1a1f22] font-bold py-2.5 sm:py-3 rounded-md transition-all duration-300 shadow-[0_0_24px_rgba(163,230,53,0.25)] hover:shadow-[0_0_32px_rgba(163,230,53,0.4)] hover:-translate-y-0.5 mb-1.5 text-xs sm:text-sm flex items-center justify-center gap-2"
       >
-        <FaWhatsapp size={16} />
+        <FaWhatsapp size={15} />
         Get A Free Quote
       </a>
       <p className="text-[10px] text-center text-gray-600 leading-relaxed">
@@ -307,24 +307,24 @@ export default function SolarCalculator() {
   );
 
   return (
-    <section className="py-10 md:py-24 bg-gray-50 overflow-hidden">
+    <section id="calculator" className="py-12 sm:py-16 md:py-24 bg-gray-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-2 md:mb-4 tracking-tight">
+        <div className="text-center mb-6 sm:mb-8 md:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-2 md:mb-4 tracking-tight">
             Solar Load <span className="text-green-600">Calculator</span>
           </h2>
-          <p className="text-sm md:text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xs sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
             Estimate your solar requirements by adding your home appliances below.
           </p>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center">
           {/* ════════════ Left Side: Appliances Form ════════════ */}
-          <div className="bg-white rounded-md shadow-sm border border-gray-200 p-4 md:p-8 w-full lg:w-[58%]">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-5 md:mb-8 gap-3">
+          <div className="bg-white rounded-md shadow-sm border border-gray-200 p-3.5 sm:p-6 md:p-8 w-full lg:w-[58%]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 md:mb-8 gap-2.5 sm:gap-3">
               <div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900">Your appliances</h3>
-                <p className="text-xs md:text-sm text-gray-500 mt-0.5">Pick a preset or enter custom watts & hours.</p>
+                <h3 className="text-base sm:text-xl font-bold text-gray-900">Your appliances</h3>
+                <p className="text-[11px] sm:text-sm text-gray-500 mt-0.5">Pick a preset or enter custom watts &amp; hours.</p>
               </div>
               {/* Phase Toggle */}
               <div className="flex items-center bg-gray-100 rounded-full p-0.5 self-start sm:self-auto shrink-0">

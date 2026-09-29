@@ -127,7 +127,7 @@ export default function YouTubeSection() {
   }, [activeVideo]);
 
   return (
-    <section id="youtube" className="py-16 md:py-24 bg-white relative overflow-hidden">
+    <section id="youtube" className="py-12 sm:py-16 md:py-24 bg-white relative overflow-hidden">
       {/* Background Accents */}
       <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-gray-50/50 to-transparent pointer-events-none" />
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
@@ -135,10 +135,10 @@ export default function YouTubeSection() {
 
       <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 md:mb-16">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12 md:mb-16">
           <div className="max-w-2xl">
             {/* Badge */}
-            <span className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-green-100 text-green-700 text-xs font-bold uppercase tracking-widest mb-4">
+            <span className="inline-flex items-center gap-2 py-1 px-3 sm:py-1.5 sm:px-4 rounded-full bg-green-100 text-green-700 text-[11px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500"></span>
@@ -146,17 +146,17 @@ export default function YouTubeSection() {
               Live Rooftop Demos
             </span>
 
-            <h2 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-4">
+            <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-tight mb-2.5 sm:mb-4">
               Watch Our Real <span className="text-green-600">Solar Projects</span>
             </h2>
 
-            <p className="text-sm md:text-lg text-gray-600 max-w-2xl">
+            <p className="text-xs sm:text-base md:text-lg text-gray-600 max-w-2xl leading-relaxed">
               Real high-wind elevated structures, tier-1 inverter unboxings, and certified net metering activations recorded on-site.
             </p>
           </div>
 
           {/* Controls + YouTube Channel CTA */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5 sm:gap-3">
             {videos.length > 1 && (
               <div className="hidden sm:flex items-center gap-1.5 mr-2">
                 <button
@@ -180,11 +180,11 @@ export default function YouTubeSection() {
               href="https://www.youtube.com/@A2ZSolarSolutions"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2.5 px-4 py-2.5 rounded-md border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs sm:text-sm font-bold transition-all shadow-sm hover:scale-[1.02] whitespace-nowrap"
+              className="inline-flex items-center gap-2 sm:gap-2.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg md:rounded-md border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs sm:text-sm font-bold transition-all shadow-sm hover:scale-[1.02] whitespace-nowrap"
             >
-              <FaYoutube className="text-lg text-red-600 shrink-0" />
+              <FaYoutube className="text-base sm:text-lg text-red-600 shrink-0" />
               <span>@A2ZSolarSolutions</span>
-              <FaArrowUpRightFromSquare className="text-[10px] text-red-400 shrink-0" />
+              <FaArrowUpRightFromSquare className="text-[9px] sm:text-[10px] text-red-400 shrink-0" />
             </a>
           </div>
         </div>
@@ -236,7 +236,7 @@ export default function YouTubeSection() {
                 role="button"
                 tabIndex={0}
                 aria-label={`Play video: ${video.title}`}
-                className="group relative w-75 sm:w-95 md:w-115 lg:w-130 aspect-video rounded-xl overflow-hidden shrink-0 border border-gray-200 hover:border-green-300 transition-all duration-300 cursor-pointer bg-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm hover:shadow-xl hover:shadow-green-500/10"
+                className="group relative w-68 sm:w-95 md:w-115 lg:w-130 aspect-video rounded-xl overflow-hidden shrink-0 border border-gray-200 hover:border-green-300 transition-all duration-300 cursor-pointer bg-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm hover:shadow-xl hover:shadow-green-500/10"
               >
                 {/* Cloudinary Thumbnail */}
                 <img
@@ -253,17 +253,17 @@ export default function YouTubeSection() {
 
                 {/* Play Button */}
                 <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
-                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-white/95 text-gray-900 flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
-                    <FaPlay className="text-base sm:text-lg ml-0.5 transition-transform" />
+                  <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/95 text-gray-900 flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
+                    <FaPlay className="text-xs sm:text-lg ml-0.5 transition-transform" />
                   </div>
                 </div>
 
                 {/* Bottom Title Content */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5 z-10 flex flex-col justify-end">
-                  <span className="text-[10px] font-extrabold uppercase tracking-wider text-green-400 mb-1 drop-shadow-md">
+                <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 z-10 flex flex-col justify-end">
+                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider text-green-400 mb-0.5 sm:mb-1 drop-shadow-md">
                     Rooftop Demonstration
                   </span>
-                  <h3 className="text-sm sm:text-base font-bold text-white line-clamp-2 leading-snug group-hover:text-green-300 transition-colors drop-shadow-md">
+                  <h3 className="text-xs sm:text-base font-bold text-white line-clamp-2 leading-snug group-hover:text-green-300 transition-colors drop-shadow-md">
                     {video.title}
                   </h3>
                 </div>

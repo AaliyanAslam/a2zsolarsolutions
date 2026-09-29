@@ -76,13 +76,13 @@ export default function Footer() {
           </div>
 
           {/* ── Banner Content (Right Side) ── */}
-          <div className="md:ml-auto md:w-7/12 lg:w-3/5 xl:w-3/5 space-y-4 relative z-10 text-left">
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug">
+          <div className="md:ml-auto md:w-7/12 lg:w-3/5 xl:w-3/5 space-y-3 sm:space-y-4 relative z-10 text-left">
+            <h3 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug">
               Subscribe to our newsletter to get updates to our latest solar installations
             </h3>
 
             <p className="text-xs sm:text-sm text-green-100/90 leading-relaxed max-w-xl">
-              Get 20% off on your initial system survey & instant WhatsApp solar load calculations.
+              Get 20% off on your initial system survey &amp; instant WhatsApp solar load calculations.
             </p>
 
             {/* Newsletter Input Form */}
