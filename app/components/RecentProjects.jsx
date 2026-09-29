@@ -125,22 +125,28 @@ export default function RecentProjects() {
 
         <div suppressHydrationWarning className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5 mb-8 sm:mb-10">
           {isLoading &&
-            Array.from({ length: 5 }).map((_, i) => (
+            Array.from({ length: 10 }).map((_, i) => (
               <div
                 key={`init-skeleton-${i}`}
-                className="relative aspect-3/4 sm:aspect-4/5 bg-gray-900/95 rounded-sm overflow-hidden border-2 border-emerald-900/40 shadow-sm animate-pulse select-none"
+                className="relative aspect-3/4 sm:aspect-4/5 bg-white rounded-sm overflow-hidden border border-gray-200 shadow-2xs animate-pulse flex flex-col justify-between p-3 select-none"
               >
-                <div className="absolute top-2 sm:top-2.5 left-0 z-10">
-                  <div className="w-12 sm:w-14 h-5 sm:h-6 bg-[#e02424]/50 rounded-r-sm" />
+                {/* Top badge skeleton */}
+                <div className="flex items-center justify-between">
+                  <div className="w-12 sm:w-14 h-5 sm:h-6 bg-gray-200 rounded-r-sm" />
+                  <div className="w-5 h-5 rounded-sm bg-gray-100" />
                 </div>
-                <div className="w-full h-full flex flex-col items-center justify-center p-4">
-                  <div className="w-10 h-10 rounded-full bg-emerald-900/40 border border-emerald-500/20 flex items-center justify-center mb-2 animate-bounce">
-                    <FaBolt className="text-[#0fa353]/70 text-sm" />
+
+                {/* Center icon placeholder */}
+                <div className="w-full flex-1 flex flex-col items-center justify-center py-2">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-sm bg-emerald-50 border border-emerald-100/80 flex items-center justify-center mb-2">
+                    <FaBolt className="text-[#0fa353]/40 text-sm sm:text-base" />
                   </div>
-                  <div className="w-20 h-2 bg-gray-800 rounded-sm" />
+                  <div className="w-16 sm:w-20 h-2 bg-gray-100 rounded-sm" />
                 </div>
-                <div className="absolute bottom-2 sm:bottom-3 left-0 right-0 px-3 z-10 flex justify-center">
-                  <div className="w-28 sm:w-32 h-6 rounded-full bg-[#f59e0b]/40 border border-[#f59e0b]/30" />
+
+                {/* Bottom location pill skeleton */}
+                <div className="flex justify-center pb-1">
+                  <div className="w-24 sm:w-28 h-5 sm:h-6 rounded-full bg-gray-200" />
                 </div>
               </div>
             ))}
