@@ -41,12 +41,10 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
-  // Hide main navbar on admin routes
   if (pathname?.startsWith("/admin")) {
     return null;
   }
 
-  // Throttled scroll listener with passive: true for buttery 60fps scrolling
   useEffect(() => {
     let ticking = false;
     const handleScroll = () => {
@@ -78,13 +76,11 @@ const Navbar = () => {
     };
   }, []);
 
-  // Close drawer when route changes
   useEffect(() => {
     if (isOpen) {
       // eslint-disable-next-line
       closeDrawer();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   const isActive = (href) => {
@@ -94,7 +90,6 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300">
-      {/* ── Top Bar ── */}
       <div
         className={`hidden lg:block w-full bg-[#2A3439] py-2.5 transition-all duration-300 ${isScrolled ? "-translate-y-full absolute opacity-0 pointer-events-none" : "translate-y-0 relative opacity-100 shadow-md"}`}
       >
@@ -128,7 +123,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* ── Main Navbar ── */}
       <nav
         className={`w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-gray-100/80 lg:backdrop-blur-none ${
           isScrolled
@@ -189,7 +183,6 @@ const Navbar = () => {
               ))}
             </div>
 
-            {/* Desktop Action Buttons */}
             <div className="hidden lg:flex items-center gap-3">
               <a
                 href={WHATSAPP_URL}
@@ -209,7 +202,6 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* Mobile: WhatsApp icon + Hamburger */}
             <div className="flex items-center gap-3 lg:hidden">
               <a
                 href={WHATSAPP_URL}
@@ -234,7 +226,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* ═══════════ MOBILE DRAWER (Hardware-accelerated CSS) ═══════════ */}
       <div
         className={`fixed inset-0 z-60 lg:hidden overflow-hidden transition-all duration-300 ${
           isOpen ? "pointer-events-auto visible" : "pointer-events-none invisible"
@@ -253,7 +244,6 @@ const Navbar = () => {
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {/* Drawer header */}
           <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100 shrink-0">
             <div className="relative w-28 h-8 flex items-center">
               <Image
@@ -272,7 +262,6 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* Drawer nav links */}
           <nav className="flex-1 overflow-y-auto px-3 sm:px-4 py-3 sm:py-4">
             <ul className="space-y-0.5 sm:space-y-1">
               {NAV_LINKS.map((link) => (
@@ -319,7 +308,6 @@ const Navbar = () => {
             </ul>
           </nav>
 
-          {/* Drawer footer CTA */}
           <div className="px-3 sm:px-4 pb-5 sm:pb-6 pt-3 sm:pt-4 border-t border-gray-100 shrink-0 space-y-2 sm:space-y-3">
             <Link
               href="/#calculator"

@@ -58,16 +58,13 @@ const GROUP = BADGES;
 const TrustBadges = () => {
   return (
     <section className="w-full bg-white border-t border-b border-gray-100 py-6 sm:py-10 overflow-hidden">
-      {/* Heading */}
       <div className="text-center px-4 mb-5 sm:mb-8">
         <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-[#1a1c29] leading-tight max-w-xl mx-auto">
           Our Trusted Certifications &amp; Partners
         </h2>
       </div>
 
-      {/* Marquee wrapper */}
       <div className="relative w-full overflow-hidden">
-        {/* Subtle Edge fade masks (small on mobile so logos are fully visible) */}
         <div
           className="pointer-events-none absolute inset-y-0 left-0 w-4 sm:w-20 z-10
                         bg-linear-to-r from-white to-transparent"
@@ -77,9 +74,7 @@ const TrustBadges = () => {
                         bg-linear-to-l from-white to-transparent"
         />
 
-        {/* Track: Group A + Group B (identical). Animates -50% = exactly Group A width. */}
         <div className="marquee-track flex w-max">
-          {/* Group A */}
           {GROUP.map((badge, i) => (
             <div
               key={`a${i}`}
@@ -98,7 +93,6 @@ const TrustBadges = () => {
             </div>
           ))}
 
-          {/* Group B — exact clone, hidden from screen-readers */}
           {GROUP.map((badge, i) => (
             <div
               key={`b${i}`}

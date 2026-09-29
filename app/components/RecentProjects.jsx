@@ -22,12 +22,10 @@ export default function RecentProjects() {
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [activeProject, setActiveProject] = useState(null);
 
-  // Client mounting check
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Fetch initial projects from database on mount
   useEffect(() => {
     let isMounted = true;
 
@@ -39,7 +37,6 @@ export default function RecentProjects() {
 
         if (isMounted && data.success && Array.isArray(data.projects)) {
           setProjects(data.projects);
-          // Only show See More button if there are more than 10 projects in DB
           setHasMore(Boolean(data.hasMore));
         }
       } catch (err) {
@@ -56,7 +53,6 @@ export default function RecentProjects() {
     };
   }, []);
 
-  // Close lightbox on Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") setActiveProject(null);
@@ -73,7 +69,6 @@ export default function RecentProjects() {
     };
   }, [activeProject]);
 
-  // Load more projects when user clicks "See More"
   const handleLoadMore = async () => {
     if (isLoadingMore) return;
     setIsLoadingMore(true);
@@ -108,12 +103,10 @@ export default function RecentProjects() {
 
   return (
     <section suppressHydrationWarning id="projects" className="py-14 sm:py-20 md:py-24 bg-white relative overflow-hidden">
-      {/* Background Soft Glows */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-100/30 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#0fa353]/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* ── Section Header ── */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <div className="inline-flex items-center gap-2 py-1 px-3 sm:py-1.5 sm:px-4 rounded-sm bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[11px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4 shadow-2xs">
             <FaTrophy className="text-[#0fa353] text-xs" />
@@ -129,9 +122,7 @@ export default function RecentProjects() {
           </p>
         </div>
 
-        {/* ── Project Image Gallery Grid ── */}
         <div suppressHydrationWarning className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 md:gap-5 mb-8 sm:mb-10">
-          {/* Initial Loading Skeletons */}
           {isLoading &&
             Array.from({ length: 5 }).map((_, i) => (
               <div
@@ -153,7 +144,6 @@ export default function RecentProjects() {
               </div>
             ))}
 
-          {/* Render Database Uploaded Projects */}
           {!isLoading &&
             projects.map((proj, idx) => {
               const key = proj._id || proj.id || idx;
@@ -165,7 +155,6 @@ export default function RecentProjects() {
                   onClick={() => setActiveProject(proj)}
                   className="group relative aspect-3/4 sm:aspect-4/5 bg-gray-900 rounded-sm overflow-hidden border-2 border-[#0fa353] hover:border-[#0c8a45] shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer select-none"
                 >
-                  {/* Photo (Rendered once client is mounted to avoid extension mismatch) */}
                   {mounted ? (
                     <img
                       src={imgSrc}
@@ -177,24 +166,20 @@ export default function RecentProjects() {
                     <div className="w-full h-full bg-gray-900" />
                   )}
 
-                  {/* Dark Gradient Overlay for Badges Readability */}
                   <div className="absolute inset-0 bg-linear-to-t from-black/80 via-transparent to-black/40 group-hover:from-black/90 transition-colors duration-300 pointer-events-none" />
 
-                  {/* ── Top-Left Red Ribbon Badge (Capacity KW) ── */}
                   <div className="absolute top-2 sm:top-2.5 left-0 z-10">
                     <div className="bg-[#e02424] text-white text-[11px] sm:text-xs md:text-sm font-black px-2.5 sm:px-3 py-0.5 sm:py-1 shadow-md uppercase tracking-wider rounded-r-sm">
                       {proj.capacity}
                     </div>
                   </div>
 
-                  {/* Top-Right Quick Expand Icon */}
                   <div className="absolute top-2 sm:top-2.5 right-2 sm:right-2.5 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                     <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-sm bg-black/60 text-white flex items-center justify-center backdrop-blur-xs text-[10px]">
                       <FaExpand />
                     </div>
                   </div>
 
-                  {/* ── Bottom Location Pill (Location Name Only) ── */}
                   <div className="absolute bottom-2 sm:bottom-3 left-0 right-0 px-2 sm:px-2.5 z-10 flex justify-center">
                     <div className="inline-flex items-center gap-1 sm:gap-1.5 px-2.5 py-1 sm:px-3 sm:py-1 rounded-full bg-[#f59e0b] hover:bg-[#d97706] text-gray-950 font-bold text-[10px] sm:text-[11px] shadow-md border border-white/40 max-w-full transition-colors">
                       <FaLocationDot className="text-gray-900 shrink-0 text-[10px]" />
@@ -205,7 +190,6 @@ export default function RecentProjects() {
               );
             })}
 
-          {/* Skeleton Loading Cards (when user clicks See More) */}
           {isLoadingMore &&
             Array.from({ length: 5 }).map((_, i) => (
               <div
@@ -228,7 +212,6 @@ export default function RecentProjects() {
             ))}
         </div>
 
-        {/* Empty State when no projects are uploaded yet */}
         {!isLoading && projects.length === 0 && (
           <div className="p-8 sm:p-12 text-center bg-gray-50 border border-gray-200/80 rounded-sm mb-10">
             <div className="w-12 h-12 rounded-sm bg-emerald-50 text-[#0fa353] flex items-center justify-center mx-auto border border-emerald-200 mb-3">
@@ -241,7 +224,6 @@ export default function RecentProjects() {
           </div>
         )}
 
-        {/* ── See More Projects Button (Only visible if database has > 10 projects) ── */}
         {!isLoading && hasMore && (
           <div className="flex justify-center mb-10 sm:mb-14">
             <button
@@ -265,7 +247,6 @@ export default function RecentProjects() {
           </div>
         )}
 
-        {/* ── 250+ Milestone Banner & Corporate Vision ── */}
         <div className="relative rounded-sm bg-linear-to-br from-[#122116] via-[#162a1c] to-[#0d1a11] text-white p-5 sm:p-8 md:p-10 border border-emerald-900/60 shadow-xl overflow-hidden mb-8 sm:mb-12">
           <div className="absolute top-0 right-0 w-80 h-80 bg-[#0fa353]/15 rounded-full blur-3xl pointer-events-none" />
 
@@ -310,7 +291,6 @@ export default function RecentProjects() {
         </div>
       </div>
 
-      {/* ── Lightbox Modal: Location Name, KW, Image Only ── */}
       {activeProject && (
         <div
           onClick={() => setActiveProject(null)}
@@ -320,7 +300,6 @@ export default function RecentProjects() {
             onClick={(e) => e.stopPropagation()}
             className="bg-white rounded-sm max-w-xl w-full overflow-hidden shadow-2xl relative border border-gray-200"
           >
-            {/* Modal Header */}
             <div className="flex items-center justify-between p-3 sm:p-4 border-b border-gray-100 bg-gray-50">
               <div className="flex items-center gap-2.5">
                 <span className="bg-[#e02424] text-white text-xs sm:text-sm font-black px-2.5 py-0.5 rounded-sm uppercase tracking-wider">
@@ -341,7 +320,6 @@ export default function RecentProjects() {
               </button>
             </div>
 
-            {/* Modal Image */}
             <div className="relative aspect-4/3 w-full bg-gray-900">
               <img
                 src={activeProject.imageUrl || activeProject.image}
@@ -350,7 +328,6 @@ export default function RecentProjects() {
               />
             </div>
 
-            {/* Modal Footer (WhatsApp CTA only) */}
             <div className="p-3 sm:p-4 bg-gray-50 border-t border-gray-100 flex items-center justify-between gap-3">
               <div className="text-[11px] text-gray-500 font-medium truncate">
                 Verified Installation • {activeProject.location}

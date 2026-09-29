@@ -23,7 +23,6 @@ const PRESET_APPLIANCES = [
   { name: "Other (custom)", watts: 0, hours: 0 },
 ];
 
-/* ── Custom SVG Donut Chart ── */
 function DonutChart({ percentage, size = 160, strokeWidth = 14 }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -49,7 +48,6 @@ function DonutChart({ percentage, size = 160, strokeWidth = 14 }) {
   );
 }
 
-/* ── Custom Horizontal Bar ── */
 function EnergyBar({ label, units, maxUnits, color }) {
   const pct = maxUnits > 0 ? Math.min((units / maxUnits) * 100, 100) : 0;
   return (
@@ -80,7 +78,6 @@ export default function SolarCalculator() {
   const [isCalculating, setIsCalculating] = useState(false);
   const resultRef = useRef(null);
 
-  // ── Derived calculations ──
   const totalLoadW = appliances.reduce((sum, app) => sum + app.qty * app.watts, 0);
   const totalDailyUnits = appliances.reduce(
     (sum, app) => sum + (app.qty * app.watts * app.hours) / 1000, 0
@@ -114,7 +111,6 @@ export default function SolarCalculator() {
 
   const maxBarUnits = applianceBreakdown.length > 0 ? applianceBreakdown[0].units : 1;
 
-  // ── Handlers ──
   const handleApplianceChange = (id, field, value) => {
     setAppliances((prev) =>
       prev.map((app) => {
@@ -139,7 +135,6 @@ export default function SolarCalculator() {
     setAppliances(appliances.filter((app) => app.id !== id));
   };
 
-  // ── Calculate handler with 1s loading & Confetti ──
   const handleCalculate = () => {
     setIsCalculating(true);
     setShowResult(false);
@@ -147,7 +142,6 @@ export default function SolarCalculator() {
       setIsCalculating(false);
       setShowResult(true);
       
-      // Fire confetti from left and right
       const duration = 2000;
       const end = Date.now() + duration;
 
@@ -173,14 +167,12 @@ export default function SolarCalculator() {
       };
       frame();
 
-      // Scroll to results after render
       setTimeout(() => {
         resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 50);
     }, 1200);
   };
 
-  // ── Build WhatsApp message with all user data ──
   const buildWhatsAppUrl = () => {
     let msg = `🌞 *Solar Load Calculator — Quote Request*\n\n`;
     msg += `📋 *Appliances Added:*\n`;
@@ -206,10 +198,8 @@ export default function SolarCalculator() {
 
   const ResultsPanel = ({ className = "" }) => (
     <div className={`bg-[#1a1f22] rounded-md text-white shadow-xl relative overflow-hidden ${className}`}>
-      {/* Ambient glow */}
       <div className="absolute top-0 right-0 w-48 h-48 bg-green-500 opacity-[0.04] rounded-full blur-3xl pointer-events-none" />
 
-      {/* ── Header: Donut + kW ── */}
       <div className="flex items-center gap-4 mb-4">
         <div className="relative shrink-0">
           <DonutChart percentage={utilizationPct} size={80} strokeWidth={8} />
@@ -229,7 +219,6 @@ export default function SolarCalculator() {
         </div>
       </div>
 
-      {/* ── Energy Breakdown ── */}
       <div className="bg-[#222930] rounded-md p-3 mb-3">
         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
           <FaBolt className="text-yellow-400" size={10} />
@@ -247,7 +236,6 @@ export default function SolarCalculator() {
         </div>
       </div>
 
-      {/* ── Summary Grid ── */}
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="bg-[#222930] rounded-md p-2.5">
           <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Daily Energy</p>
@@ -271,7 +259,6 @@ export default function SolarCalculator() {
         </div>
       </div>
 
-      {/* ── Yearly Savings ── */}
       <div className="bg-linear-to-r from-[#a3e635]/10 to-[#22c55e]/10 border border-[#a3e635]/10 rounded-md p-2.5 sm:p-3 mb-3 flex items-center gap-2.5 sm:gap-3">
         <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-md flex items-center justify-center shrink-0">
           <Image src="/images/pkr.webp" alt="PKR" width={58} height={28} className="object-contain" />
@@ -282,7 +269,6 @@ export default function SolarCalculator() {
         </div>
       </div>
 
-      {/* ── Status ── */}
       <div className="flex gap-2 items-start mb-3 px-0.5">
         <FaCheck className="text-[#a3e635] mt-0.5 shrink-0" size={11} />
         <p className="text-[11px] sm:text-xs text-gray-400 leading-relaxed">
@@ -290,7 +276,6 @@ export default function SolarCalculator() {
         </p>
       </div>
 
-      {/* ── CTA ── */}
       <a
         href={buildWhatsAppUrl()}
         target="_blank"
@@ -319,14 +304,12 @@ export default function SolarCalculator() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center">
-          {/* ════════════ Left Side: Appliances Form ════════════ */}
           <div className="bg-white rounded-md shadow-sm border border-gray-200 p-3.5 sm:p-6 md:p-8 w-full lg:w-[58%]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 md:mb-8 gap-2.5 sm:gap-3">
               <div>
                 <h3 className="text-base sm:text-xl font-bold text-gray-900">Your appliances</h3>
                 <p className="text-[11px] sm:text-sm text-gray-500 mt-0.5">Pick a preset or enter custom watts &amp; hours.</p>
               </div>
-              {/* Phase Toggle */}
               <div className="flex items-center bg-gray-100 rounded-full p-0.5 self-start sm:self-auto shrink-0">
                 <button
                   onClick={() => setPhase("single")}
@@ -347,7 +330,6 @@ export default function SolarCalculator() {
               </div>
             </div>
 
-            {/* Desktop Table Header */}
             <div className="hidden md:grid grid-cols-12 gap-4 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-3 mb-4">
               <div className="col-span-4">Appliance</div>
               <div className="col-span-2 text-center">Qty</div>
@@ -356,7 +338,6 @@ export default function SolarCalculator() {
               <div className="col-span-2 text-right">Units/Day</div>
             </div>
 
-            {/* Appliances List */}
             <div className="space-y-3 md:space-y-3">
               {appliances.map((app) => {
                 const unitsPerDay = ((app.qty * app.watts * app.hours) / 1000).toFixed(1);
@@ -365,7 +346,6 @@ export default function SolarCalculator() {
                     key={app.id}
                     className="group relative bg-gray-50 md:bg-transparent p-3 md:p-0 rounded-md md:rounded-none border md:border-none border-gray-100"
                   >
-                    {/* ── Mobile: compact 2-col grid ── */}
                     <div className="md:hidden">
                       <div className="flex items-center justify-between mb-2">
                         <select
@@ -415,7 +395,6 @@ export default function SolarCalculator() {
                       </div>
                     </div>
 
-                    {/* ── Desktop: 12-col grid ── */}
                     <div className="hidden md:grid grid-cols-12 gap-4 items-center">
                       <div className="col-span-4">
                         <select value={app.name}
@@ -459,7 +438,6 @@ export default function SolarCalculator() {
               })}
             </div>
 
-            {/* Add Appliance */}
             <div className="flex items-center justify-between mt-4 md:mt-6">
               <button onClick={addAppliance}
                 className="flex items-center gap-2 text-xs md:text-sm font-semibold text-green-700 bg-green-50 hover:bg-green-100 px-3 py-1.5 md:px-4 md:py-2 rounded-md transition-colors"
@@ -467,7 +445,6 @@ export default function SolarCalculator() {
                 <FaPlus size={10} /> Add Appliance
               </button>
 
-              {/* Calculate Button (Shown if results are hidden) */}
               {!showResult && (
                 <button
                   onClick={handleCalculate}
@@ -490,7 +467,6 @@ export default function SolarCalculator() {
             </div>
           </div>
 
-          {/* ════════════ Desktop: Results Panel ════════════ */}
           {showResult && !isCalculating && (
             <div className="hidden lg:block w-[42%] animate-[heroFadeUp_0.5s_ease-out]" ref={resultRef}>
               <div className="lg:sticky lg:top-28">
@@ -500,7 +476,6 @@ export default function SolarCalculator() {
           )}
         </div>
 
-        {/* ════════════ Mobile & Desktop: Loading State ════════════ */}
         {isCalculating && (
           <div className="mt-8 flex flex-col items-center justify-center py-12 w-full lg:w-[42%] mx-auto">
             <svg className="animate-spin h-10 w-10 text-green-500 mb-4" viewBox="0 0 24 24" fill="none">
@@ -511,7 +486,6 @@ export default function SolarCalculator() {
           </div>
         )}
 
-        {/* ════════════ Mobile: Results Panel ════════════ */}
         {showResult && !isCalculating && (
           <div className="lg:hidden mt-6 animate-[heroFadeUp_0.5s_ease-out]">
             <ResultsPanel className="p-4" />

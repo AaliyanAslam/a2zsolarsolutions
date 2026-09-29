@@ -53,7 +53,6 @@ export async function GET(req) {
   }
 }
 
-// POST: Upload new project (Uploads image to Cloudinary & saves capacity + location to MongoDB)
 export async function POST(req) {
   try {
     await connectDB();
@@ -71,7 +70,6 @@ export async function POST(req) {
       );
     }
 
-    // If a photo file is uploaded from the device, upload to Cloudinary
     if (imageFile && typeof imageFile === "object" && imageFile.size > 0) {
       const bytes = await imageFile.arrayBuffer();
       const buffer = Buffer.from(bytes);
@@ -100,7 +98,6 @@ export async function POST(req) {
       );
     }
 
-    // Cleanly format capacity: e.g. '6 kw', '6.5', '10KW' -> '6KW', '6.5KW', '10KW'
     const cleanNum = capacity.trim().replace(/\s*kw$/i, "").trim().toUpperCase();
     const formattedCapacity = cleanNum ? `${cleanNum}KW` : capacity.trim().toUpperCase();
 
@@ -117,7 +114,6 @@ export async function POST(req) {
   }
 }
 
-// DELETE: Delete project by ID
 export async function DELETE(req) {
   try {
     await connectDB();

@@ -4,7 +4,6 @@ import { FaPhoneAlt } from "react-icons/fa";
 const Hero = () => {
   return (
     <section className="relative min-h-0 md:min-h-[90svh] flex items-start md:items-center pt-20 md:pt-20 pb-8 md:pb-0 overflow-hidden">
-      {/* Background Image & Light Overlay */}
       <div className="absolute inset-0 z-0">
         <picture>
           <source
@@ -19,15 +18,12 @@ const Hero = () => {
             className="absolute inset-0 w-full h-full object-cover object-[82%_center] md:object-right"
           />
         </picture>
-        {/* Soft Left Gradient Overlay for text readability */}
         <div className="absolute inset-0 bg-linear-to-r from-white via-white/90 to-transparent md:via-white/80" />
-        {/* Subtle Bottom Fade into white section below */}
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/20 to-white md:hidden" />
       </div>
 
       <div className="relative z-10 w-full max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-xl md:max-w-2xl">
-          {/* Title */}
           <h1 className="hero-animate-title text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black leading-[1.18] sm:leading-[1.1] tracking-tight mb-3 sm:mb-6">
             <span className="text-[#1a1c29]">Sustainable Power</span>{" "}
             <br className="hidden sm:inline" />
@@ -36,7 +32,6 @@ const Hero = () => {
             <span className="text-[#0fa353]">Reliable.</span>
           </h1>
 
-          {/* Description */}
           <p className="hero-animate-desc text-xs sm:text-base md:text-lg lg:text-xl text-gray-600 mb-5 sm:mb-8 md:mb-10 leading-relaxed max-w-lg sm:max-w-xl">
             Eliminate up to{" "}
             <span className="font-bold text-[#0fa353]">
@@ -45,7 +40,6 @@ const Hero = () => {
             with premium On-Grid, Hybrid &amp; Custom Solar Systems.
           </p>
 
-          {/* Action Buttons */}
           <div className="hero-animate-buttons flex flex-col sm:flex-row gap-2.5 sm:gap-4 w-full sm:max-w-md">
             <Link
               href="/#calculator"
@@ -63,9 +57,7 @@ const Hero = () => {
             </a>
           </div>
 
-          {/* Trust Metrics */}
           <div className="hero-animate-metrics mt-6 sm:mt-10 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-8 pt-2">
-            {/* Established Badge */}
             <div className="flex items-center gap-2.5 sm:gap-3">
               <div className="flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#0fa353]/10 text-[#0fa353] shrink-0">
                 <svg
@@ -93,7 +85,6 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Installations Metric */}
             <div className="flex items-center gap-2.5 sm:gap-3">
               <div className="flex items-center justify-center w-8 h-8 sm:w-11 sm:h-11 rounded-full bg-[#0fa353]/10 text-[#0fa353] shrink-0">
                 <svg

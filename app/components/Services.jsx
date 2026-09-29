@@ -86,7 +86,6 @@ const services = [
 export default function Services() {
   return (
     <section id="services" className="py-12 sm:py-16 md:py-24 bg-gray-50 relative overflow-hidden">
-      {/* Background Accents */}
       <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-white to-transparent pointer-events-none" />
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
@@ -110,7 +109,6 @@ export default function Services() {
               key={index}
               className="group bg-white rounded-2xl md:rounded-md p-5 sm:p-7 md:p-8 border border-gray-100 shadow-sm hover:shadow-2xl hover:shadow-green-500/10 hover:border-green-200 transition-all duration-300 relative flex flex-col h-full"
             >
-              {/* Subtle top border indicator */}
               <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-green-400 to-green-600 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 rounded-t-2xl md:rounded-t-md" />
               
               <div className="flex items-center justify-between mb-4 sm:mb-6">

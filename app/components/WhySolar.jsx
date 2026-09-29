@@ -48,12 +48,10 @@ const BENEFITS = [
 export default function WhySolar() {
   return (
     <section id="why-solar" className="py-14 sm:py-20 md:py-24 bg-white relative overflow-hidden">
-      {/* Background Ambient Accents */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-emerald-100/40 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#0fa353]/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* ── Section Header ── */}
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
           <div className="inline-flex items-center gap-2 py-1 px-3 sm:py-1.5 sm:px-4 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[11px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4 shadow-2xs">
             <FaSun className="text-[#0fa353] text-xs sm:text-sm animate-[spin_12s_linear_infinite]" />
@@ -69,7 +67,6 @@ export default function WhySolar() {
           </p>
         </div>
 
-        {/* ── Benefits Grid (5 Cards Layout) ── */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-10 sm:mb-14">
           {BENEFITS.map((item, idx) => {
             const Icon = item.icon;
@@ -105,7 +102,6 @@ export default function WhySolar() {
             );
           })}
 
-          {/* 6th Card: Official Quote & Website Highlight */}
           <div className="bg-linear-to-br from-[#1a3821] via-[#152a1a] to-[#0f1f13] text-white rounded-sm p-5 sm:p-7 shadow-lg flex flex-col justify-between relative overflow-hidden border border-emerald-800/40">
             <div className="absolute top-0 right-0 w-36 h-36 bg-[#0fa353]/20 rounded-full blur-2xl pointer-events-none" />
 
@@ -138,7 +134,6 @@ export default function WhySolar() {
           </div>
         </div>
 
-        {/* ── Corporate Mission & Value Proposition Banner ── */}
         <div className="relative rounded-sm sm:rounded-sm bg-linear-to-r from-[#f4f8f3] via-white to-[#edf5ec] p-5 sm:p-8 md:p-10 border border-emerald-200/80 shadow-xs">
           <div className="flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-10">
             <div className="space-y-2.5 sm:space-y-3.5 max-w-3xl">

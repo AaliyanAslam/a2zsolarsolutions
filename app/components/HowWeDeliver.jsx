@@ -51,12 +51,10 @@ const STEPS = [
 export default function HowWeDeliver() {
   return (
     <section id="process" className="py-14 sm:py-20 md:py-24 bg-[#fbfdfa] relative overflow-hidden border-t border-b border-gray-100">
-      {/* Background Accent Gradients */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-100/30 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#0fa353]/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* ── Section Header ── */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
           <div className="inline-flex items-center gap-2 py-1 px-3 sm:py-1.5 sm:px-4 rounded-sm bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[11px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4 shadow-2xs">
             <span className="w-1.5 h-1.5 rounded-full bg-[#0fa353] animate-pulse" />
@@ -72,7 +70,6 @@ export default function HowWeDeliver() {
           </p>
         </div>
 
-        {/* ── Steps Grid (5 Cards + 1 Quote/Vision Card) ── */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-10 sm:mb-14">
           {STEPS.map((stepItem, idx) => {
             const Icon = stepItem.icon;
@@ -114,7 +111,6 @@ export default function HowWeDeliver() {
             );
           })}
 
-          {/* 6th Card: Process Delivery Quote & Website Link */}
           <div className="bg-linear-to-br from-[#122116] via-[#162a1c] to-[#0d1a11] text-white rounded-sm p-5 sm:p-7 shadow-lg flex flex-col justify-between relative overflow-hidden border border-emerald-900/60">
             <div className="absolute top-0 right-0 w-36 h-36 bg-[#0fa353]/20 rounded-full blur-2xl pointer-events-none" />
 
@@ -147,7 +143,6 @@ export default function HowWeDeliver() {
           </div>
         </div>
 
-        {/* ── Bottom Callout Banner ── */}
         <div className="relative rounded-sm bg-linear-to-r from-[#f4f8f3] via-white to-[#edf5ec] p-5 sm:p-8 md:p-10 border border-emerald-200/80 shadow-xs">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-8">
             <div className="space-y-1.5 sm:space-y-2 text-center sm:text-left">

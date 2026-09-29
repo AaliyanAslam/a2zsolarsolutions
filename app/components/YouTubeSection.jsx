@@ -11,7 +11,6 @@ import {
 } from "react-icons/fa6";
 import { FaWhatsapp } from "react-icons/fa";
 
-// Helper to extract clean YouTube Video ID from any format
 function getYouTubeId(url) {
   if (!url) return "";
   try {
@@ -42,7 +41,6 @@ export default function YouTubeSection() {
   const scrollContainerRef = useRef(null);
   const interactionTimeoutRef = useRef(null);
 
-  // Fetch live videos from MongoDB Atlas via API
   useEffect(() => {
     async function loadVideos() {
       try {
@@ -60,13 +58,11 @@ export default function YouTubeSection() {
     loadVideos();
   }, []);
 
-  // Duplicate for smooth horizontal scrolling if we have 2 or more videos
   const videosList =
     videos.length > 2
       ? [...videos, ...videos]
       : videos;
 
-  // Continuous horizontal auto-scrolling
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container || videos.length === 0) return;
@@ -109,7 +105,6 @@ export default function YouTubeSection() {
     handleUserInteractionEnd();
   };
 
-  // Keyboard escape for modal
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") setActiveVideo(null);
@@ -128,16 +123,13 @@ export default function YouTubeSection() {
 
   return (
     <section id="youtube" className="py-12 sm:py-16 md:py-24 bg-white relative overflow-hidden">
-      {/* Background Accents */}
       <div className="absolute top-0 right-0 w-full h-125 bg-linear-to-b from-gray-50/50 to-transparent pointer-events-none" />
       <div className="absolute top-1/4 -right-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 -left-40 w-96 h-96 bg-green-500/10 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12 md:mb-16">
           <div className="max-w-2xl">
-            {/* Badge */}
             <span className="inline-flex items-center gap-2 py-1 px-3 sm:py-1.5 sm:px-4 rounded-full bg-green-100 text-green-700 text-[11px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
@@ -155,7 +147,6 @@ export default function YouTubeSection() {
             </p>
           </div>
 
-          {/* Controls + YouTube Channel CTA */}
           <div className="flex items-center gap-2.5 sm:gap-3">
             {videos.length > 1 && (
               <div className="hidden sm:flex items-center gap-1.5 mr-2">
@@ -190,7 +181,6 @@ export default function YouTubeSection() {
         </div>
       </div>
 
-      {/* ── Continuous Horizontal Video Gallery ── */}
       <div
         className="relative w-full overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
@@ -238,7 +228,6 @@ export default function YouTubeSection() {
                 aria-label={`Play video: ${video.title}`}
                 className="group relative w-68 sm:w-95 md:w-115 lg:w-130 aspect-video rounded-xl overflow-hidden shrink-0 border border-gray-200 hover:border-green-300 transition-all duration-300 cursor-pointer bg-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 shadow-sm hover:shadow-xl hover:shadow-green-500/10"
               >
-                {/* Cloudinary Thumbnail */}
                 <img
                   src={video.thumbnailUrl}
                   alt={`${video.title} - Solar Video Demonstration Karachi`}
@@ -248,17 +237,14 @@ export default function YouTubeSection() {
                   loading="lazy"
                 />
 
-                {/* Scrim overlay */}
                 <div className="absolute inset-0 bg-linear-to-t from-gray-950 via-gray-950/20 to-transparent group-hover:via-gray-950/40 transition-colors duration-300" />
 
-                {/* Play Button */}
                 <div className="absolute inset-0 flex items-center justify-center z-10 pointer-events-none">
                   <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-full bg-white/95 text-gray-900 flex items-center justify-center shadow-2xl group-hover:scale-110 group-hover:bg-green-600 group-hover:text-white transition-all duration-300">
                     <FaPlay className="text-xs sm:text-lg ml-0.5 transition-transform" />
                   </div>
                 </div>
 
-                {/* Bottom Title Content */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-5 z-10 flex flex-col justify-end">
                   <span className="text-[9px] sm:text-[10px] font-extrabold uppercase tracking-wider text-green-400 mb-0.5 sm:mb-1 drop-shadow-md">
                     Rooftop Demonstration
@@ -273,7 +259,6 @@ export default function YouTubeSection() {
         )}
       </div>
 
-      {/* ── Video Player Modal ── */}
       {activeVideo && (
         <div
           onClick={() => setActiveVideo(null)}
@@ -283,7 +268,6 @@ export default function YouTubeSection() {
             onClick={(e) => e.stopPropagation()}
             className="bg-white rounded-2xl max-w-4xl w-full overflow-hidden shadow-2xl relative border border-gray-200"
           >
-            {/* Modal Header */}
             <div className="flex items-center justify-between p-4 sm:p-5 border-b border-gray-100">
               <div className="flex items-center gap-3">
                 <span className="w-10 h-10 rounded-full bg-red-50 text-red-600 flex items-center justify-center text-lg">
@@ -308,7 +292,6 @@ export default function YouTubeSection() {
               </button>
             </div>
 
-            {/* Video Player Frame */}
             <div className="relative aspect-video w-full bg-black">
               <iframe
                 src={`https://www.youtube-nocookie.com/embed/${getYouTubeId(activeVideo.youtubeUrl)}?autoplay=1&rel=0`}
@@ -319,7 +302,6 @@ export default function YouTubeSection() {
               />
             </div>
 
-            {/* Modal Footer */}
             <div className="p-5 sm:p-6 bg-gray-50">
               <h4 className="text-base sm:text-lg font-bold text-gray-900 mb-2">
                 {activeVideo.title}
