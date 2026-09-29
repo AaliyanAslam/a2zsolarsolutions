@@ -122,14 +122,11 @@ export default function WhySolar() {
               </blockquote>
 
               <p className="text-xs text-emerald-100/80 leading-relaxed font-normal">
-                Visit our official portal for solar insights, verified certifications, and turnkey project assistance:
+                Reduce your reliance on conventional grid energy, protect your budget from rising tariffs, and generate your own clean electricity.
               </p>
             </div>
 
             <div className="pt-4 mt-4 border-t border-white/15">
-              <span className="text-xs sm:text-sm font-black tracking-wide text-[#a3e635] block mb-2">
-                www.A2ZSolarSolutions.com
-              </span>
               <Link
                 href="/#calculator"
                 className="inline-flex items-center gap-2 text-xs font-bold text-white hover:text-[#a3e635] transition-colors"

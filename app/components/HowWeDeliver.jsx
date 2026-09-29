@@ -136,10 +136,6 @@ export default function HowWeDeliver() {
             </div>
 
             <div className="pt-4 mt-4 border-t border-white/15">
-              <span className="text-xs text-gray-400 block mb-0.5 font-medium">Visit Our Website</span>
-              <span className="text-xs sm:text-sm font-black tracking-wide text-[#a3e635] block mb-2">
-                www.A2ZSolarSolutions.com
-              </span>
               <Link
                 href="/#calculator"
                 className="inline-flex items-center gap-2 text-xs font-bold text-white hover:text-[#a3e635] transition-colors"

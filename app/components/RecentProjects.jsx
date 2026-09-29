@@ -308,22 +308,6 @@ export default function RecentProjects() {
             </div>
           </div>
         </div>
-
-        {/* ── Official Website Link Strip ── */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left p-3.5 sm:p-4 rounded-sm bg-gray-50 border border-gray-200/80 text-xs text-gray-600">
-          <div className="flex items-center gap-2">
-            <FaCircleCheck className="text-[#0fa353] shrink-0" />
-            <span>Visit our official portal for project updates, certifications and customer reviews:</span>
-          </div>
-          <a
-            href="https://www.a2zsolarsolutions.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-bold text-[#0fa353] hover:underline"
-          >
-            www.A2ZSolarSolutions.com
-          </a>
-        </div>
       </div>
 
       {/* ── Lightbox Modal: Location Name, KW, Image Only ── */}
