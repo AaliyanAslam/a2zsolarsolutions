@@ -2,6 +2,8 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import useSWR from "swr";
+import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import {
   FaYoutube,
   FaPlay,
@@ -34,30 +36,20 @@ function getYouTubeId(url) {
 }
 
 export default function YouTubeSection() {
-  const [videos, setVideos] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [activeVideo, setActiveVideo] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isUserInteracting, setIsUserInteracting] = useState(false);
   const scrollContainerRef = useRef(null);
   const interactionTimeoutRef = useRef(null);
 
-  useEffect(() => {
-    async function loadVideos() {
-      try {
-        const res = await fetch("/api/videos");
-        const data = await res.json();
-        if (data.success && Array.isArray(data.videos)) {
-          setVideos(data.videos);
-        }
-      } catch (err) {
-        console.error("Failed to load videos from database:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadVideos();
-  }, []);
+  // SWR basic cache for YouTube videos
+  const { data, error, isLoading } = useSWR(
+    "/api/videos",
+    fetcher,
+    SWR_CACHE_CONFIG
+  );
+
+  const videos = data?.success && Array.isArray(data.videos) ? data.videos : [];
 
   const videosList =
     videos.length > 2

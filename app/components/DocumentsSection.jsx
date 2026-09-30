@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import useSWR from "swr";
+import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import {
   FaFilePdf,
   FaArrowUpRightFromSquare,
@@ -18,27 +20,18 @@ import {
 const CATEGORIES = ["All", "Datasheet", "Brochure", "Warranty", "Guide", "Company Profile"];
 
 export default function DocumentsSection() {
-  const [documents, setDocuments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [copiedId, setCopiedId] = useState(null);
 
-  useEffect(() => {
-    async function loadDocuments() {
-      try {
-        const res = await fetch("/api/documents");
-        const data = await res.json();
-        if (data.success && Array.isArray(data.documents)) {
-          setDocuments(data.documents);
-        }
-      } catch (err) {
-        console.error("Failed to load documents on frontend:", err);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    loadDocuments();
-  }, []);
+  // SWR basic cache for documents
+  const { data, error, isLoading } = useSWR(
+    "/api/documents",
+    fetcher,
+    SWR_CACHE_CONFIG
+  );
+
+  const documents =
+    data?.success && Array.isArray(data.documents) ? data.documents : [];
 
   const handleCopy = (url, id) => {
     if (typeof navigator !== "undefined" && navigator.clipboard) {

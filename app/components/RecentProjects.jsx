@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import useSWR from "swr";
+import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import {
   FaLocationDot,
   FaArrowRight,
@@ -18,41 +20,27 @@ import {
 export default function RecentProjects() {
   const [mounted, setMounted] = useState(false);
   const [projects, setProjects] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [hasMore, setHasMore] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [activeProject, setActiveProject] = useState(null);
+
+  // SWR basic cache for projects
+  const { data, error, isLoading } = useSWR(
+    "/api/projects?limit=10",
+    fetcher,
+    SWR_CACHE_CONFIG
+  );
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const fetchInitialProjects = async () => {
-      try {
-        setIsLoading(true);
-        const res = await fetch("/api/projects?limit=10");
-        const data = await res.json();
-
-        if (isMounted && data.success && Array.isArray(data.projects)) {
-          setProjects(data.projects);
-          setHasMore(Boolean(data.hasMore));
-        }
-      } catch (err) {
-        console.error("Failed to load projects from DB:", err);
-      } finally {
-        if (isMounted) setIsLoading(false);
-      }
-    };
-
-    fetchInitialProjects();
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
+    if (data?.success && Array.isArray(data.projects)) {
+      setProjects(data.projects);
+      setHasMore(Boolean(data.hasMore));
+    }
+  }, [data]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {

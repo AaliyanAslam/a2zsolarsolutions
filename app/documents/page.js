@@ -1,7 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
+import useSWR from "swr";
+import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import {
   FaFilePdf,
   FaArrowUpRightFromSquare,
@@ -28,41 +30,33 @@ const CATEGORIES = [
 ];
 
 export default function DocumentsPage() {
-  const [documents, setDocuments] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState(null);
 
-  useEffect(() => {
-    fetchDocuments();
-  }, [selectedCategory]);
+  const queryParams = new URLSearchParams();
+  if (selectedCategory && selectedCategory !== "All") {
+    queryParams.append("category", selectedCategory);
+  }
+  if (searchQuery.trim()) {
+    queryParams.append("search", searchQuery.trim());
+  }
+  const queryStr = queryParams.toString();
+  const swrKey = `/api/documents${queryStr ? `?${queryStr}` : ""}`;
 
-  const fetchDocuments = async () => {
-    try {
-      setIsLoading(true);
-      const params = new URLSearchParams();
-      if (selectedCategory && selectedCategory !== "All") {
-        params.append("category", selectedCategory);
-      }
-      if (searchQuery.trim()) {
-        params.append("search", searchQuery.trim());
-      }
-      const res = await fetch(`/api/documents?${params.toString()}`);
-      const data = await res.json();
-      if (data.success && Array.isArray(data.documents)) {
-        setDocuments(data.documents);
-      }
-    } catch (err) {
-      console.error("Failed to fetch documents:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  // SWR basic cache for documents
+  const { data, error, isLoading, mutate } = useSWR(
+    swrKey,
+    fetcher,
+    SWR_CACHE_CONFIG
+  );
+
+  const documents =
+    data?.success && Array.isArray(data.documents) ? data.documents : [];
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    fetchDocuments();
+    mutate();
   };
 
   const handleCopy = (url, id) => {

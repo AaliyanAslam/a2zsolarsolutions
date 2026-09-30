@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import useSWR from "swr";
+import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import {
   FaStar,
   FaQuoteLeft,
@@ -18,37 +20,24 @@ import { HiOutlineSparkles } from "react-icons/hi2";
 const ClientsFeedback = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [hasMore, setHasMore] = useState(false);
-  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // SWR basic cache for client testimonials
+  const { data, error, isLoading: isLoadingInitial } = useSWR(
+    "/api/testimonials?skip=0&limit=6",
+    fetcher,
+    SWR_CACHE_CONFIG
+  );
 
   const WHATSAPP_FEEDBACK_URL =
     "https://wa.me/923214189298?text=Hello%20A2Z%20Solar%20Solutions%2C%20I%20would%20like%20to%20share%20my%20feedback%20regarding%20your%20solar%20services";
 
   useEffect(() => {
-    fetchInitialTestimonials();
-  }, []);
-
-  const fetchInitialTestimonials = async () => {
-    try {
-      setIsLoadingInitial(true);
-      const res = await fetch("/api/testimonials?skip=0&limit=6");
-      const data = await res.json();
-
-      if (data.success && data.testimonials) {
-        setTestimonials(data.testimonials);
-        setHasMore(data.hasMore || false);
-      } else {
-        setTestimonials([]);
-        setHasMore(false);
-      }
-    } catch (err) {
-      console.error("Error loading testimonials:", err);
-      setTestimonials([]);
-      setHasMore(false);
-    } finally {
-      setIsLoadingInitial(false);
+    if (data?.success && Array.isArray(data.testimonials)) {
+      setTestimonials(data.testimonials);
+      setHasMore(Boolean(data.hasMore));
     }
-  };
+  }, [data]);
 
   const handleLoadMore = async () => {
     if (isLoadingMore) return;
