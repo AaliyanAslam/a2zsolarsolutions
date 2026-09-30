@@ -23,6 +23,20 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["react-icons"],
   },
+  async redirects() {
+    return [
+      {
+        source: "/privacy",
+        destination: "/privacy-policy",
+        permanent: true,
+      },
+      {
+        source: "/terms",
+        destination: "/terms-and-conditions",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

@@ -230,6 +230,16 @@ export default function Footer() {
                   Project Videos
                 </Link>
               </li>
+              <li>
+                <Link href="/privacy-policy" className="hover:text-[#0fa353] transition-colors">
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link href="/terms-and-conditions" className="hover:text-[#0fa353] transition-colors">
+                  Terms &amp; Conditions
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -310,18 +320,24 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ── 3. Bottom Bar (Cleaned - No Legal or Sitemap) ── */}
+        {/* ── 3. Bottom Bar (Legal & Compliance) ── */}
         <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-gray-500">
           <p>
             &copy; {new Date().getFullYear()} A2Z Solar Solutions. All rights reserved. “Lighting the Nation with Clean Energy.”
           </p>
 
-          <div className="flex items-center gap-4 sm:gap-6 font-medium text-gray-600">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 font-medium text-gray-600">
             <Link href="/" className="hover:text-[#0fa353] transition-colors">
               Home
             </Link>
             <Link href="/about" className="hover:text-[#0fa353] transition-colors">
               About Us
+            </Link>
+            <Link href="/privacy-policy" className="hover:text-[#0fa353] transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms-and-conditions" className="hover:text-[#0fa353] transition-colors">
+              Terms &amp; Conditions
             </Link>
             <Link href="/contact" className="hover:text-[#0fa353] transition-colors">
               Contact
