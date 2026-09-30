@@ -93,6 +93,20 @@ export default function AdminTopbar({ mobileMenuOpen, setMobileMenuOpen }) {
                 Dashboard
               </Link>
               <Link
+                href="/admin/projects"
+                onClick={() => setProfileDropdownOpen(false)}
+                className="block px-4 py-2 text-xs font-medium text-gray-700 hover:bg-emerald-50 hover:text-[#0fa353] transition-colors whitespace-nowrap"
+              >
+                Solar Projects
+              </Link>
+              <Link
+                href="/admin/documents"
+                onClick={() => setProfileDropdownOpen(false)}
+                className="block px-4 py-2 text-xs font-medium text-gray-700 hover:bg-emerald-50 hover:text-[#0fa353] transition-colors whitespace-nowrap"
+              >
+                Documents &amp; PDFs
+              </Link>
+              <Link
                 href="/admin/videos"
                 onClick={() => setProfileDropdownOpen(false)}
                 className="block px-4 py-2 text-xs font-medium text-gray-700 hover:bg-emerald-50 hover:text-[#0fa353] transition-colors whitespace-nowrap"
