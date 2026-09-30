@@ -7,170 +7,129 @@ import {
   FaArrowRight,
   FaWhatsapp,
   FaMagnifyingGlassLocation,
-  FaQuoteLeft,
 } from "react-icons/fa6";
 
 const STEPS = [
   {
-    step: "01",
     title: "Consultation",
-    desc: "We begin by understanding your energy needs, budget, and goals. Our experts provide guidance on the best solar solutions tailored to your home, business, or industry.",
+    desc: "We understand your energy needs, budget and goals, then recommend the right solar setup for your home, business or industry.",
     icon: FaComments,
-    badge: "Step 1",
   },
   {
-    step: "02",
-    title: "Site Inspection",
-    desc: "Our certified engineers conduct a detailed on-site survey of your rooftop, structural azimuth, shading analysis, and electrical distribution board.",
+    title: "Site inspection",
+    desc: "Our certified engineers survey your rooftop: orientation, shading and your electrical distribution board.",
     icon: FaMagnifyingGlassLocation,
-    badge: "Step 2",
   },
   {
-    step: "03",
-    title: "Customized Structure Design",
-    desc: "We engineer customized 3D CAD system layouts and heavy-gauge galvanized elevated frames built for maximum solar irradiance and high wind endurance.",
+    title: "Custom structure design",
+    desc: "We prepare a 3D CAD layout and heavy-gauge galvanized frames built for maximum sunlight and strong wind.",
     icon: FaCompassDrafting,
-    badge: "Step 3",
   },
   {
-    step: "04",
-    title: "Turnkey Installation",
-    desc: "Our skilled technicians handle the complete installation process, ensuring proper alignment, secure mounting, and seamless integration with your electrical system for maximum performance.",
+    title: "Turnkey installation",
+    desc: "Our technicians handle alignment, secure mounting and clean integration with your electrical system.",
     icon: FaScrewdriverWrench,
-    badge: "Step 4",
   },
   {
-    step: "05",
-    title: "After-Sales Support",
-    desc: "We provide ongoing maintenance, troubleshooting, and support to ensure your solar system continues to operate at peak efficiency, giving you peace of mind and long-term savings.",
+    title: "After-sales support",
+    desc: "Ongoing maintenance and troubleshooting keep your system running at peak efficiency for years.",
     icon: FaHeadset,
-    badge: "Step 5",
   },
 ];
 
+const WHATSAPP_URL =
+  "https://wa.me/923214189298?text=Salam%20A2Z%20Solar%2C%20I%20would%20like%20to%20schedule%20a%20Consultation%20and%20Site%20Inspection.";
+
 export default function HowWeDeliver() {
   return (
-    <section id="process" className="scroll-mt-20 py-14 sm:py-20 md:py-24 bg-[#fbfdfa] relative overflow-hidden border-t border-b border-gray-100">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-100/30 rounded-full blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#0fa353]/5 rounded-full blur-[100px] pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 py-1 px-3 sm:py-1.5 sm:px-4 rounded-sm bg-emerald-50 text-emerald-800 border border-emerald-200/80 text-[11px] sm:text-xs font-bold uppercase tracking-widest mb-3 sm:mb-4 shadow-2xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#0fa353] animate-pulse" />
-            Step-by-Step Process
-          </div>
-
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-black text-[#1a1c29] tracking-tight leading-tight mb-3 sm:mb-5">
-            Solar Solutions — <span className="text-[#0fa353]">How We Deliver</span>
+    <section
+      id="process"
+      aria-labelledby="process-heading"
+      className="scroll-mt-20 border-y border-gray-100 bg-[#fbfdfa] py-14 sm:py-20 md:py-24"
+    >
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-12 max-w-2xl sm:mb-16">
+          <h2
+            id="process-heading"
+            className="text-3xl font-black leading-tight tracking-tight text-[#1a1c29] sm:text-4xl md:text-5xl"
+          >
+            From first call to{" "}
+            <span className="text-[#0fa353]">a working solar system</span>
           </h2>
-
-          <p className="text-xs sm:text-base md:text-lg text-gray-600 leading-relaxed font-normal">
-            At <strong className="text-[#1a1c29] font-bold">A2Z Solar Solutions.</strong>, we follow a structured and customer-focused process to deliver reliable and efficient solar solutions:
+          <p className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base md:text-lg">
+            A2Z Solar Solutions follows the same five steps on every project, so
+            you always know what happens next.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mb-10 sm:mb-14">
-          {STEPS.map((stepItem, idx) => {
-            const Icon = stepItem.icon;
-            return (
-              <div
-                key={idx}
-                className="group relative bg-white hover:bg-emerald-50/20 rounded-sm p-5 sm:p-7 border border-emerald-100/90 hover:border-emerald-300 hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="flex items-center gap-3">
-                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-sm bg-emerald-50 text-[#0fa353] group-hover:bg-[#0fa353] group-hover:text-white flex items-center justify-center transition-all duration-300 shadow-2xs border border-emerald-100">
-                        <Icon className="text-lg sm:text-xl" />
-                      </div>
-                      <span className="text-2xl sm:text-3xl font-black text-emerald-200 group-hover:text-emerald-400/80 transition-colors">
-                        {stepItem.step}
-                      </span>
-                    </div>
+        {/* Timeline: vertical on mobile, horizontal on desktop */}
+        <ol className="relative grid grid-cols-1 gap-y-10 lg:grid-cols-5 lg:gap-x-6 lg:gap-y-0">
+          {/* Vertical line (mobile) */}
+          <span
+            aria-hidden="true"
+            className="absolute bottom-6 left-6 top-6 w-px bg-emerald-200 lg:hidden"
+          />
+          {/* Horizontal line (desktop) */}
+          <span
+            aria-hidden="true"
+            className="absolute left-6 right-6 top-6 hidden h-px bg-emerald-200 lg:block"
+          />
 
-                    <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-sm border border-emerald-200/70">
-                      {stepItem.badge}
-                    </span>
-                  </div>
-
-                  <h3 className="text-base sm:text-lg font-bold text-[#1a1c29] mb-2 leading-snug group-hover:text-[#0fa353] transition-colors">
-                    {stepItem.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-gray-600 leading-relaxed font-normal">
-                    {stepItem.desc}
-                  </p>
-                </div>
-
-                <div className="pt-4 mt-5 border-t border-gray-100 flex items-center justify-between text-xs text-emerald-800 font-semibold">
-                  <span>Structured Milestone</span>
-                  <span className="text-gray-400 group-hover:text-[#0fa353] transition-colors">→</span>
-                </div>
-              </div>
-            );
-          })}
-
-          <div className="bg-linear-to-br from-[#122116] via-[#162a1c] to-[#0d1a11] text-white rounded-sm p-5 sm:p-7 shadow-lg flex flex-col justify-between relative overflow-hidden border border-emerald-900/60">
-            <div className="absolute top-0 right-0 w-36 h-36 bg-[#0fa353]/20 rounded-full blur-2xl pointer-events-none" />
-
-            <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-[#a3e635] bg-white/10 px-2.5 py-0.5 rounded-sm border border-white/15">
-                  Process Guarantee
+          {STEPS.map(({ title, desc, icon: Icon }, idx) => (
+            <li
+              key={title}
+              className="relative flex gap-5 lg:block"
+            >
+              <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-emerald-200 bg-white text-[#0fa353] shadow-xs">
+                <Icon className="text-lg" aria-hidden="true" />
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#0fa353] text-[11px] font-bold leading-none text-white">
+                  {idx + 1}
                 </span>
-                <FaQuoteLeft className="text-emerald-400/40 text-xl" />
               </div>
 
-              <blockquote className="text-lg sm:text-xl font-bold text-white leading-snug mb-3">
-                “Seamless Solar Solutions, Every Step of the Way.”
-              </blockquote>
+              <div className="lg:mt-6">
+                <h3 className="text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
+                  {title}
+                </h3>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                  {desc}
+                </p>
+              </div>
+            </li>
+          ))}
+        </ol>
 
-              <p className="text-xs text-emerald-100/80 leading-relaxed font-normal">
-                From initial site audit to K-Electric green-meter sanctioning and 24/7 maintenance, we manage the entire lifecycle.
+        {/* Closing CTA */}
+        <div className="mt-14 overflow-hidden rounded-sm bg-[#122116] text-white sm:mt-20">
+          <div className="flex flex-col gap-8 p-6 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-xl">
+              <p className="text-xl font-bold leading-snug sm:text-2xl">
+                Seamless solar, every step of the way.
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-emerald-100/80">
+                We manage the full journey: site audit, K-Electric green-meter
+                sanctioning and 24/7 maintenance. Book a free site inspection
+                with our engineers in Karachi or Lahore.
               </p>
             </div>
 
-            <div className="pt-4 mt-4 border-t border-white/15">
-              <Link
-                href="/#calculator"
-                className="inline-flex items-center gap-2 text-xs font-bold text-white hover:text-[#a3e635] transition-colors"
-              >
-                <span>Start Your Survey</span>
-                <FaArrowRight size={10} />
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative rounded-sm bg-linear-to-r from-[#f4f8f3] via-white to-[#edf5ec] p-5 sm:p-8 md:p-10 border border-emerald-200/80 shadow-xs">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-5 sm:gap-8">
-            <div className="space-y-1.5 sm:space-y-2 text-center sm:text-left">
-              <h4 className="text-base sm:text-xl font-bold text-[#1a1c29]">
-                Ready to begin your step-by-step solar journey?
-              </h4>
-              <p className="text-xs sm:text-sm text-gray-600">
-                Book a free technical site inspection with our solar engineers in Karachi or Lahore.
-              </p>
-            </div>
-
-            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full sm:w-auto shrink-0">
+            <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:flex-row">
               <a
-                href="https://wa.me/923214189298?text=Salam%20A2Z%20Solar%2C%20I%20would%20like%20to%20schedule%20a%20Consultation%20and%20Site%20Inspection."
+                href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs sm:text-sm font-bold shadow-md shadow-green-600/20 active:scale-[0.99] transition-all text-center"
+                className="inline-flex items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3e635]"
               >
-                <FaWhatsapp className="text-white text-base" />
-                <span>Book Site Inspection</span>
+                <FaWhatsapp className="text-base" aria-hidden="true" />
+                Book site inspection
               </a>
-
               <Link
                 href="/#calculator"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm bg-white hover:bg-emerald-50 text-emerald-900 border border-emerald-300 text-xs sm:text-sm font-bold active:scale-[0.99] transition-all text-center shadow-2xs"
+                className="inline-flex items-center justify-center gap-2 rounded-sm border border-white/30 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3e635]"
               >
-                <span>Calculate Load</span>
-                <FaArrowRight size={11} />
+                Calculate your load
+                <FaArrowRight size={11} aria-hidden="true" />
               </Link>
             </div>
           </div>
