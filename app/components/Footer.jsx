@@ -270,6 +270,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/documents" className="hover:text-[#0fa353] transition-colors">
+                  Documents &amp; Datasheets
+                </Link>
+              </li>
+              <li>
                 <Link href="/contact" className="hover:text-[#0fa353] transition-colors">
                   Contact Our Engineers
                 </Link>

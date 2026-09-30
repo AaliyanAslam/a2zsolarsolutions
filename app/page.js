@@ -7,6 +7,7 @@ import Services from "./components/Services";
 import RecentProjects from "./components/RecentProjects";
 import ClientsFeedback from "./components/ClientsFeedback";
 import YouTubeSection from "./components/YouTubeSection";
+import DocumentsSection from "./components/DocumentsSection";
 
 export default function Home() {
   return (
@@ -20,6 +21,7 @@ export default function Home() {
       <RecentProjects />
       <ClientsFeedback />
       <YouTubeSection />
+      <DocumentsSection />
     </main>
   );
 }

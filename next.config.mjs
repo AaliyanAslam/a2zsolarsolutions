@@ -35,6 +35,11 @@ const nextConfig = {
         destination: "/terms-and-conditions",
         permanent: true,
       },
+      {
+        source: "/downloads",
+        destination: "/documents",
+        permanent: true,
+      },
     ];
   },
 };

@@ -31,6 +31,7 @@ const NAV_LINKS = [
       { label: "How We Deliver", href: "/#process" },
       { label: "Video Showcase", href: "/#videos" },
       { label: "Certifications", href: "/#certifications" },
+      { label: "Downloads & PDFs", href: "/documents" },
     ],
   },
   { label: "Contact", href: "/contact" },
