@@ -4,11 +4,7 @@ import {
   FaWhatsapp,
   FaEnvelope,
   FaLocationDot,
-  FaClock,
-  FaShieldHalved,
   FaArrowRight,
-  FaCheck,
-  FaHeadset,
 } from "react-icons/fa6";
 
 export const metadata = {
@@ -17,157 +13,194 @@ export const metadata = {
     "Get in touch with A2Z Solar Solutions for solar consultation, site inspections, and net-metering services in Karachi and Lahore.",
 };
 
+const PHONE_DISPLAY = "+92 321 4189298";
+const PHONE_TEL = "+923214189298";
+const EMAIL = "a2zsolarsolutions.com@gmail.com";
+const WHATSAPP_URL = `https://wa.me/923214189298?text=${encodeURIComponent(
+  "Salam A2Z Solar, I would like to get a solar quote.",
+)}`;
+
+const FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0fa353]";
+const FOCUS_DARK =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3e635]";
+
 const CONTACT_CHANNELS = [
   {
     icon: FaPhone,
-    title: "Call Us Directly",
-    desc: "Speak with our certified solar engineers",
-    value: "+92 321 4189298",
-    href: "tel:03214189298",
-    btnText: "Call Now",
-    color: "emerald",
+    title: "Call us",
+    desc: "Speak with our certified solar engineers.",
+    value: PHONE_DISPLAY,
+    href: `tel:${PHONE_TEL}`,
+    btnText: "Call now",
   },
   {
     icon: FaWhatsapp,
-    title: "WhatsApp Consultation",
-    desc: "Instant quote & system audit estimates",
-    value: "+92 321 4189298",
-    href: "https://wa.me/923214189298?text=Salam%20A2Z%20Solar%2C%20I%20would%20like%20to%20get%20a%20solar%20quote.",
+    title: "WhatsApp",
+    desc: "Get a quick quote and system estimate.",
+    value: PHONE_DISPLAY,
+    href: WHATSAPP_URL,
     btnText: "Chat on WhatsApp",
-    color: "green",
+    external: true,
   },
   {
     icon: FaEnvelope,
-    title: "Email Inquiries",
-    desc: "Corporate tenders & formal inquiries",
-    value: "a2zsolarsolutions.com@gmail.com",
-    href: "mailto:a2zsolarsolutions.com@gmail.com",
-    btnText: "Send Email",
-    color: "blue",
+    title: "Email",
+    desc: "For corporate tenders and formal inquiries.",
+    value: EMAIL,
+    href: `mailto:${EMAIL}`,
+    btnText: "Send email",
   },
 ];
 
 const LOCATIONS = [
   {
-    city: "Karachi Head Office",
-    address: "Gulistan-e-Johar / Malir City, Karachi, Sindh, Pakistan",
-    timing: "Mon - Sat: 9:00 AM - 7:00 PM",
-    phone: "0321-4189298",
+    city: "Karachi head office",
+    address: "Gulistan-e-Johar / Malir City, Karachi, Sindh",
+    timing: "Mon - Sat, 9:00 AM - 7:00 PM",
   },
   {
-    city: "Lahore Regional Office",
-    address: "Model Town / DHA Phase 5, Lahore, Punjab, Pakistan",
-    timing: "Mon - Sat: 9:00 AM - 6:00 PM",
-    phone: "0321-4189298",
+    city: "Lahore regional office",
+    address: "Model Town / DHA Phase 5, Lahore, Punjab",
+    timing: "Mon - Sat, 9:00 AM - 6:00 PM",
   },
 ];
 
 export default function ContactPage() {
   return (
-    <main className="min-h-screen bg-white text-gray-900 pt-24 sm:pt-32 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* ── Page Header ── */}
-        <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <div className="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold uppercase tracking-wider mb-4">
-            <FaHeadset className="text-[#0fa353]" />
-            <span>24/7 Dedicated Support</span>
-          </div>
+    <main className="min-h-screen bg-white pb-16 pt-24 text-gray-900 sm:pb-24 sm:pt-32">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-10 max-w-3xl sm:mb-14">
+          <nav
+            aria-label="Breadcrumb"
+            className="mb-5 text-sm font-medium text-gray-600"
+          >
+            <ol className="flex items-center gap-2">
+              <li>
+                <Link href="/" className={`hover:text-[#0fa353] ${FOCUS}`}>
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-gray-300">
+                /
+              </li>
+              <li aria-current="page" className="font-semibold text-[#0fa353]">
+                Contact
+              </li>
+            </ol>
+          </nav>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-[#1a1c29] tracking-tight leading-tight mb-4">
-            Let’s Power Your Home or Business With <span className="text-[#0fa353]">Solar</span>
+          <h1 className="text-[2rem] font-black leading-[1.1] tracking-tight text-[#1a1c29] sm:text-5xl">
+            Let&apos;s power your home or business with{" "}
+            <span className="text-[#0fa353]">solar</span>
           </h1>
 
-          <p className="text-sm sm:text-lg text-gray-600 leading-relaxed font-normal">
-            Have questions regarding system sizing, K-Electric green net-metering, or inverter pricing? Our team of certified solar experts is ready to assist you.
+          <p className="mt-5 text-base leading-relaxed text-gray-600 sm:text-lg">
+            Questions about system sizing, K-Electric net metering or inverter
+            prices? Our certified solar engineers are ready to help.
           </p>
         </div>
 
-        {/* ── Contact Channels Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 mb-12 sm:mb-16">
-          {CONTACT_CHANNELS.map((channel, idx) => {
-            const Icon = channel.icon;
-            return (
-              <div
-                key={idx}
-                className="p-6 sm:p-8 bg-gray-50 border border-gray-200/80 rounded-sm flex flex-col justify-between hover:border-[#0fa353] hover:shadow-lg transition-all"
+        {/* Contact channels */}
+        <ul className="mb-12 grid gap-4 sm:mb-16 md:grid-cols-3 md:gap-6">
+          {CONTACT_CHANNELS.map(
+            ({ icon: Icon, title, desc, value, href, btnText, external }) => (
+              <li
+                key={title}
+                className="flex flex-col rounded-sm border border-gray-200 border-t-2 border-t-[#0fa353] bg-white p-6 sm:p-8"
               >
-                <div>
-                  <div className="w-12 h-12 rounded-sm bg-emerald-100/80 text-[#0fa353] flex items-center justify-center text-xl mb-4">
-                    <Icon />
-                  </div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900 mb-1">
-                    {channel.title}
-                  </h3>
-                  <p className="text-xs text-gray-500 mb-3">{channel.desc}</p>
-                  <p className="text-sm font-black text-gray-800 break-all mb-6">
-                    {channel.value}
-                  </p>
-                </div>
+                <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-emerald-50 text-xl text-[#0fa353]">
+                  <Icon aria-hidden="true" />
+                </span>
+                <h2 className="mt-4 text-lg font-bold text-[#1a1c29]">
+                  {title}
+                </h2>
+                <p className="mt-1 text-sm text-gray-600">{desc}</p>
+                <p className="mb-6 mt-3 break-all text-base font-black text-gray-900">
+                  {value}
+                </p>
 
                 <a
-                  href={channel.href}
-                  target={channel.href.startsWith("http") ? "_blank" : undefined}
-                  rel={channel.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="w-full py-2.5 px-4 rounded-sm bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs sm:text-sm font-bold text-center transition-all shadow-xs"
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noopener noreferrer" : undefined}
+                  className={`mt-auto inline-flex min-h-12 items-center justify-center rounded-sm bg-[#0fa353] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] ${FOCUS}`}
                 >
-                  {channel.btnText}
+                  {btnText}
                 </a>
-              </div>
-            );
-          })}
-        </div>
+              </li>
+            ),
+          )}
+        </ul>
 
-        {/* ── Locations & Offices Grid ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 sm:mb-16">
-          {LOCATIONS.map((loc, idx) => (
-            <div
-              key={idx}
-              className="p-6 sm:p-8 bg-white border-2 border-emerald-100 rounded-sm shadow-xs space-y-4"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-sm bg-emerald-50 text-[#0fa353] flex items-center justify-center text-lg">
-                  <FaLocationDot />
+        {/* Offices */}
+        <section aria-labelledby="offices-heading" className="mb-12 sm:mb-16">
+          <h2
+            id="offices-heading"
+            className="text-2xl font-black tracking-tight text-[#1a1c29] sm:text-3xl"
+          >
+            Our offices
+          </h2>
+
+          <ul className="mt-6 grid gap-4 md:grid-cols-2 md:gap-6">
+            {LOCATIONS.map((loc) => (
+              <li
+                key={loc.city}
+                className="rounded-sm border border-gray-200 bg-[#fbfdfa] p-6 sm:p-8"
+              >
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-sm bg-emerald-50 text-[#0fa353]">
+                    <FaLocationDot aria-hidden="true" />
+                  </span>
+                  <h3 className="text-lg font-bold text-[#1a1c29]">
+                    {loc.city}
+                  </h3>
                 </div>
-                <div>
-                  <h3 className="text-base sm:text-lg font-bold text-gray-900">{loc.city}</h3>
-                  <span className="text-[11px] font-semibold text-emerald-700">Official Branch</span>
-                </div>
-              </div>
 
-              <div className="space-y-2 text-xs text-gray-600 pt-2 border-t border-gray-100">
-                <p className="flex items-start gap-2">
-                  <span className="font-bold text-gray-800 shrink-0">Address:</span>
-                  <span>{loc.address}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="font-bold text-gray-800 shrink-0">Timing:</span>
-                  <span>{loc.timing}</span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <span className="font-bold text-gray-800 shrink-0">Phone:</span>
-                  <a href={`tel:${loc.phone}`} className="text-[#0fa353] font-bold hover:underline">
-                    {loc.phone}
-                  </a>
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
+                <dl className="mt-5 space-y-3 border-t border-gray-200 pt-5 text-sm sm:text-base">
+                  <div>
+                    <dt className="font-bold text-gray-800">Address</dt>
+                    <dd className="mt-0.5 text-gray-600">{loc.address}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-bold text-gray-800">Hours</dt>
+                    <dd className="mt-0.5 text-gray-600">{loc.timing}</dd>
+                  </div>
+                  <div>
+                    <dt className="font-bold text-gray-800">Phone</dt>
+                    <dd className="mt-0.5">
+                      <a
+                        href={`tel:${PHONE_TEL}`}
+                        className={`inline-block py-1 font-bold text-[#0fa353] hover:underline ${FOCUS}`}
+                      >
+                        {PHONE_DISPLAY}
+                      </a>
+                    </dd>
+                  </div>
+                </dl>
+              </li>
+            ))}
+          </ul>
+        </section>
 
-        {/* ── Quick Calculator CTA ── */}
-        <div className="rounded-sm bg-linear-to-r from-[#122116] via-[#162a1c] to-[#0d1a11] text-white p-6 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-emerald-900/60">
-          <div>
-            <h3 className="text-lg sm:text-2xl font-black mb-2">Want an instant load estimate?</h3>
-            <p className="text-xs sm:text-sm text-emerald-100/80 max-w-xl">
-              Use our Solar Calculator to calculate required KW capacity, daily energy units, and monthly savings.
+        {/* Calculator CTA */}
+        <div className="flex flex-col gap-6 rounded-sm bg-[#122116] p-6 text-white sm:p-10 md:flex-row md:items-center md:justify-between">
+          <div className="max-w-xl">
+            <h2 className="text-xl font-black sm:text-2xl">
+              Want an instant load estimate?
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-emerald-100/80 sm:text-base">
+              Use our solar calculator to find the capacity you need, your daily
+              energy units and your monthly savings.
             </p>
           </div>
           <Link
             href="/#calculator"
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-sm bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs sm:text-sm font-bold shadow-md shadow-green-600/20 active:scale-95 transition-all shrink-0"
+            className={`inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] ${FOCUS_DARK}`}
           >
-            <span>Open Solar Calculator</span>
-            <FaArrowRight size={11} />
+            Open solar calculator
+            <FaArrowRight size={11} aria-hidden="true" />
           </Link>
         </div>
       </div>

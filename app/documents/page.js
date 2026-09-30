@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
@@ -11,11 +11,7 @@ import {
   FaMagnifyingGlass,
   FaCopy,
   FaCheck,
-  FaRotate,
-  FaCalendarDays,
-  FaHardDrive,
-  FaArrowLeft,
-  FaTag,
+  FaXmark,
 } from "react-icons/fa6";
 
 const CATEGORIES = [
@@ -29,253 +25,346 @@ const CATEGORIES = [
   "Other",
 ];
 
+const SEARCH_DELAY_MS = 300;
+
+const FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0fa353]";
+
+// Plain grey placeholder, same shape as a document card.
+function DocSkeleton() {
+  return (
+    <div
+      aria-hidden="true"
+      className="animate-pulse rounded-sm border border-gray-200 bg-white p-5 sm:p-6"
+    >
+      <div className="h-11 w-11 rounded-sm bg-gray-200" />
+      <div className="mt-4 h-4 w-3/4 rounded-sm bg-gray-200" />
+      <div className="mt-2 h-3 w-full rounded-sm bg-gray-200" />
+      <div className="mt-1.5 h-3 w-2/3 rounded-sm bg-gray-200" />
+      <div className="mt-6 h-12 rounded-sm bg-gray-200" />
+    </div>
+  );
+}
+
 export default function DocumentsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchInput, setSearchInput] = useState("");
+  const [searchQuery, setSearchQuery] = useState(""); // debounced value
   const [copiedId, setCopiedId] = useState(null);
+  const [copyFailed, setCopyFailed] = useState(false);
+  const copyTimeoutRef = useRef(null);
+
+  // Wait for the visitor to stop typing before asking the server.
+  useEffect(() => {
+    const t = setTimeout(
+      () => setSearchQuery(searchInput.trim()),
+      SEARCH_DELAY_MS,
+    );
+    return () => clearTimeout(t);
+  }, [searchInput]);
+
+  useEffect(() => () => clearTimeout(copyTimeoutRef.current), []);
 
   const queryParams = new URLSearchParams();
-  if (selectedCategory && selectedCategory !== "All") {
+  if (selectedCategory !== "All")
     queryParams.append("category", selectedCategory);
-  }
-  if (searchQuery.trim()) {
-    queryParams.append("search", searchQuery.trim());
-  }
+  if (searchQuery) queryParams.append("search", searchQuery);
   const queryStr = queryParams.toString();
   const swrKey = `/api/documents${queryStr ? `?${queryStr}` : ""}`;
 
-  // SWR basic cache for documents
-  const { data, error, isLoading, mutate } = useSWR(
-    swrKey,
-    fetcher,
-    SWR_CACHE_CONFIG
-  );
+  // keepPreviousData: the list stays on screen while new results load.
+  const { data, error, isLoading, isValidating } = useSWR(swrKey, fetcher, {
+    ...SWR_CACHE_CONFIG,
+    keepPreviousData: true,
+  });
 
   const documents =
     data?.success && Array.isArray(data.documents) ? data.documents : [];
 
+  // Safety net in case the API does not filter by search itself.
+  const q = searchQuery.toLowerCase();
+  const filteredDocs = q
+    ? documents.filter(
+        (doc) =>
+          doc.title?.toLowerCase().includes(q) ||
+          doc.description?.toLowerCase().includes(q) ||
+          doc.fileName?.toLowerCase().includes(q),
+      )
+    : documents;
+
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    mutate();
+    setSearchQuery(searchInput.trim()); // apply immediately
   };
 
-  const handleCopy = (url, id) => {
-    if (typeof navigator !== "undefined" && navigator.clipboard) {
-      navigator.clipboard.writeText(url);
+  const clearFilters = () => {
+    setSearchInput("");
+    setSearchQuery("");
+    setSelectedCategory("All");
+  };
+
+  const handleCopy = async (url, id) => {
+    clearTimeout(copyTimeoutRef.current);
+    try {
+      await navigator.clipboard.writeText(url);
       setCopiedId(id);
-      setTimeout(() => setCopiedId(null), 2500);
+      setCopyFailed(false);
+    } catch {
+      setCopiedId(null);
+      setCopyFailed(true);
     }
+    copyTimeoutRef.current = setTimeout(() => {
+      setCopiedId(null);
+      setCopyFailed(false);
+    }, 2500);
   };
 
-  const getCategoryColor = (cat) => {
-    switch (cat) {
-      case "Datasheet":
-        return "bg-blue-50 text-blue-700 border-blue-200";
-      case "Brochure":
-        return "bg-emerald-50 text-emerald-700 border-emerald-200";
-      case "Warranty":
-        return "bg-amber-50 text-amber-700 border-amber-200";
-      case "Company Profile":
-        return "bg-purple-50 text-purple-700 border-purple-200";
-      case "Guide":
-        return "bg-cyan-50 text-cyan-700 border-cyan-200";
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-200";
-    }
-  };
-
-  const filteredDocs = documents.filter((doc) => {
-    if (!searchQuery.trim()) return true;
-    const q = searchQuery.toLowerCase();
-    return (
-      doc.title?.toLowerCase().includes(q) ||
-      doc.description?.toLowerCase().includes(q) ||
-      doc.fileName?.toLowerCase().includes(q)
-    );
-  });
+  const hasFilters = selectedCategory !== "All" || searchQuery;
 
   return (
-    <main className="min-h-screen bg-[#fcfdfd] text-[#1a1c29] pt-24 sm:pt-32 pb-20 selection:bg-emerald-100 selection:text-emerald-900">
-      {/* ── Hero Banner ── */}
-      <section className="relative overflow-hidden bg-white border-b border-gray-200/80 py-10 sm:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <main className="min-h-screen bg-white pb-16 text-[#1a1c29] selection:bg-emerald-100 selection:text-emerald-900 sm:pb-24">
+      {/* Header */}
+      <section className="border-b border-gray-100 bg-[#fbfdfa] pb-10 pt-24 sm:pb-14 sm:pt-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4"
+            className="mb-5 text-sm font-medium text-gray-600"
           >
-            <Link href="/" className="hover:text-[#0fa353] transition-colors">
-              Home
-            </Link>
-            <span className="text-gray-300">/</span>
-            <span className="text-[#0fa353]">Downloads &amp; Documents</span>
+            <ol className="flex items-center gap-2">
+              <li>
+                <Link href="/" className={`hover:text-[#0fa353] ${FOCUS}`}>
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-gray-300">
+                /
+              </li>
+              <li aria-current="page" className="font-semibold text-[#0fa353]">
+                Downloads
+              </li>
+            </ol>
           </nav>
 
-          <div className="inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold uppercase tracking-wider mb-4 shadow-2xs">
-            <FaFilePdf className="text-red-500" />
-            <span>Technical Resources &amp; Downloads</span>
-          </div>
-
-          <h1 className="text-3xl sm:text-5xl font-black text-[#1a1c29] tracking-tight leading-tight mb-3">
-            Solar Documents, <span className="text-[#0fa353]">Brochures &amp; Datasheets</span>
+          <h1 className="max-w-3xl text-[2rem] font-black leading-[1.1] tracking-tight sm:text-5xl">
+            Datasheets, brochures and{" "}
+            <span className="text-[#0fa353]">solar guides</span>
           </h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-gray-600 leading-relaxed max-w-3xl">
-            Access and download verified technical datasheets for hybrid/on-grid inverters (Inverex, Solis, Deye), Tier-1 solar panel specifications, official company brochures, and K-Electric / LESCO net-metering guidelines.
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
+            Download technical datasheets for hybrid and on-grid inverters
+            (Inverex, Solis, Deye), Tier-1 solar panel specifications, our
+            company brochure, and K-Electric and LESCO net metering guidelines.
           </p>
         </div>
       </section>
 
-      {/* ── Content & Grid ── */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-12 space-y-8">
-        {/* Search & Category Filter Toolbar */}
-        <div className="bg-white border border-gray-200/90 rounded-2xl p-4 sm:p-5 shadow-xs flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-          {/* Search bar */}
-          <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-md">
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by inverter model, brochure, or keywords..."
-              className="w-full bg-gray-50 border border-gray-200 rounded-xl pl-10 pr-4 py-2.5 text-xs sm:text-sm text-gray-900 focus:bg-white focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353] outline-none"
+      <section className="mx-auto mt-8 max-w-7xl px-4 sm:mt-12 sm:px-6 lg:px-8">
+        {/* Search and filters */}
+        <div className="space-y-4">
+          <form
+            onSubmit={handleSearchSubmit}
+            role="search"
+            className="relative max-w-xl"
+          >
+            <label htmlFor="doc-search" className="sr-only">
+              Search documents
+            </label>
+            <FaMagnifyingGlass
+              className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-400"
+              aria-hidden="true"
             />
-            <FaMagnifyingGlass className="absolute left-3.5 top-3.5 text-gray-400 text-xs sm:text-sm" />
+            <input
+              id="doc-search"
+              type="search"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              placeholder="Search by inverter model or keyword"
+              className="min-h-12 w-full rounded-sm border border-gray-300 bg-white py-3 pl-11 pr-12 text-base text-gray-900 placeholder:text-gray-500 focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-[#0fa353] sm:text-sm [&::-webkit-search-cancel-button]:hidden"
+            />
+            {searchInput && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchInput("");
+                  setSearchQuery("");
+                }}
+                aria-label="Clear search"
+                className={`absolute right-1 top-1/2 flex h-10 w-10 -translate-y-1/2 items-center justify-center rounded-sm text-gray-500 hover:bg-gray-100 hover:text-gray-800 ${FOCUS}`}
+              >
+                <FaXmark aria-hidden="true" />
+              </button>
+            )}
           </form>
 
-          {/* Category Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`px-3.5 py-1.5 rounded-lg text-xs font-bold whitespace-nowrap transition-all ${
-                  selectedCategory === cat
-                    ? "bg-[#0fa353] text-white shadow-2xs"
-                    : "bg-gray-100 hover:bg-gray-200 text-gray-600"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          <div
+            role="group"
+            aria-label="Filter documents by category"
+            className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]"
+          >
+            {CATEGORIES.map((cat) => {
+              const active = selectedCategory === cat;
+              return (
+                <button
+                  key={cat}
+                  type="button"
+                  onClick={() => setSelectedCategory(cat)}
+                  aria-pressed={active}
+                  className={`min-h-11 shrink-0 whitespace-nowrap rounded-sm border px-4 py-2 text-sm font-bold transition-colors ${FOCUS} ${
+                    active
+                      ? "border-[#0fa353] bg-[#0fa353] text-white"
+                      : "border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
+                  }`}
+                >
+                  {cat}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* ── Document Cards Grid ── */}
+        {/* Result count + copy announcements for screen readers and sighted users */}
+        <p
+          role="status"
+          aria-live="polite"
+          className="mb-4 mt-6 text-sm text-gray-600"
+        >
+          {copiedId
+            ? "Link copied"
+            : copyFailed
+              ? "Could not copy link"
+              : !isLoading && !error
+                ? `${filteredDocs.length} ${filteredDocs.length === 1 ? "document" : "documents"}${
+                    hasFilters ? " found" : ""
+                  }`
+                : "\u00A0"}
+        </p>
+
+        {/* Results */}
         {isLoading ? (
-          <div className="py-20 text-center text-gray-400">
-            <div className="w-9 h-9 border-3 border-[#0fa353] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-xs font-semibold">Loading documents from database...</p>
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <DocSkeleton key={i} />
+            ))}
+          </div>
+        ) : error && documents.length === 0 ? (
+          <div
+            role="alert"
+            className="rounded-sm border border-gray-200 bg-gray-50 p-8 text-center sm:p-12"
+          >
+            <h2 className="text-lg font-bold">Documents could not be loaded</h2>
+            <p className="mx-auto mt-1 max-w-md text-sm text-gray-600">
+              Please check your connection and refresh the page.
+            </p>
           </div>
         ) : filteredDocs.length === 0 ? (
-          <div className="bg-white border border-gray-200/90 rounded-2xl p-12 text-center space-y-3 shadow-xs">
-            <div className="w-14 h-14 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center mx-auto border border-amber-200 shadow-2xs">
-              <FaFilePdf size={28} />
-            </div>
-            <h3 className="text-base sm:text-lg font-bold text-gray-900">
-              No Documents Found
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+          <div className="rounded-sm border border-gray-200 bg-gray-50 p-8 text-center sm:p-12">
+            <h2 className="text-lg font-bold">No documents found</h2>
+            <p className="mx-auto mt-1 max-w-md text-sm leading-relaxed text-gray-600">
               {searchQuery
-                ? `No documents matched "${searchQuery}". Please try another keyword or select "All".`
-                : "Documents and brochures will appear here once uploaded by the admin."}
+                ? `Nothing matched "${searchQuery}". Try another keyword or clear the filters.`
+                : "Documents will appear here once they are uploaded."}
             </p>
-            <div className="pt-2">
+            <div className="mt-5 flex flex-col justify-center gap-3 sm:flex-row">
+              {hasFilters && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className={`inline-flex min-h-12 items-center justify-center rounded-sm border border-gray-300 bg-white px-5 py-3 text-sm font-bold hover:bg-gray-50 ${FOCUS}`}
+                >
+                  Clear filters
+                </button>
+              )}
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0fa353] text-white text-xs font-bold hover:bg-[#0c8a45] transition-all shadow-xs"
+                className={`inline-flex min-h-12 items-center justify-center rounded-sm bg-[#0fa353] px-5 py-3 text-sm font-bold text-white hover:bg-[#0c8a45] ${FOCUS}`}
               >
-                <span>Request Specific Datasheet</span>
+                Request a specific datasheet
               </Link>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredDocs.map((doc) => {
-              const id = doc._id || doc.id;
+          <ul
+            className={`grid grid-cols-1 gap-4 transition-opacity sm:gap-6 md:grid-cols-2 lg:grid-cols-3 ${
+              isValidating ? "opacity-60" : ""
+            }`}
+          >
+            {filteredDocs.map((doc, idx) => {
+              const id = doc._id || doc.id || idx;
+              const copied = copiedId === id;
               return (
-                <div
+                <li
                   key={id}
-                  className="bg-white border border-gray-200/90 hover:border-emerald-300 rounded-2xl p-6 flex flex-col justify-between shadow-xs hover:shadow-xl transition-all duration-300 group"
+                  className="flex flex-col rounded-sm border border-gray-200 border-t-2 border-t-[#0fa353] bg-white p-5 sm:p-6"
                 >
-                  <div>
-                    {/* Header: Red PDF Icon + Category Tag + Copy Link */}
-                    <div className="flex items-start justify-between gap-3 mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-11 h-11 rounded-xl bg-red-50 text-red-600 border border-red-200/90 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                          <FaFilePdf size={22} />
-                        </div>
-                        <span
-                          className={`text-[10px] font-bold px-2.5 py-0.5 rounded-md border uppercase tracking-wider ${getCategoryColor(
-                            doc.category
-                          )}`}
-                        >
-                          {doc.category || "Brochure"}
-                        </span>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={() => handleCopy(doc.pdfUrl, id)}
-                        title="Copy direct PDF URL"
-                        className="p-1.5 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-                      >
-                        {copiedId === id ? (
-                          <FaCheck className="text-[#0fa353]" size={13} />
-                        ) : (
-                          <FaCopy size={13} />
-                        )}
-                      </button>
-                    </div>
-
-                    {/* Title */}
-                    <h2 className="text-base sm:text-lg font-bold text-[#1a1c29] group-hover:text-[#0fa353] transition-colors line-clamp-2 leading-snug mb-2">
-                      {doc.title}
-                    </h2>
-
-                    {/* Text Description */}
-                    {doc.description && (
-                      <p className="text-xs sm:text-sm text-gray-600 leading-relaxed line-clamp-3 mb-4 font-normal">
-                        {doc.description}
-                      </p>
-                    )}
-
-                    {/* Metadata */}
-                    <div className="flex items-center justify-between text-[11px] text-gray-400 pt-3 border-t border-gray-100 font-medium">
-                      <span className="truncate max-w-[180px] font-mono text-[10px]">
-                        {doc.fileName || "document.pdf"}
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex min-w-0 items-center gap-3">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-red-50 text-red-600">
+                        <FaFilePdf size={20} aria-hidden="true" />
                       </span>
-                      <span className="font-semibold text-gray-600 shrink-0">
-                        {doc.fileSizeFormatted || "PDF Document"}
+                      <span className="truncate text-sm font-semibold text-emerald-800">
+                        {doc.category || "Document"}
                       </span>
                     </div>
+
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(doc.pdfUrl, id)}
+                      aria-label={`Copy link to ${doc.title}`}
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-sm text-gray-500 transition-colors hover:bg-gray-100 hover:text-gray-800 ${FOCUS}`}
+                    >
+                      {copied ? (
+                        <FaCheck
+                          className="text-[#0fa353]"
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        <FaCopy size={14} aria-hidden="true" />
+                      )}
+                    </button>
                   </div>
 
-                  {/* Actions Bar */}
-                  <div className="pt-4 mt-4 border-t border-gray-100 flex items-center justify-between gap-2">
+                  <h2 className="mt-4 line-clamp-2 text-base font-bold leading-snug sm:text-lg">
+                    {doc.title}
+                  </h2>
+
+                  {doc.description && (
+                    <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-600">
+                      {doc.description}
+                    </p>
+                  )}
+
+                  <p className="mt-4 text-xs font-medium text-gray-500">
+                    PDF
+                    {doc.fileSizeFormatted ? `, ${doc.fileSizeFormatted}` : ""}
+                  </p>
+
+                  <div className="mt-auto flex flex-col gap-2 pt-5 sm:flex-row">
                     <a
                       href={doc.pdfUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs font-bold transition-all shadow-xs"
+                      className={`inline-flex min-h-12 flex-1 items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-4 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] ${FOCUS}`}
                     >
-                      <FaArrowUpRightFromSquare size={11} />
-                      <span>View PDF</span>
+                      <FaArrowUpRightFromSquare size={12} aria-hidden="true" />
+                      View PDF
+                      <span className="sr-only">: {doc.title}</span>
                     </a>
-
                     <a
                       href={doc.pdfUrl}
                       download={doc.fileName || "document.pdf"}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-gray-700 hover:text-gray-950 hover:bg-gray-100 text-xs font-semibold transition-colors border border-gray-200/70"
+                      className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-gray-300 bg-white px-4 py-3 text-sm font-bold transition-colors hover:bg-gray-50 ${FOCUS}`}
                     >
-                      <FaDownload size={11} />
-                      <span>Download</span>
+                      <FaDownload size={12} aria-hidden="true" />
+                      Download
+                      <span className="sr-only">: {doc.title}</span>
                     </a>
                   </div>
-                </div>
+                </li>
               );
             })}
-          </div>
+          </ul>
         )}
       </section>
     </main>

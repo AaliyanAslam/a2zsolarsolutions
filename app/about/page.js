@@ -11,15 +11,11 @@ import {
   FaPhone,
   FaGlobe,
   FaCheck,
-  FaQuoteLeft,
   FaLocationDot,
   FaArrowRight,
   FaBolt,
   FaWrench,
   FaFileContract,
-  FaStar,
-  FaAward,
-  FaHandshake,
 } from "react-icons/fa6";
 
 export const metadata = {
@@ -28,594 +24,431 @@ export const metadata = {
     "Founded in 2015, A2Z Solar Solutions is an FBR registered renewable energy company headquartered in Karachi, delivering complete turnkey solar power solutions across Karachi and Lahore.",
 };
 
+const PHONE_DISPLAY = "0321-4189298";
+const PHONE_TEL = "+923214189298";
+const WHATSAPP_URL = `https://wa.me/923214189298?text=${encodeURIComponent(
+  "Salam A2Z Solar, I would like to talk to a solar engineer.",
+)}`;
+
+const FOCUS =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0fa353]";
+const FOCUS_DARK =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3e635]";
+
 const STATS = [
-  {
-    value: "2015",
-    label: "Founded in",
-    subtext: "Over a Decade of Excellence",
-    icon: FaBuilding,
-    color: "text-[#0fa353]",
-    bg: "from-[#0fa353]/10 to-transparent",
-    border: "border-emerald-200/90",
-  },
+  { value: "2015", label: "Founded", subtext: "Over a decade of experience" },
   {
     value: "10+",
-    label: "Years of Trust",
-    subtext: "Quality, Safety & Innovation",
-    icon: FaStar,
-    color: "text-[#0fa353]",
-    bg: "from-[#0fa353]/10 to-transparent",
-    border: "border-emerald-200/90",
+    label: "Years of trust",
+    subtext: "Quality, safety and innovation",
   },
   {
-    value: "2 Cities",
-    label: "Karachi & Lahore",
-    subtext: "Residential & Commercial",
-    icon: FaCity,
-    color: "text-[#0fa353]",
-    bg: "from-[#0fa353]/10 to-transparent",
-    border: "border-emerald-200/90",
+    value: "2 cities",
+    label: "Karachi and Lahore",
+    subtext: "Homes, businesses, industry",
   },
   {
     value: "100%",
-    label: "Turnkey Execution",
-    subtext: "Survey, Structure to Net-Meter",
-    icon: FaShieldHalved,
-    color: "text-[#0fa353]",
-    bg: "from-[#0fa353]/10 to-transparent",
-    border: "border-emerald-200/90",
+    label: "Turnkey execution",
+    subtext: "From survey to net meter",
   },
+];
+
+const HIGHLIGHTS = [
+  "FBR registered and compliant",
+  "Active branches in Karachi and Lahore",
+  "High-wind elevated structures",
+  "Tier-1 N-Type bifacial solar modules",
+  "Net metering approval processing",
+  "24/7 troubleshooting and maintenance",
 ];
 
 const EXPERTISE_AREAS = [
   {
-    title: "Complete Turnkey Installations",
-    desc: "End-to-end load audits, system design, equipment procurement, and net-metering sanctions for On-Grid, Hybrid, and Off-Grid solar setups.",
-    tag: "On-Grid & Hybrid",
+    title: "Complete turnkey installations",
+    desc: "Load audits, system design, equipment procurement and net metering sanctions for On-Grid, Hybrid and Off-Grid systems.",
     icon: FaSolarPanel,
   },
   {
-    title: "Customized Elevated Structures",
-    desc: "Heavy-gauge galvanized steel fabrication engineered specifically for high coastal wind resistance and optimal all-day sun capture.",
-    tag: "High-Wind Rated",
+    title: "Customized elevated structures",
+    desc: "Heavy-gauge galvanized steel fabrication built for strong coastal wind and all-day sun capture.",
     icon: FaBuilding,
   },
   {
-    title: "24/7 Diagnostics & Maintenance",
-    desc: "Error code resolutions (Error 04, 09, 52), thermal imaging for hot spot detection, active cell equalization, and earthing renewals.",
-    tag: "Rapid Response",
+    title: "24/7 diagnostics and maintenance",
+    desc: "Error code fixes (Error 04, 09, 52), thermal imaging for hot spots, cell equalization and earthing renewals.",
     icon: FaWrench,
   },
   {
-    title: "Residential, Commercial & Industrial",
-    desc: "Tailored energy setups from 5kW to 20kW villas to large industrial megawatt factory rooftops in Karachi and Lahore.",
-    tag: "5kW to 1MW+",
+    title: "Residential, commercial and industrial",
+    desc: "Systems from 5kW to 20kW for villas, up to industrial rooftops in the megawatt range, in Karachi and Lahore.",
     icon: FaCity,
   },
 ];
 
 const PILLARS = [
   {
-    title: "FBR Registered & Compliant",
-    desc: "A fully registered legal corporate entity adhering strictly to AEDB quality benchmarks and standard double-insulated wiring.",
+    title: "FBR registered and compliant",
+    desc: "A fully registered company that follows AEDB quality benchmarks and uses double-insulated wiring.",
     icon: FaFileContract,
-    badge: "100% Legal Entity",
   },
   {
-    title: "Tier-1 Hardware Exclusively",
-    desc: "We deploy exclusively Tier-1 bifacial panels (580W-650W) and top-rated inverters (Inverex, Nitrox, Huawei, Growatt, Deye).",
+    title: "Tier-1 hardware only",
+    desc: "Tier-1 bifacial panels (580W-650W) and top-rated inverters such as Inverex, Nitrox, Huawei, Growatt and Deye.",
     icon: FaBolt,
-    badge: "Tier-1 Certified",
   },
   {
-    title: "Elevated Structural Safety",
-    desc: "All structural joints and mounting hardware are chemically anchored with certified heavy-gauge channel sections.",
+    title: "Safe elevated structures",
+    desc: "Structural joints and mounting hardware are chemically anchored and built with certified heavy-gauge channel sections.",
     icon: FaShieldHalved,
-    badge: "Cyclone Resilient",
   },
   {
-    title: "Seamless Net-Metering",
-    desc: "Turnkey application processing with K-Electric (Karachi) and LESCO (Lahore) so you export units and minimize your bills.",
+    title: "Seamless net metering",
+    desc: "We process your K-Electric (Karachi) or LESCO (Lahore) application so you can export units and cut your bill.",
     icon: FaGlobe,
-    badge: "Bill Reduction",
   },
 ];
 
 const LOCATIONS = [
   {
     city: "Karachi",
-    role: "Headquarters & Central Warehouse",
+    role: "Headquarters and central warehouse",
     coverage:
-      "DHA, Clifton, Gulshan, North Nazimabad, Korangi, Bahria Town & Industrial Estates (SITE, Korangi, FB Area).",
-    phone: "0321-4189298",
-    badge: "Main HQ",
+      "DHA, Clifton, Gulshan, North Nazimabad, Korangi, Bahria Town and industrial estates (SITE, Korangi, FB Area).",
   },
   {
     city: "Lahore",
-    role: "Regional Operations & Project Office",
+    role: "Regional operations and project office",
     coverage:
-      "DHA, Bahria Town, Gulberg, Johar Town, Model Town, Raiwind Road & Sundar Industrial Estate.",
-    phone: "0321-4189298",
-    badge: "Active Operations",
+      "DHA, Bahria Town, Gulberg, Johar Town, Model Town, Raiwind Road and Sundar Industrial Estate.",
   },
 ];
 
+const H2 =
+  "text-[1.65rem] font-black leading-tight tracking-tight text-[#1a1c29] sm:text-3xl lg:text-4xl";
+
 export default function AboutPage() {
   return (
-    <main className="min-h-screen bg-white text-gray-900 pb-20 overflow-x-hidden selection:bg-emerald-100 selection:text-emerald-900">
-      <section className="relative min-h-0 md:min-h-[85svh] flex flex-col justify-start md:justify-center pt-24 sm:pt-32 md:pt-40 pb-10 sm:pb-16 md:pb-20 overflow-hidden mb-10 sm:mb-16 bg-white">
-        <div className="absolute inset-0 z-0 hidden md:block">
+    <main className="min-h-screen overflow-x-hidden bg-white text-gray-900 selection:bg-emerald-100 selection:text-emerald-900">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-white pb-12 pt-24 sm:pb-16 sm:pt-32 md:flex md:min-h-[80svh] md:items-center md:pt-40">
+        <div
+          className="absolute inset-0 z-0 hidden md:block"
+          aria-hidden="true"
+        >
           <Image
             src="/images/about-hero-bg.webp"
-            alt="A2Z Solar Solutions About Us Background"
+            alt=""
             fill
             priority
             sizes="100vw"
-            className="object-cover object-[82%_center] md:object-right"
+            className="object-cover md:object-right"
           />
-          <div className="absolute inset-0 bg-linear-to-r from-white via-white/95 to-transparent md:via-white/85" />
+          <div className="absolute inset-0 bg-linear-to-r from-white via-white/90 to-transparent" />
           <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/20 to-white" />
         </div>
 
-        <div className="relative z-10 w-full max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto w-full max-w-400 px-4 sm:px-6 lg:px-8">
           <nav
             aria-label="Breadcrumb"
-            className="flex items-center gap-2 text-[11px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4 sm:mb-6"
+            className="mb-5 text-sm font-medium text-gray-600"
           >
-            <Link href="/" className="hover:text-[#0fa353] transition-colors">
-              Home
-            </Link>
-            <span className="text-gray-300">/</span>
-            <span className="text-[#0fa353]">About Us</span>
+            <ol className="flex items-center gap-2">
+              <li>
+                <Link href="/" className={`hover:text-[#0fa353] ${FOCUS}`}>
+                  Home
+                </Link>
+              </li>
+              <li aria-hidden="true" className="text-gray-300">
+                /
+              </li>
+              <li aria-current="page" className="font-semibold text-[#0fa353]">
+                About us
+              </li>
+            </ol>
           </nav>
 
-          <div className="max-w-2xl lg:max-w-3xl space-y-3.5 sm:space-y-6">
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 py-1 sm:py-1.5 px-3 sm:px-4 rounded-full bg-emerald-50/70 sm:bg-white/90 sm:backdrop-blur-md border border-emerald-200/90 text-emerald-800 text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-wider shadow-2xs max-w-full">
-              <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#0fa353] animate-pulse shrink-0" />
-              <span className="truncate sm:overflow-visible">FBR Registered Renewable Energy Company</span>
-              <span className="text-emerald-400 shrink-0">•</span>
-              <span className="text-emerald-700 font-semibold shrink-0">Est. 2015</span>
-            </div>
-
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-[#1a1c29] tracking-tight leading-[1.15] sm:leading-[1.1] wrap-break-word">
-              About Our <span className="text-[#0fa353]">Company</span>
+          <div className="max-w-2xl lg:max-w-3xl">
+            <h1 className="text-[2rem] font-black leading-[1.1] tracking-tight text-[#1a1c29] sm:text-5xl lg:text-6xl">
+              An FBR registered solar company,{" "}
+              <span className="text-[#0fa353]">since 2015</span>
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed font-normal">
-              Founded in 2015,{" "}
-              <strong className="text-[#1a1c29] font-bold">
-                A2Z Solar Solutions.
-              </strong>{" "}
-              is an FBR registered renewable energy company headquartered in
-              Karachi, Pakistan. We proudly serve clients across{" "}
-              <span className="font-semibold text-emerald-800 bg-emerald-50/90 px-2 py-0.5 rounded border border-emerald-200/70 inline-block">
-                Karachi and Lahore
-              </span>
-              , delivering complete solar power solutions tailored for
-              residential, commercial, and industrial applications.
+            <p className="mt-5 text-base leading-relaxed text-gray-700 sm:text-lg lg:text-xl">
+              A2Z Solar Solutions is a renewable energy company headquartered in
+              Karachi. We serve clients across Karachi and Lahore with complete
+              solar power solutions for homes, businesses and industries.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between w-full max-w-400 p-2.5 sm:p-2.5 rounded-xl border border-[#9ab596] bg-linear-to-r from-[#cfe1cb] to-[#b7ceb4] shadow-sm gap-3 sm:gap-4 mt-3 sm:mt-4">
-              <div className="flex items-center gap-2.5 sm:gap-3 w-full sm:w-auto">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white border border-[#9ab596] flex items-center justify-center shrink-0 shadow-2xs">
-                  <FaBolt className="text-[#1a3821] text-xs sm:text-base" />
-                </div>
-                <div className="text-xs sm:text-sm text-[#1a3821] font-medium text-left">
-                  <span className="font-bold opacity-80">Official Tagline:</span> “Lighting the Nation with Clean Energy.”
-                </div>
-              </div>
-              <Link href="/#calculator" className="px-4 py-2 sm:px-5 sm:py-2 rounded-lg border border-[#84a380] text-[#1a3821] text-xs sm:text-sm font-semibold hover:bg-white/30 transition-colors w-full sm:w-auto text-center shrink-0 shadow-2xs">
-                Get Started
+            <p className="mt-4 border-l-4 border-[#0fa353] pl-4 text-base font-semibold text-[#1a3821]">
+              Lighting the Nation with Clean Energy.
+            </p>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/#calculator"
+                className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] ${FOCUS}`}
+              >
+                Calculate your savings
+                <FaArrowRight size={11} aria-hidden="true" />
               </Link>
+              <a
+                href={`tel:${PHONE_TEL}`}
+                className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-gray-300 bg-white px-6 py-3 text-sm font-bold text-[#1a1c29] transition-colors hover:bg-gray-50 ${FOCUS}`}
+              >
+                <FaPhone size={12} aria-hidden="true" />
+                Call {PHONE_DISPLAY}
+              </a>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 lg:gap-0 mt-8 sm:mt-14 pt-6 sm:pt-10 border-t border-gray-200/80">
-            {STATS.map((stat, i) => {
-              const Icon = stat.icon;
-              return (
-                <div
-                  key={i}
-                  className={`p-3.5 sm:p-5 lg:p-6 rounded-xl sm:rounded-none bg-white border ${stat.border} shadow-2xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group`}
-                >
-                  <div
-                    className={`absolute top-0 left-0 right-0 h-1 bg-linear-to-r ${stat.bg}`}
-                  />
-                  <div className="flex items-center justify-between mb-2.5 sm:mb-4">
-                    <div
-                      className={`w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-gray-50 border border-gray-100 flex items-center justify-center ${stat.color} group-hover:scale-105 transition-transform`}
-                    >
-                      <Icon className="text-sm sm:text-lg" />
-                    </div>
-                    <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-gray-400 bg-gray-50 px-1.5 sm:px-2 py-0.5 rounded-md border border-gray-100">
-                      Verified
-                    </span>
-                  </div>
-
-                  <div>
-                    <div
-                      className={`text-xl sm:text-3xl lg:text-4xl font-black tracking-tight mb-0.5 sm:mb-1 ${stat.color}`}
-                    >
-                      {stat.value}
-                    </div>
-                    <div className="text-[11px] sm:text-sm font-bold text-[#1a1c29] leading-tight">
-                      {stat.label}
-                    </div>
-                    <div className="text-[10px] sm:text-xs text-gray-500 font-medium mt-0.5 leading-tight">
-                      {stat.subtext}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <dl className="mt-12 grid grid-cols-2 gap-x-4 gap-y-6 border-t border-gray-200 pt-8 sm:mt-16 lg:grid-cols-4 lg:gap-x-8">
+            {STATS.map((stat) => (
+              <div
+                key={stat.label}
+                className="border-t-2 border-[#0fa353] pt-3"
+              >
+                <dd className="text-2xl font-black tracking-tight text-[#0fa353] sm:text-4xl">
+                  {stat.value}
+                </dd>
+                <dt className="mt-1 text-sm font-bold leading-tight text-[#1a1c29]">
+                  {stat.label}
+                </dt>
+                <dd className="mt-0.5 text-sm leading-snug text-gray-600">
+                  {stat.subtext}
+                </dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-gray-700 text-sm sm:text-base lg:text-lg leading-relaxed">
-            <div className="inline-flex items-center gap-2 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200/80">
-              <FaAward className="text-[#0fa353] text-xs sm:text-sm" />
-              Over A Decade Of Experience
+      {/* Story + expertise */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-7">
+            <h2 className={H2}>Engineering, reliability and innovation</h2>
+
+            <div className="mt-5 space-y-4 text-base leading-relaxed text-gray-700 sm:text-lg">
+              <p>
+                With over a decade of experience, A2Z Solar Solutions has built
+                a reputation for quality and reliability. Our engineers and
+                technicians specialize in solar system design, installation,
+                maintenance and customized elevated structures, so your system
+                performs well, stays safe and keeps saving you money.
+              </p>
+              <p>
+                We believe renewable energy is not just the future, it is the
+                present. Our mission is to give communities and businesses
+                clean, affordable solar power that cuts costs and supports
+                Pakistan&apos;s move toward energy independence.
+              </p>
             </div>
 
-            <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#1a1c29] tracking-tight leading-snug wrap-break-word">
-              Engineering Excellence, Reliability & Innovation Since 2015
-            </h2>
-
-            <p className="text-xs sm:text-base text-gray-600 sm:text-gray-700 leading-relaxed">
-              With over a decade of experience,{" "}
-              <strong className="text-[#1a1c29] font-semibold">
-                A2Z Solar Solutions.
-              </strong>{" "}
-              has built a strong reputation for quality, reliability, and
-              innovation. Our skilled engineering and technical team specializes
-              in solar system design, installation, maintenance, and customized
-              elevated structures — ensuring high performance, safety, and
-              long-term energy efficiency.
-            </p>
-
-            <p className="text-xs sm:text-base text-gray-600 sm:text-gray-700 leading-relaxed">
-              We believe that renewable energy is not just the future — it’s the
-              present. Our mission is to empower communities and businesses with
-              sustainable, affordable, and clean solar energy solutions that
-              reduce costs and support Pakistan’s transition toward a greener
-              and energy-independent future.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-0 pt-1 sm:pt-2">
-              {[
-                "FBR Registered & Compliant Entity",
-                "Karachi & Lahore Active Branch Operations",
-                "Certified High-Wind Elevated Structures",
-                "Tier-1 N-Type Bifacial Solar Modules",
-                "Complete Net-Metering Approval Processing",
-                "24/7 Troubleshooting & Preventive Maintenance",
-              ].map((item, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-2.5 p-2 sm:p-2.5 bg-white hover:bg-emerald-50/20 transition-all"
-                >
-                  <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0 text-[10px] mt-0.5">
-                    <FaCheck size={8} />
-                  </div>
-                  <span className="text-xs sm:text-sm font-semibold text-gray-800 leading-snug wrap-break-word">
+            <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+              {HIGHLIGHTS.map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+                    <FaCheck size={9} aria-hidden="true" />
+                  </span>
+                  <span className="text-sm font-semibold leading-snug text-gray-800 sm:text-base">
                     {item}
                   </span>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
 
-          <div className="lg:col-span-5 grid grid-cols-1 gap-0 mt-4 lg:mt-0">
-            <div className="flex items-center justify-between px-1 mb-1.5">
-              <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-gray-400">
-                Core Specializations
-              </span>
-              <span className="text-[11px] sm:text-xs font-semibold text-[#0fa353]">
-                Turnkey Solutions
-              </span>
-            </div>
-
-            {EXPERTISE_AREAS.map((area, idx) => {
-              const Icon = area.icon;
-              return (
-                <div
-                  key={idx}
-                  className="p-3.5 sm:p-5 bg-white hover:bg-gray-50 transition-all duration-300 flex items-start gap-3 sm:gap-4 group"
-                >
-                  <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-[#0fa353] group-hover:bg-[#0fa353] group-hover:text-white flex items-center justify-center shrink-0 transition-colors duration-300 shadow-2xs border border-emerald-100">
-                    <Icon className="text-base sm:text-xl" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center justify-between gap-1 mb-1">
-                      <h3 className="text-xs sm:text-base font-bold text-[#1a1c29] wrap-break-word">
-                        {area.title}
-                      </h3>
-                      <span className="text-[9px] sm:text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 sm:px-2 py-0.5 rounded border border-emerald-200/80 shrink-0">
-                        {area.tag}
-                      </span>
-                    </div>
-                    <p className="text-[11px] sm:text-[13px] text-gray-600 leading-relaxed font-normal">
-                      {area.desc}
+          <div className="lg:col-span-5">
+            <h3 className="text-sm font-bold text-gray-600">What we do</h3>
+            <ul className="mt-2 divide-y divide-gray-200 border-y border-gray-200">
+              {EXPERTISE_AREAS.map(({ title, desc, icon: Icon }) => (
+                <li key={title} className="flex gap-4 py-5">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-sm bg-emerald-50 text-[#0fa353]">
+                    <Icon className="text-lg" aria-hidden="true" />
+                  </span>
+                  <div className="min-w-0">
+                    <h4 className="text-base font-bold leading-snug text-[#1a1c29]">
+                      {title}
+                    </h4>
+                    <p className="mt-1 text-sm leading-relaxed text-gray-600">
+                      {desc}
                     </p>
                   </div>
-                </div>
-              );
-            })}
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
-        <div className="relative rounded-2xl sm:rounded-3xl bg-linear-to-br from-[#f8faf8] via-white to-[#f0f5ec] p-5 sm:p-10 md:p-14 lg:p-16 overflow-hidden shadow-sm border border-emerald-100">
-          <div className="absolute top-0 right-0 w-80 sm:w-96 h-80 sm:h-96 bg-emerald-100/50 rounded-full blur-[80px] pointer-events-none" />
-          <div className="absolute -bottom-20 -left-20 w-64 sm:w-80 h-64 sm:h-80 bg-[#0fa353]/5 rounded-full blur-[80px] pointer-events-none" />
-
-          <div className="relative z-10 max-w-3xl mx-auto text-center space-y-3 sm:space-y-6">
-            <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-emerald-50 text-[#0fa353] flex items-center justify-center mx-auto border border-emerald-100 shadow-2xs">
-              <FaQuoteLeft className="text-base sm:text-2xl" />
-            </div>
-
-            <blockquote className="text-base sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-tight leading-snug sm:leading-tight text-[#1a2e22] wrap-break-word">
-              “At A2Z Solar Solutions., we don’t just install solar systems — we
-              build lasting energy partnerships that empower you to enjoy clean,
-              dependable, and affordable power for years to come.”
-            </blockquote>
-
-            <div className="pt-1 sm:pt-2">
-              <div className="text-xs sm:text-sm font-bold text-[#0fa353] uppercase tracking-widest">
-                A2Z Solar Solutions
-              </div>
-              <div className="text-[11px] sm:text-xs text-gray-500 mt-1 font-medium">
-                Headquartered in Karachi • Complete Solar Power Solutions Across
-                Karachi & Lahore
-              </div>
-            </div>
-          </div>
-        </div>
+      {/* Quote */}
+      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <figure className="rounded-sm bg-[#122116] p-6 text-white sm:p-10 md:p-14">
+          <blockquote className="max-w-4xl text-xl font-extrabold leading-snug tracking-tight sm:text-2xl md:text-3xl">
+            &ldquo;We don&apos;t just install solar systems. We build lasting
+            energy partnerships that give you clean, dependable and affordable
+            power for years to come.&rdquo;
+          </blockquote>
+          <figcaption className="mt-6 text-sm text-emerald-100/80">
+            A2Z Solar Solutions, Karachi
+          </figcaption>
+        </figure>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
-        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
-          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200/80 inline-block mb-1.5 sm:mb-2">
-            Guiding Principles
-          </span>
-          <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#1a1c29] tracking-tight">
-            Our Vision & Mission
-          </h2>
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-1.5 sm:mt-2">
-            The values and objectives steering our commitment to renewable
-            energy across Pakistan.
-          </p>
-        </div>
+      {/* Vision and mission */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
+        <h2 className={H2}>Our vision and mission</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
-          <div className="p-4 sm:p-7 lg:p-9 rounded-2xl sm:rounded-3xl bg-white border border-emerald-200/90 shadow-2xs hover:shadow-xl hover:border-emerald-400 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
-            <div className="space-y-3 sm:space-y-4 relative z-10">
-              <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-emerald-50 text-[#0fa353] flex items-center justify-center shadow-2xs border border-emerald-100">
-                <FaEye className="text-lg sm:text-2xl" />
-              </div>
-
-              <div>
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#0fa353] block mb-0.5 sm:mb-1">
-                  Forward Looking
-                </span>
-                <h3 className="text-lg sm:text-2xl font-black text-[#1a1c29] tracking-tight">
-                  Our Vision
-                </h3>
-              </div>
-
-              <p className="text-gray-700 text-xs sm:text-base lg:text-[17px] leading-relaxed font-normal">
-                Our vision at A2Z Solar Solutions. is to become Pakistan’s most
-                trusted and innovative solar energy provider, leading the
-                transition toward a clean, sustainable, and energy-independent
-                future. We strive to make solar power accessible, affordable,
-                and reliable for every home and business.
-              </p>
-            </div>
-
-            <div className="pt-3 sm:pt-5 mt-4 sm:mt-6 border-t border-emerald-100 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-bold text-emerald-800">
-              <span className="bg-emerald-50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md border border-emerald-200/60">
-                Clean Energy
-              </span>
-              <span className="bg-emerald-50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md border border-emerald-200/60">
-                Sustainable Future
-              </span>
-              <span className="bg-emerald-50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md border border-emerald-200/60">
-                Accessible & Affordable
-              </span>
-            </div>
-          </div>
-
-          <div className="p-4 sm:p-7 lg:p-9 rounded-2xl sm:rounded-3xl bg-white border border-green-200/90 shadow-2xs hover:shadow-xl hover:border-green-400 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
-            <div className="space-y-3 sm:space-y-4 relative z-10">
-              <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-green-50 text-[#0fa353] flex items-center justify-center shadow-2xs border border-green-100">
-                <FaBullseye className="text-lg sm:text-2xl" />
-              </div>
-
-              <div>
-                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#0fa353] block mb-0.5 sm:mb-1">
-                  Daily Execution
-                </span>
-                <h3 className="text-lg sm:text-2xl font-black text-[#1a1c29] tracking-tight">
-                  Our Mission
-                </h3>
-              </div>
-
-              <p className="text-gray-700 text-xs sm:text-base lg:text-[17px] leading-relaxed font-normal">
-                Our mission at A2Z Solar Solutions. is to deliver reliable,
-                efficient, and sustainable solar energy solutions that empower
-                homes, businesses, and industries across Pakistan. We are
-                dedicated to providing quality installations, professional
-                maintenance, and innovative technology that promote energy
-                independence and a greener future for all.
-              </p>
-            </div>
-
-            <div className="pt-3 sm:pt-5 mt-4 sm:mt-6 border-t border-green-100 flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-bold text-emerald-800">
-              <span className="bg-emerald-50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md border border-emerald-200/60">
-                Quality Installations
-              </span>
-              <span className="bg-emerald-50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md border border-emerald-200/60">
-                Professional Maintenance
-              </span>
-              <span className="bg-emerald-50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md border border-emerald-200/60">
-                Greener Pakistan
-              </span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
-        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
-          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200/80 inline-block mb-1.5 sm:mb-2">
-            Dual City Presence
-          </span>
-          <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#1a1c29] tracking-tight">
-            Serving Karachi & Lahore
-          </h2>
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-1.5 sm:mt-2">
-            Active on-ground operations, technical teams, and rapid maintenance
-            support across both metropolises.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 border border-gray-200/80 rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-xs">
-          {LOCATIONS.map((loc, idx) => (
-            <div
-              key={idx}
-              className={`p-4 sm:p-8 lg:p-10 hover:bg-emerald-50/40 transition-colors duration-500 flex flex-col justify-between group ${
-                idx === 0 ? "border-b md:border-b-0 md:border-r border-gray-100" : ""
-              }`}
+        <div className="mt-8 grid gap-4 sm:mt-10 md:grid-cols-2 md:gap-6">
+          {[
+            {
+              title: "Our vision",
+              icon: FaEye,
+              text: "To become Pakistan's most trusted and innovative solar energy provider, leading the move to a clean, sustainable and energy-independent future. We want solar power to be accessible, affordable and reliable for every home and business.",
+            },
+            {
+              title: "Our mission",
+              icon: FaBullseye,
+              text: "To deliver reliable, efficient and sustainable solar solutions for homes, businesses and industries across Pakistan, with quality installations, professional maintenance and innovative technology that support energy independence.",
+            },
+          ].map(({ title, icon: Icon, text }) => (
+            <article
+              key={title}
+              className="rounded-sm border border-gray-200 border-t-2 border-t-[#0fa353] bg-white p-6 sm:p-8"
             >
-              <div>
-                <div className="flex items-center justify-between mb-4 sm:mb-6">
-                  <div className="inline-flex items-center gap-2.5 sm:gap-3.5">
-                    <div className="w-8 h-8 sm:w-12 sm:h-12 rounded-full bg-emerald-50 text-[#0fa353] flex items-center justify-center border border-emerald-100 group-hover:scale-110 group-hover:bg-[#0fa353] group-hover:text-white transition-all shadow-2xs">
-                      <FaLocationDot className="text-xs sm:text-base" />
-                    </div>
-                    <span className="text-base sm:text-xl md:text-2xl font-black text-[#1a1c29]">
-                      {loc.city}
-                    </span>
-                  </div>
-                  <span className="text-[9px] sm:text-xs font-bold uppercase tracking-widest bg-emerald-50 text-emerald-800 border border-emerald-200/60 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full">
-                    {loc.badge}
-                  </span>
-                </div>
-
-                <div className="text-xs sm:text-base font-semibold text-emerald-700 mb-2 sm:mb-3">
-                  {loc.role}
-                </div>
-
-                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4 sm:mb-6 font-normal">
-                  <strong className="text-gray-800 font-bold">Coverage: </strong>
-                  {loc.coverage}
-                </p>
-              </div>
-
-              <div className="pt-3 sm:pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 sm:gap-3">
-                <a
-                  href={`tel:${loc.phone.replace(/[^0-9]/g, "")}`}
-                  className="inline-flex items-center gap-2 text-xs sm:text-sm font-bold text-[#1a1c29] hover:text-[#0fa353] transition-colors"
-                >
-                  <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-gray-100 group-hover:bg-emerald-100 flex items-center justify-center transition-colors">
-                    <FaPhone size={9} className="text-gray-600 group-hover:text-[#0fa353]" />
-                  </div>
-                  <span>Call {loc.phone}</span>
-                </a>
-                <span className="text-[10px] sm:text-xs font-medium text-gray-400 uppercase tracking-wide">
-                  Mon - Sat: 9 AM - 8 PM
-                </span>
-              </div>
-            </div>
+              <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-emerald-50 text-[#0fa353]">
+                <Icon className="text-xl" aria-hidden="true" />
+              </span>
+              <h3 className="mt-5 text-xl font-black tracking-tight text-[#1a1c29] sm:text-2xl">
+                {title}
+              </h3>
+              <p className="mt-3 text-base leading-relaxed text-gray-700">
+                {text}
+              </p>
+            </article>
           ))}
         </div>
       </section>
 
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12 sm:mb-20">
-        <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-12">
-          <span className="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-md border border-emerald-200/80 inline-block mb-1.5 sm:mb-2">
-            Key Advantages
-          </span>
-          <h2 className="text-xl sm:text-3xl lg:text-4xl font-black text-[#1a1c29] tracking-tight">
-            Why Choose A2Z Solar Solutions
-          </h2>
-          <p className="text-xs sm:text-sm md:text-base text-gray-600 mt-1.5 sm:mt-2">
-            Engineering standards and service integrity that set our solar
-            installations apart.
-          </p>
-        </div>
+      {/* Locations */}
+      <section className="border-y border-gray-100 bg-[#fbfdfa]">
+        <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
+          <div className="max-w-2xl">
+            <h2 className={H2}>Serving Karachi and Lahore</h2>
+            <p className="mt-4 text-base leading-relaxed text-gray-600 md:text-lg">
+              Local teams in both cities for installation and fast maintenance
+              support.
+            </p>
+          </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0">
-          {PILLARS.map((pillar, index) => {
-            const Icon = pillar.icon;
-            return (
-              <div
-                key={index}
-                className="p-4 sm:p-6 bg-white hover:bg-gray-50 transition-all duration-300 flex flex-col justify-between"
+          <div className="mt-8 grid gap-4 sm:mt-10 md:grid-cols-2 md:gap-6">
+            {LOCATIONS.map((loc) => (
+              <article
+                key={loc.city}
+                className="flex flex-col rounded-sm border border-gray-200 bg-white p-6 sm:p-8"
               >
-                <div>
-                  <div className="flex items-center justify-between mb-3 sm:mb-4">
-                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-xl bg-emerald-50 text-[#0fa353] flex items-center justify-center shadow-2xs border border-emerald-100">
-                      <Icon className="text-base sm:text-xl" />
-                    </div>
-                    <span className="text-[9px] sm:text-[10px] font-bold text-gray-400 uppercase tracking-wider bg-gray-50 px-2 py-0.5 rounded border border-gray-100">
-                      {pillar.badge}
-                    </span>
-                  </div>
-
-                  <h3 className="text-xs sm:text-base font-bold text-[#1a1c29] mb-1.5 sm:mb-2 leading-snug wrap-break-word">
-                    {pillar.title}
+                <div className="flex items-center gap-3">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-sm bg-emerald-50 text-[#0fa353]">
+                    <FaLocationDot aria-hidden="true" />
+                  </span>
+                  <h3 className="text-xl font-black text-[#1a1c29] sm:text-2xl">
+                    {loc.city}
                   </h3>
-                  <p className="text-[11px] sm:text-[13px] text-gray-600 leading-relaxed font-normal">
-                    {pillar.desc}
+                </div>
+
+                <p className="mt-4 text-base font-semibold text-emerald-800">
+                  {loc.role}
+                </p>
+                <p className="mt-2 text-sm leading-relaxed text-gray-600 sm:text-base">
+                  <strong className="font-bold text-gray-800">
+                    Coverage:{" "}
+                  </strong>
+                  {loc.coverage}
+                </p>
+
+                <div className="mt-6 flex flex-col gap-3 border-t border-gray-100 pt-5 sm:flex-row sm:items-center sm:justify-between">
+                  <a
+                    href={`tel:${PHONE_TEL}`}
+                    className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-gray-300 px-5 py-3 text-sm font-bold text-[#1a1c29] transition-colors hover:bg-gray-50 ${FOCUS}`}
+                  >
+                    <FaPhone size={12} aria-hidden="true" />
+                    Call {PHONE_DISPLAY}
+                  </a>
+                  <p className="text-sm text-gray-600">
+                    Mon - Sat, 9 AM - 8 PM
                   </p>
                 </div>
-
-                <div className="pt-3 mt-3.5 border-t border-gray-100 flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-[#0fa353]">
-                  <FaCheck size={10} />
-                  <span>Verified Standard</span>
-                </div>
-              </div>
-            );
-          })}
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section className="w-full bg-[#f8f9fa] py-14 sm:py-24 mt-12 sm:mt-16 border-t border-gray-100">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
-          <div className="inline-flex items-center justify-center px-3.5 py-1 rounded-full bg-[#1a1c29] text-white text-[11px] sm:text-xs font-semibold mb-4 sm:mb-6 shadow-xs tracking-wide">
-            Get started
-          </div>
-
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-medium text-[#1a1c29] tracking-tight mb-3 sm:mb-5 leading-tight">
-            Ready to Build Your Energy Independence?
-          </h2>
-
-          <p className="text-xs sm:text-base md:text-[17px] text-gray-500 max-w-2xl mx-auto leading-relaxed mb-6 sm:mb-10 font-normal">
-            Get a tailored load audit, calculate your electricity bill reduction,
-            and receive a customized solar system proposal from our certified engineers.
+      {/* Why choose */}
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
+        <div className="max-w-2xl">
+          <h2 className={H2}>Why choose A2Z Solar Solutions</h2>
+          <p className="mt-4 text-base leading-relaxed text-gray-600 md:text-lg">
+            The standards and service that set our installations apart.
           </p>
+        </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2.5 sm:gap-4 w-full sm:w-auto">
-            <a
-              href="tel:03214189298"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg bg-white border border-gray-200 text-[#1a1c29] text-xs sm:text-sm font-semibold hover:bg-gray-50 transition-colors shadow-xs"
+        <ul className="mt-8 grid gap-4 sm:mt-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+          {PILLARS.map(({ title, desc, icon: Icon }) => (
+            <li
+              key={title}
+              className="rounded-sm border border-gray-200 border-t-2 border-t-[#0fa353] bg-white p-6"
             >
-              <span>Jump on a call</span>
-              <FaPhone className="text-gray-400 text-[10px] sm:text-xs" />
-            </a>
+              <span className="flex h-11 w-11 items-center justify-center rounded-sm bg-emerald-50 text-[#0fa353]">
+                <Icon className="text-lg" aria-hidden="true" />
+              </span>
+              <h3 className="mt-4 text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
+                {title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                {desc}
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-            <Link
-              href="/#calculator"
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-6 sm:py-3 rounded-lg bg-[#0fa353] text-white text-xs sm:text-sm font-semibold hover:bg-[#0c8a45] transition-colors shadow-xs"
-            >
-              <span>Calculate Savings</span>
-              <FaArrowRight className="text-white/80 text-[10px] sm:text-xs" />
-            </Link>
+      {/* CTA */}
+      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8">
+        <div className="rounded-sm bg-[#122116] p-6 text-white sm:p-10 md:p-14">
+          <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-2xl">
+              <h2 className="text-2xl font-black leading-tight tracking-tight sm:text-3xl md:text-4xl">
+                Ready to build your energy independence?
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-emerald-100/80">
+                Get a load audit, see how much your bill can drop, and receive a
+                customized solar proposal from our certified engineers.
+              </p>
+            </div>
+
+            <div className="flex w-full shrink-0 flex-col gap-3 sm:flex-row lg:w-auto lg:flex-col">
+              <Link
+                href="/#calculator"
+                className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] ${FOCUS_DARK}`}
+              >
+                Calculate your savings
+                <FaArrowRight size={11} aria-hidden="true" />
+              </Link>
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-sm border border-white/30 px-6 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10 ${FOCUS_DARK}`}
+              >
+                <FaWhatsapp
+                  className="text-base text-[#25D366]"
+                  aria-hidden="true"
+                />
+                Talk to an engineer
+              </a>
+            </div>
           </div>
         </div>
       </section>
