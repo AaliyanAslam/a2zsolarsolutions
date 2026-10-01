@@ -137,6 +137,10 @@ export const metadata = {
     images: ["/images/solar-image.webp"],
   },
 
+  verification: {
+    google: "XVfiMRA9Dl5ji9U4pqlRVj8xbZgPteVYqKLUxt-Jfzc",
+  },
+
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
