@@ -399,7 +399,7 @@ export default function AdminDocumentsPage() {
                   {/* Metadata: File name, Size, Date */}
                   <div className="space-y-1 pt-3 border-t border-gray-100 text-[11px] text-gray-500 font-medium">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="truncate max-w-[180px] font-mono text-[10px]">
+                      <span className="truncate max-w-45 font-mono text-[10px]">
                         {doc.fileName || "document.pdf"}
                       </span>
                       <span className="text-gray-400 shrink-0 font-semibold">

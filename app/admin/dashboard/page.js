@@ -481,7 +481,7 @@ export default function AdminDashboardPage() {
                     </div>
 
                     <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-                      <span className="text-[10px] text-gray-400 truncate max-w-[160px]">
+                      <span className="text-[10px] text-gray-400 truncate max-w-40">
                         {doc.fileName}
                       </span>
                       <a
