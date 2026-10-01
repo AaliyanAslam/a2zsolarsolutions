@@ -237,6 +237,10 @@ export default function RootLayout({ children }) {
       className={`${font.variable} font-sans h-full antialiased overflow-x-hidden`}
     >
       <head>
+        <meta
+          name="google-site-verification"
+          content="XVfiMRA9Dl5ji9U4pqlRVj8xbZgPteVYqKLUxt-Jfzc"
+        />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/logo/a2zlogo.webp" />
