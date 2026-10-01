@@ -6,9 +6,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   FaFacebookF,
-  FaXTwitter,
-  FaInstagram,
-  FaLinkedinIn,
   FaYoutube,
   FaEnvelope,
   FaPhone,
@@ -147,45 +144,18 @@ export default function Footer() {
             {/* Social Icons */}
             <div className="flex items-center gap-2.5 pt-2">
               <a
-                href="https://facebook.com"
+                href="https://www.facebook.com/faizanelectronicsonline"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 aria-label="Facebook"
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-[#0fa353] text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-[#1877F2] text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
               >
                 <FaFacebookF size={12} />
               </a>
               <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Twitter"
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-[#0fa353] text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
-              >
-                <FaXTwitter size={12} />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="Instagram"
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-[#0fa353] text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
-              >
-                <FaInstagram size={12} />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noreferrer"
-                aria-label="LinkedIn"
-                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-[#0fa353] text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
-              >
-                <FaLinkedinIn size={12} />
-              </a>
-              <a
                 href="https://youtube.com/@A2ZSolarSolutions"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 aria-label="YouTube"
                 className="w-8 h-8 rounded-full bg-gray-100 hover:bg-red-600 text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
               >
