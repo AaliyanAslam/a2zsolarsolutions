@@ -3,7 +3,7 @@ import DocumentsClient from "./DocumentsClient";
 export const metadata = {
   title: "Download Solar Brochures, Datasheets & Inverter Manuals | A2Z Solar",
   description:
-    "Download official PDF technical datasheets, solar panel warranty terms, hybrid inverter manuals, and net metering guidebooks provided by A2Z Solar Solutions.",
+    "Download official PDF technical datasheets, solar panel warranty terms, hybrid inverter manuals, and battery storage guides provided by A2Z Solar Solutions.",
   alternates: {
     canonical: "https://a2zsolarsolutions.com/documents",
   },

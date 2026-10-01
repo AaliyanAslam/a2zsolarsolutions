@@ -86,14 +86,14 @@ const HIGHLIGHTS = [
   "Active branches in Karachi and Lahore",
   "High-wind elevated structures",
   "Tier-1 N-Type bifacial solar modules",
-  "Net metering approval processing",
+  "Smart hybrid battery integration",
   "24/7 troubleshooting and maintenance",
 ];
 
 const EXPERTISE_AREAS = [
   {
     title: "Complete turnkey installations",
-    desc: "Load audits, system design, equipment procurement and net metering sanctions for On-Grid, Hybrid and Off-Grid systems.",
+    desc: "Load audits, system design, equipment procurement and seamless commissioning for smart Hybrid solar setups.",
     icon: FaSolarPanel,
   },
   {
@@ -130,8 +130,8 @@ const PILLARS = [
     icon: FaShieldHalved,
   },
   {
-    title: "Seamless net metering",
-    desc: "We process your K-Electric (Karachi) or LESCO (Lahore) application so you can export units and cut your bill.",
+    title: "24/7 Power Security",
+    desc: "Smart hybrid inverters paired with lithium batteries ensure zero downtime during grid load shedding and power cuts.",
     icon: FaGlobe,
   },
 ];

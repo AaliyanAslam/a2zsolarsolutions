@@ -84,15 +84,15 @@ const services = [
     icon: FaBroom,
   },
   {
-    label: "Green meter",
-    title: "K-Electric Net Metering Turnkey",
+    label: "Storage & Backup",
+    title: "Hybrid Solar & Battery Storage",
     description:
-      "We handle the full net metering process: K-Electric approvals, AEDB licensing, bi-directional meter installation and reverse billing activation.",
+      "24/7 uninterrupted power with smart hybrid inverters and lithium/tubular battery banks tailored for zero load shedding.",
     bullets: [
-      "Complete legal documentation and engineer site survey",
-      "NEPRA and K-Electric clearance and NOC processing",
-      "Sell surplus power to the grid and earn credits",
-      "Bring your electricity bill to zero or a credit balance",
+      "Lithium (LiFePO4) and tubular battery bank integration",
+      "Smart automatic grid-to-battery changeover (instant transfer)",
+      "Dedicated essential and non-essential load distribution",
+      "Protection from power outages, voltage drops, and brownouts",
     ],
     icon: FaPlug,
   },
@@ -145,7 +145,7 @@ export default function Services() {
             <span className="text-[#0fa353]">go solar</span>
           </h2>
           <p className="mt-4 text-sm leading-relaxed text-gray-600 sm:text-base md:text-lg">
-            From factory installations to home net metering, one team handles
+            From residential hybrid setups to commercial solar, one team handles
             design, supply, installation and upkeep.
           </p>
         </div>

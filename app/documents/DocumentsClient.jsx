@@ -151,9 +151,9 @@ export default function DocumentsClient() {
           </h1>
 
           <p className="mt-5 max-w-3xl text-base leading-relaxed text-gray-600 sm:text-lg">
-            Download technical datasheets for hybrid and on-grid inverters
-            (Inverex, Solis, Deye), Tier-1 solar panel specifications, our
-            company brochure, and K-Electric and LESCO net metering guidelines.
+            Download technical datasheets for smart hybrid inverters
+            (Inverex, Nitrox, Deye), Tier-1 solar panel specifications, our
+            company brochure, and battery storage operation manuals.
           </p>
         </div>
       </section>

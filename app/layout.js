@@ -17,7 +17,7 @@ export const metadata = {
   },
 
   description:
-    "A2Z Solar Solutions is Pakistan's leading renewable energy company providing Tier-1 on-grid, off-grid & hybrid solar systems, certified net metering, and turnkey rooftop installations across Karachi and Lahore.",
+    "A2Z Solar Solutions is Pakistan's leading renewable energy company specializing in Tier-1 hybrid solar systems, advanced lithium battery storage, and turnkey rooftop installations across Karachi and Lahore.",
 
   keywords: [
     "A2Z Solar Solutions",
@@ -31,26 +31,27 @@ export const metadata = {
     "Certified Solar Engineers Karachi",
     "Turnkey Solar Solutions Pakistan",
 
-    "On-Grid Solar System Karachi",
     "Hybrid Solar System Pakistan",
+    "Hybrid Solar System Karachi",
     "Off-Grid Solar System Pakistan",
-    "3kW Solar System Price in Pakistan",
+    "3kW Hybrid Solar System",
     "5kW Hybrid Solar System",
-    "6kW Solar System Karachi",
-    "10kW On-Grid Solar System",
-    "15kW Commercial Solar System",
-    "20kW Industrial Solar Plant",
+    "6kW Hybrid Solar System Karachi",
+    "10kW Hybrid Solar System",
+    "15kW Hybrid Solar System",
+    "20kW Hybrid Solar Plant",
     "Solar System for Home in Pakistan",
     "Commercial Solar Panels Karachi",
     "Industrial Solar Solutions Pakistan",
 
-    "Solar Net Metering Karachi",
-    "K-Electric Net Metering Process",
-    "LESCO Net Metering Lahore",
-    "Green Meter Installation Pakistan",
-    "NEPRA Approved Solar Company",
+    "Hybrid Solar Inverter Pakistan",
+    "Solar Battery Backup Karachi",
+    "Lithium Battery Solar Storage",
+    "24/7 Load Shedding Solution",
+    "Hybrid Solar System Price in Pakistan",
     "Zero Electricity Bill Pakistan",
     "Solar Energy Bill Reduction",
+    "UPS Replacement Solar System",
 
     "Tier 1 Solar Panels Pakistan",
     "Longi Solar Panels Price",
@@ -73,7 +74,7 @@ export const metadata = {
     "Solar Panel Cleaning Services",
     "Solar System Maintenance Karachi",
     "Solar Structure Fabrication",
-    "Net Metering Sanction Letter",
+    "Solar Battery Installation Lahore",
     "Solar Consultation Pakistan",
     "Solar Financing Banks Pakistan",
 
@@ -113,7 +114,7 @@ export const metadata = {
   openGraph: {
     title: "A2Z Solar Solutions | Best Solar Energy Company in Karachi & Lahore",
     description:
-      "Cut your electricity bills up to 90% with Tier-1 solar panels, smart hybrid inverters, and K-Electric/LESCO net-metering systems by A2Z Solar Solutions.",
+      "Cut your electricity bills up to 90% and secure 24/7 power backup with Tier-1 solar panels, smart hybrid inverters, and lithium battery storage by A2Z Solar Solutions.",
     url: "https://a2zsolarsolutions.com",
     siteName: "A2Z Solar Solutions",
     images: [
@@ -132,7 +133,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "A2Z Solar Solutions | Solar Energy Systems Pakistan",
     description:
-      "Certified solar installations, Tier-1 panels, hybrid inverters & net metering across Karachi and Lahore.",
+      "Certified solar installations, Tier-1 panels, smart hybrid inverters & lithium battery backup across Karachi and Lahore.",
     images: ["/images/solar-image.webp"],
   },
 
@@ -158,7 +159,7 @@ export default function RootLayout({ children }) {
     url: "https://a2zsolarsolutions.com",
     logo: "https://a2zsolarsolutions.com/logo/a2zlogo.webp",
     description:
-      "A2Z Solar Solutions is a certified solar energy company providing on-grid, off-grid and hybrid solar installations and net-metering across Karachi and Lahore.",
+      "A2Z Solar Solutions is a certified solar energy company providing smart hybrid and off-grid solar systems with advanced battery storage across Karachi and Lahore.",
     telephone: "+923214189298",
     email: "a2zsolarsolutions.com@gmail.com",
     sameAs: [

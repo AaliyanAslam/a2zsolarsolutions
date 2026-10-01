@@ -12,14 +12,14 @@ import DocumentsSection from "./components/DocumentsSection";
 export const metadata = {
   title: "A2Z Solar Solutions | Best Solar Energy Company in Karachi & Lahore",
   description:
-    "Pakistan's trusted solar energy partner since 2015. Turnkey residential, commercial & industrial solar installations, Tier-1 panels, smart inverters & K-Electric net-metering.",
+    "Pakistan's trusted solar energy partner since 2015. Turnkey residential, commercial & industrial hybrid solar installations, Tier-1 panels, smart hybrid inverters & battery backup storage.",
   alternates: {
     canonical: "https://a2zsolarsolutions.com",
   },
   openGraph: {
-    title: "A2Z Solar Solutions | Turnkey Solar Energy Systems in Pakistan",
+    title: "A2Z Solar Solutions | Turnkey Hybrid Solar Systems in Pakistan",
     description:
-      "Cut electricity bills by up to 90%. Tier-1 solar panels, hybrid inverters & K-Electric net metering in Karachi & Lahore.",
+      "Cut electricity bills by up to 90% and ensure 24/7 power backup with Tier-1 solar panels and smart hybrid systems in Karachi & Lahore.",
     url: "https://a2zsolarsolutions.com",
     siteName: "A2Z Solar Solutions",
     images: [
@@ -35,9 +35,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "A2Z Solar Solutions | Turnkey Solar Energy Systems",
+    title: "A2Z Solar Solutions | Turnkey Hybrid Solar Systems",
     description:
-      "Cut electricity bills by up to 90%. Tier-1 solar panels, hybrid inverters & K-Electric net metering in Karachi & Lahore.",
+      "Cut electricity bills by up to 90% and ensure 24/7 power backup with Tier-1 solar panels and smart hybrid systems in Karachi & Lahore.",
     images: ["/images/solar-image.webp"],
   },
 };

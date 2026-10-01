@@ -194,7 +194,7 @@ export default function YouTubeSection() {
               <span className="text-[#0fa353]">solar projects</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-gray-600 md:text-lg">
-              Elevated structures, inverter unboxings and net metering
+              Elevated structures, hybrid inverter unboxings and battery storage
               activations, recorded on site.
             </p>
           </div>

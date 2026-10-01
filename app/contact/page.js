@@ -10,7 +10,7 @@ import {
 export const metadata = {
   title: "Contact Us | Solar Consultation & Free Site Survey in Karachi & Lahore",
   description:
-    "Get in touch with A2Z Solar Solutions for solar consultation, site inspections, and net-metering services in Karachi and Lahore. Call or WhatsApp +92 321 4189298.",
+    "Get in touch with A2Z Solar Solutions for solar consultation, site inspections, and hybrid solar system installations in Karachi and Lahore. Call or WhatsApp +92 321 4189298.",
   alternates: {
     canonical: "https://a2zsolarsolutions.com/contact",
   },
@@ -35,7 +35,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Contact Us | A2Z Solar Solutions",
     description:
-      "Get in touch with A2Z Solar Solutions for solar quotes, site inspections and net metering.",
+      "Get in touch with A2Z Solar Solutions for hybrid solar quotes, site inspections and battery backup solutions.",
     images: ["/images/solar-image.webp"],
   },
 };
@@ -124,7 +124,7 @@ export default function ContactPage() {
           </h1>
 
           <p className="mt-5 text-base leading-relaxed text-gray-600 sm:text-lg">
-            Questions about system sizing, K-Electric net metering or inverter
+            Questions about system sizing, hybrid battery backup or inverter
             prices? Our certified solar engineers are ready to help.
           </p>
         </div>

@@ -460,7 +460,7 @@ export default function AdminTestimonialsPage() {
                 <textarea
                   required
                   rows={4}
-                  placeholder="Share what the customer said about their solar system, installation quality, net-metering, or savings..."
+                  placeholder="Share what the customer said about their hybrid solar system, installation quality, battery backup, or savings..."
                   value={review}
                   onChange={(e) => setReview(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353] transition-colors resize-none"
