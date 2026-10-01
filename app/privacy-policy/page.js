@@ -16,9 +16,36 @@ import {
 } from "react-icons/fa6";
 
 export const metadata = {
-  title: "Privacy Policy | A to Z Solar Solutions",
+  title: "Privacy Policy | A2Z Solar Solutions",
   description:
-    "Privacy Policy for A to Z Solar Solutions. Learn how we collect, use, and protect your data, solar calculator inputs, and cookies on a2zsolarsolutions.com.",
+    "Privacy Policy for A2Z Solar Solutions. Learn how we collect, use, and protect your data, solar calculator inputs, and cookies on a2zsolarsolutions.com.",
+  alternates: {
+    canonical: "https://a2zsolarsolutions.com/privacy-policy",
+  },
+  openGraph: {
+    title: "Privacy Policy | A2Z Solar Solutions",
+    description:
+      "Privacy Policy for A2Z Solar Solutions. Learn how customer data and solar calculator inputs are protected.",
+    url: "https://a2zsolarsolutions.com/privacy-policy",
+    siteName: "A2Z Solar Solutions",
+    images: [
+      {
+        url: "/images/solar-image.webp",
+        width: 1200,
+        height: 630,
+        alt: "A2Z Solar Solutions Privacy Policy",
+      },
+    ],
+    locale: "en_PK",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy | A2Z Solar Solutions",
+    description:
+      "Official privacy policy and data protection terms for A2Z Solar Solutions.",
+    images: ["/images/solar-image.webp"],
+  },
 };
 
 const TOC_SECTIONS = [

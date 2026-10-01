@@ -22,6 +22,33 @@ export const metadata = {
   title: "About Us | A2Z Solar Solutions - FBR Registered Solar Company",
   description:
     "Founded in 2015, A2Z Solar Solutions is an FBR registered renewable energy company headquartered in Karachi, delivering complete turnkey solar power solutions across Karachi and Lahore.",
+  alternates: {
+    canonical: "https://a2zsolarsolutions.com/about",
+  },
+  openGraph: {
+    title: "About Us | A2Z Solar Solutions Pakistan",
+    description:
+      "Learn about A2Z Solar Solutions - Over a decade of excellence in residential, commercial and industrial solar power engineering.",
+    url: "https://a2zsolarsolutions.com/about",
+    siteName: "A2Z Solar Solutions",
+    images: [
+      {
+        url: "/images/about-hero-bg.webp",
+        width: 1200,
+        height: 630,
+        alt: "About A2Z Solar Solutions",
+      },
+    ],
+    locale: "en_PK",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About Us | A2Z Solar Solutions",
+    description:
+      "Over a decade of excellence in residential, commercial and industrial solar power engineering in Karachi & Lahore.",
+    images: ["/images/about-hero-bg.webp"],
+  },
 };
 
 const PHONE_DISPLAY = "0321-4189298";

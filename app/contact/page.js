@@ -8,9 +8,36 @@ import {
 } from "react-icons/fa6";
 
 export const metadata = {
-  title: "Contact Us | A2Z Solar Solutions",
+  title: "Contact Us | Solar Consultation & Free Site Survey in Karachi & Lahore",
   description:
-    "Get in touch with A2Z Solar Solutions for solar consultation, site inspections, and net-metering services in Karachi and Lahore.",
+    "Get in touch with A2Z Solar Solutions for solar consultation, site inspections, and net-metering services in Karachi and Lahore. Call or WhatsApp +92 321 4189298.",
+  alternates: {
+    canonical: "https://a2zsolarsolutions.com/contact",
+  },
+  openGraph: {
+    title: "Contact Us | A2Z Solar Solutions",
+    description:
+      "Speak with certified solar engineers in Karachi and Lahore. Get your customized solar energy proposal today.",
+    url: "https://a2zsolarsolutions.com/contact",
+    siteName: "A2Z Solar Solutions",
+    images: [
+      {
+        url: "/images/solar-image.webp",
+        width: 1200,
+        height: 630,
+        alt: "Contact A2Z Solar Solutions",
+      },
+    ],
+    locale: "en_PK",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Contact Us | A2Z Solar Solutions",
+    description:
+      "Get in touch with A2Z Solar Solutions for solar quotes, site inspections and net metering.",
+    images: ["/images/solar-image.webp"],
+  },
 };
 
 const PHONE_DISPLAY = "+92 321 4189298";

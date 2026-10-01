@@ -15,6 +15,33 @@ export const metadata = {
   title: "Terms & Conditions | A to Z Solar Solutions",
   description:
     "Official Terms and Conditions for using a2zsolarsolutions.com operated by A to Z Solar Solutions (FBR Registered). Review our intellectual property, solar calculator disclaimers, warranties, and governing law.",
+  alternates: {
+    canonical: "https://a2zsolarsolutions.com/terms-and-conditions",
+  },
+  openGraph: {
+    title: "Terms & Conditions | A to Z Solar Solutions",
+    description:
+      "Official Terms and Conditions for A to Z Solar Solutions. Intellectual property rights, solar calculator disclaimer, and service warranties.",
+    url: "https://a2zsolarsolutions.com/terms-and-conditions",
+    siteName: "A to Z Solar Solutions",
+    images: [
+      {
+        url: "/images/solar-image.webp",
+        width: 1200,
+        height: 630,
+        alt: "A to Z Solar Solutions Terms and Conditions",
+      },
+    ],
+    locale: "en_PK",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Terms & Conditions | A to Z Solar Solutions",
+    description:
+      "Official Terms and Conditions for A to Z Solar Solutions (FBR Registered).",
+    images: ["/images/solar-image.webp"],
+  },
 };
 
 const TOC_SECTIONS = [
