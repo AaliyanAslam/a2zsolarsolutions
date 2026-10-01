@@ -5,9 +5,6 @@ import { useRouter } from "next/navigation";
 
 const AuthContext = createContext(null);
 
-const ADMIN_EMAIL = "a2zsolar@gmail.com";
-const ADMIN_PASS = "12345";
-
 export function AdminAuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -18,7 +15,7 @@ export function AdminAuthProvider({ children }) {
     if (stored) {
       try {
         const parsed = JSON.parse(stored);
-        if (parsed.email === ADMIN_EMAIL) {
+        if (parsed && parsed.email) {
           setIsAuthenticated(true);
           setAdminUser(parsed);
         }
@@ -29,15 +26,32 @@ export function AdminAuthProvider({ children }) {
     setIsLoading(false);
   }, []);
 
-  const login = (email, password) => {
-    if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
-      const user = { email, name: "A2Z Solar Solutions", role: "Admin", loginAt: new Date().toISOString() };
-      localStorage.setItem("a2z_admin_auth", JSON.stringify(user));
-      setAdminUser(user);
-      setIsAuthenticated(true);
-      return { success: true };
+  const login = async (email, password) => {
+    try {
+      const res = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await res.json();
+
+      if (data.success && data.user) {
+        localStorage.setItem("a2z_admin_auth", JSON.stringify(data.user));
+        setAdminUser(data.user);
+        setIsAuthenticated(true);
+        return { success: true };
+      }
+
+      return {
+        success: false,
+        error: data.error || "Invalid email or password",
+      };
+    } catch (err) {
+      return {
+        success: false,
+        error: "Network error. Please try again.",
+      };
     }
-    return { success: false, error: "Invalid email or password" };
   };
 
   const logout = () => {
@@ -47,7 +61,9 @@ export function AdminAuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, adminUser, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, isLoading, adminUser, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

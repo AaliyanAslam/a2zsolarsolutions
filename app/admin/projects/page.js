@@ -189,7 +189,7 @@ export default function AdminProjectsPage() {
       {isLoading ? (
         <div className="py-20 text-center text-gray-400">
           <div className="w-8 h-8 border-3 border-[#0fa353] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-medium">Loading solar projects from database...</p>
+          <p className="text-xs font-medium">Loading solar projects...</p>
         </div>
       ) : projects.length === 0 ? (
         <div className="bg-white border border-gray-200/80 rounded-sm p-12 text-center space-y-3">
@@ -320,7 +320,7 @@ export default function AdminProjectsPage() {
                 </div>
               </div>
 
-              {/* Image Upload to Cloudinary */}
+              {/* Image Upload */}
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
                   Installation Photo <span className="text-red-500">*</span>
@@ -354,7 +354,7 @@ export default function AdminProjectsPage() {
                   <label className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-gray-300 hover:border-[#0fa353] rounded-sm cursor-pointer bg-gray-50/50 hover:bg-emerald-50/20 transition-all">
                     <FaUpload className="text-[#0fa353] text-2xl mb-2" />
                     <span className="text-xs font-bold text-gray-700">Click to select photo</span>
-                    <span className="text-[10px] text-gray-400 mt-0.5">PNG, JPG, WEBP (auto-compressed &amp; hosted on Cloudinary)</span>
+                    <span className="text-[10px] text-gray-400 mt-0.5">PNG, JPG, WEBP formats supported</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -384,7 +384,7 @@ export default function AdminProjectsPage() {
                   {isSubmitting ? (
                     <>
                       <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Uploading to Cloudinary...</span>
+                      <span>Uploading project...</span>
                     </>
                   ) : (
                     <>

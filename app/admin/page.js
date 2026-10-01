@@ -3,12 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { FaSolarPanel, FaEnvelope, FaLock, FaArrowRight } from "react-icons/fa";
-
-const ADMIN_EMAIL = "a2zsolar@gmail.com";
-const ADMIN_PASS = "12345";
+import { useAdminAuth } from "./components/AdminAuth";
 
 export default function AdminLoginPage() {
   const router = useRouter();
+  const { login } = useAdminAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -19,15 +18,12 @@ export default function AdminLoginPage() {
     setError("");
     setIsLoading(true);
 
-    // Simulate network delay
-    await new Promise((r) => setTimeout(r, 800));
+    const result = await login(email, password);
 
-    if (email === ADMIN_EMAIL && password === ADMIN_PASS) {
-      const user = { email, name: "A2Z Solar Solutions", role: "Admin", loginAt: new Date().toISOString() };
-      localStorage.setItem("a2z_admin_auth", JSON.stringify(user));
+    if (result.success) {
       router.push("/admin/dashboard");
     } else {
-      setError("Invalid email or password");
+      setError(result.error || "Invalid email or password");
       setIsLoading(false);
     }
   };

@@ -140,7 +140,7 @@ export default function AdminDocumentsPage() {
         setCategory("Brochure");
         setPdfFile(null);
         setShowAddModal(false);
-        setSuccessMsg("Document uploaded to Cloudinary successfully!");
+        setSuccessMsg("Document uploaded successfully!");
         setTimeout(() => setSuccessMsg(""), 3500);
       } else {
         setErrorMsg(data.error || "Failed to upload document.");
@@ -153,7 +153,7 @@ export default function AdminDocumentsPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this document from Cloudinary and database?")) {
+    if (!window.confirm("Are you sure you want to delete this document?")) {
       return;
     }
 
@@ -226,7 +226,7 @@ export default function AdminDocumentsPage() {
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="text-[10px] font-bold uppercase tracking-widest text-[#0fa353] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-sm">
-              Cloudinary Storage
+              Official Documents
             </span>
             <span className="text-xs text-gray-400">
               • Total: {documents.length} PDF Documents
@@ -312,7 +312,7 @@ export default function AdminDocumentsPage() {
       {isLoading ? (
         <div className="py-20 text-center text-gray-400">
           <div className="w-8 h-8 border-3 border-[#0fa353] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-xs font-medium">Loading documents from Cloudinary database...</p>
+          <p className="text-xs font-medium">Loading documents...</p>
         </div>
       ) : filteredDocuments.length === 0 ? (
         <div className="bg-white border border-gray-200/80 rounded-2xl p-12 text-center space-y-3">
@@ -323,7 +323,7 @@ export default function AdminDocumentsPage() {
           <p className="text-xs text-gray-500 max-w-sm mx-auto">
             {searchQuery
               ? "No documents matched your search query. Try another keyword."
-              : "Upload company brochures, warranties, and inverter datasheets directly to Cloudinary."}
+              : "Upload company brochures, warranties, and inverter datasheets for website visitors."}
           </p>
           <button
             onClick={() => setShowAddModal(true)}
@@ -363,7 +363,7 @@ export default function AdminDocumentsPage() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => handleCopyLink(doc.pdfUrl, id)}
-                        title="Copy Cloudinary PDF link"
+                        title="Copy document link"
                         className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
                       >
                         {copiedId === id ? (
@@ -464,7 +464,7 @@ export default function AdminDocumentsPage() {
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-gray-900">
-                    Upload Document to Cloudinary
+                    Upload Document
                   </h3>
                   <p className="text-xs text-gray-500">
                     Add PDF file along with title, text description, and category.
@@ -548,7 +548,7 @@ export default function AdminDocumentsPage() {
                           {pdfFile.name}
                         </p>
                         <p className="text-[10px] text-gray-500">
-                          {formatFileSize(pdfFile.size)} • Ready for Cloudinary
+                          {formatFileSize(pdfFile.size)} • Ready to upload
                         </p>
                       </div>
                     </div>
@@ -600,7 +600,7 @@ export default function AdminDocumentsPage() {
                   {isSubmitting ? (
                     <>
                       <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      <span>Uploading to Cloudinary...</span>
+                      <span>Uploading document...</span>
                     </>
                   ) : (
                     <>

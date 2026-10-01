@@ -65,7 +65,7 @@ export default function AdminVideos() {
     }
 
     if (!thumbnailFile) {
-      setErrorMsg("Please select a thumbnail image to upload to Cloudinary.");
+      setErrorMsg("Please select a thumbnail image to upload.");
       return;
     }
 
@@ -102,7 +102,7 @@ export default function AdminVideos() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to remove this video from MongoDB?")) {
+    if (!window.confirm("Are you sure you want to remove this video?")) {
       return;
     }
 
@@ -130,7 +130,7 @@ export default function AdminVideos() {
             YouTube Video Showcase
           </h1>
           <p className="text-xs text-gray-500 mt-1">
-            Upload thumbnails directly to Cloudinary and store video details in MongoDB Atlas.
+            Manage your YouTube video showcases and project walkthroughs.
           </p>
         </div>
 
@@ -161,7 +161,7 @@ export default function AdminVideos() {
         {isLoading ? (
           <div className="py-16 text-center text-gray-400">
             <div className="w-8 h-8 border-3 border-emerald-500 border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-            <p className="text-xs">Loading videos from MongoDB...</p>
+            <p className="text-xs">Loading videos...</p>
           </div>
         ) : videos.length === 0 ? (
           <div className="py-16 text-center text-gray-500 px-4">
@@ -170,7 +170,7 @@ export default function AdminVideos() {
             </div>
             <h3 className="text-sm font-bold text-gray-900">No videos uploaded yet</h3>
             <p className="text-xs text-gray-500 max-w-sm mx-auto mt-1">
-              Click &quot;Add New Video&quot; above to upload a thumbnail to Cloudinary and link your YouTube video.
+              Click &quot;Add New Video&quot; above to upload a thumbnail and link your YouTube video.
             </p>
           </div>
         ) : (
@@ -293,10 +293,10 @@ export default function AdminVideos() {
                 />
               </div>
 
-              {/* Thumbnail Image upload to Cloudinary */}
+              {/* Thumbnail Image upload */}
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                  Thumbnail Image (Upload to Cloudinary)
+                  Thumbnail Image
                 </label>
 
                 {thumbnailPreview ? (
@@ -351,7 +351,7 @@ export default function AdminVideos() {
                   {isSubmitting ? (
                     <>
                       <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Uploading to Cloudinary...
+                      Uploading thumbnail...
                     </>
                   ) : (
                     "Save & Upload"

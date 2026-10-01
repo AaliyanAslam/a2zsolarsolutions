@@ -15,12 +15,7 @@ import {
   FaRotate,
   FaArrowUpRightFromSquare,
   FaLocationDot,
-  FaDatabase,
-  FaCloudArrowUp,
-  FaCircle,
-  FaCircleCheck,
   FaXmark,
-  FaHardDrive,
 } from "react-icons/fa6";
 
 export default function AdminDashboardPage() {
@@ -50,11 +45,11 @@ export default function AdminDashboardPage() {
       if (json.success) {
         setData(json);
       } else {
-        setErrorMsg(json.error || "Failed to fetch live database stats.");
+        setErrorMsg(json.error || "Failed to fetch live portal stats.");
       }
     } catch (err) {
       console.error("Dashboard stats error:", err);
-      setErrorMsg("Network error fetching live stats from MongoDB Atlas.");
+      setErrorMsg("Network error fetching live portal stats.");
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -75,11 +70,6 @@ export default function AdminDashboardPage() {
     testimonials: [],
   };
 
-  const system = data?.system || {
-    database: { connected: false, name: "Connecting...", host: "MongoDB Atlas" },
-    storage: { provider: "Cloudinary", cloudName: "ufzwfnc0", configured: true },
-  };
-
   // Live filter across recent items
   const q = searchQuery.toLowerCase().trim();
   const filteredProjects = recent.projects.filter(
@@ -97,27 +87,21 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="max-w-7xl mx-auto py-8 sm:py-10 px-3 sm:px-6 space-y-8 select-none">
-      {/* ── 1. Top Greeting & Live Health Banner ── */}
+      {/* ── 1. Top Greeting & Live Status Banner ── */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-200/80 pb-6">
         <div>
           <div className="flex items-center gap-2 mb-1.5 flex-wrap">
-            {/* Live Database status pill */}
+            {/* Live System Status pill */}
             <div className="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-700 border border-emerald-200 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#0fa353]" />
               </span>
-              <span>Atlas Live: {system.database?.name || "a2zsolarsolutions"}</span>
-            </div>
-
-            {/* Cloudinary pill */}
-            <div className="inline-flex items-center gap-1.5 bg-sky-50 text-sky-700 border border-sky-200 px-2.5 py-0.5 rounded-full text-[11px] font-bold">
-              <FaCloudArrowUp size={11} />
-              <span>Cloudinary: {system.storage?.cloudName || "ufzwfnc0"}</span>
+              <span>Portal Status: Online</span>
             </div>
 
             <span className="text-gray-400 text-xs hidden sm:inline">•</span>
-            <span className="text-gray-400 text-[11px]">Real-Time Sync</span>
+            <span className="text-gray-400 text-[11px]">Real-Time Sync Active</span>
           </div>
 
           <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
@@ -224,7 +208,7 @@ export default function AdminDashboardPage() {
           <div>
             <div className="flex items-center justify-between mb-3">
               <span className="text-[10px] font-bold uppercase tracking-wider text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
-                Cloudinary
+                PDF Library
               </span>
               <div className="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <FaFilePdf size={14} />
@@ -348,7 +332,7 @@ export default function AdminDashboardPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-100 pb-4">
           <div>
             <h2 className="text-base font-bold text-gray-900">
-              Live Database Explorer
+              Live Content Explorer
             </h2>
             <p className="text-xs text-gray-500">
               View real uploaded records currently published to the live website.
@@ -467,7 +451,7 @@ export default function AdminDashboardPage() {
                   href="/admin/documents"
                   className="inline-block text-xs font-bold text-[#0fa353] hover:underline"
                 >
-                  Upload your first PDF document to Cloudinary →
+                  Upload your first PDF document →
                 </Link>
               </div>
             ) : (
@@ -672,57 +656,6 @@ export default function AdminDashboardPage() {
             </div>
           </div>
         )}
-      </div>
-
-      {/* ── 6. System & Infrastructure Health ── */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Database Health Card */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-xs flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#0fa353] border border-emerald-200 flex items-center justify-center shrink-0">
-            <FaDatabase size={16} />
-          </div>
-          <div className="space-y-1 flex-1">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-gray-900">
-                MongoDB Atlas Cluster
-              </h3>
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                <FaCircle size={6} className="text-[#0fa353] animate-pulse" />
-                <span>Connected</span>
-              </span>
-            </div>
-            <p className="text-xs text-gray-500">
-              Primary cloud database storing all solar projects, customer testimonials, showcase videos, and PDF document metadata.
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-gray-400">
-              Database: <span className="text-gray-700 font-bold">{system.database?.name || "a2zsolarsolutions"}</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Cloudinary Storage Health Card */}
-        <div className="bg-white border border-gray-200/80 rounded-2xl p-5 shadow-xs flex items-start gap-4">
-          <div className="w-10 h-10 rounded-xl bg-sky-50 text-sky-600 border border-sky-200 flex items-center justify-center shrink-0">
-            <FaHardDrive size={16} />
-          </div>
-          <div className="space-y-1 flex-1">
-            <div className="flex items-center justify-between">
-              <h3 className="text-sm font-bold text-gray-900">
-                Cloudinary Asset Storage
-              </h3>
-              <span className="inline-flex items-center gap-1 text-[10px] font-bold text-sky-700 bg-sky-50 px-2 py-0.5 rounded-full border border-sky-200">
-                <FaCircleCheck size={10} className="text-sky-600" />
-                <span>Configured</span>
-              </span>
-            </div>
-            <p className="text-xs text-gray-500">
-              Cloud media repository hosting project installation photos, raw PDF brochures/manuals, and video thumbnails.
-            </p>
-            <div className="pt-2 text-[11px] font-mono text-gray-400">
-              Cloud Name: <span className="text-gray-700 font-bold">{system.storage?.cloudName || "ufzwfnc0"}</span>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

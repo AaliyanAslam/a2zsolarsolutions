@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import mongoose from "mongoose";
 import connectDB from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Document from "@/models/Document";
@@ -39,11 +38,6 @@ export async function GET() {
       { $sort: { count: -1 } },
     ]).catch(() => []);
 
-    // System connection & storage health
-    const isDbConnected = mongoose.connection.readyState === 1;
-    const dbName = mongoose.connection.name || "a2zsolarsolutions";
-    const cloudinaryCloud = process.env.CLOUDINARY_CLOUD_NAME || "ufzwfnc0";
-
     return NextResponse.json({
       success: true,
       stats: {
@@ -62,19 +56,6 @@ export async function GET() {
         videos: recentVideos,
         testimonials: recentTestimonials,
       },
-      system: {
-        database: {
-          connected: isDbConnected,
-          name: dbName,
-          host: "MongoDB Atlas",
-        },
-        storage: {
-          provider: "Cloudinary",
-          cloudName: cloudinaryCloud,
-          configured: Boolean(process.env.CLOUDINARY_API_KEY),
-        },
-        serverTime: new Date().toISOString(),
-      },
     });
   } catch (error) {
     console.error("GET /api/admin/stats error:", error);
@@ -87,10 +68,6 @@ export async function GET() {
           documents: 0,
           videos: 0,
           testimonials: 0,
-        },
-        system: {
-          database: { connected: false, name: "Disconnected" },
-          storage: { provider: "Cloudinary", configured: false },
         },
       },
       { status: 500 }
