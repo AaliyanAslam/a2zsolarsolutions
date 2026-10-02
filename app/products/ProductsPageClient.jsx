@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import {
   FaBoxOpen,
-  FaSearch,
+  FaMagnifyingGlass,
   FaTag,
   FaStar,
   FaWhatsapp,
@@ -91,7 +91,7 @@ export default function ProductsPageClient() {
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           {/* Search */}
           <div className="relative flex-1 max-w-md">
-            <FaSearch className="absolute left-3 top-2.5 text-gray-400" size={13} />
+            <FaMagnifyingGlass className="absolute left-3 top-2.5 text-gray-400" size={13} />
             <input
               type="text"
               value={search}

@@ -181,6 +181,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/products" className="hover:text-[#0fa353] transition-colors font-medium text-[#0fa353]">
+                  Solar Products &amp; Equipment
+                </Link>
+              </li>
+              <li>
                 <Link href="/#services" className="hover:text-[#0fa353] transition-colors">
                   Solar Solutions
                 </Link>

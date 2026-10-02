@@ -242,9 +242,11 @@ export default function RootLayout({ children }) {
           name="google-site-verification"
           content="XVfiMRA9Dl5ji9U4pqlRVj8xbZgPteVYqKLUxt-Jfzc"
         />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="shortcut icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/logo/a2zlogo.webp" />
+        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/logo/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/logo/icon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="512x512" href="/logo/icon-512x512.png" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/logo/apple-touch-icon.png" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
       </head>

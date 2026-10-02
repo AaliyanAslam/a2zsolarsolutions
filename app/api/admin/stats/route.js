@@ -4,6 +4,7 @@ import Project from "@/models/Project";
 import Document from "@/models/Document";
 import Video from "@/models/Video";
 import Testimonial from "@/models/Testimonial";
+import Product from "@/models/Product";
 
 export const dynamic = "force-dynamic";
 
@@ -17,19 +18,23 @@ export async function GET() {
       totalDocuments,
       totalVideos,
       totalTestimonials,
+      totalProducts,
       recentProjects,
       recentDocuments,
       recentVideos,
       recentTestimonials,
+      recentProducts,
     ] = await Promise.all([
       Project.countDocuments(),
       Document.countDocuments(),
       Video.countDocuments(),
       Testimonial.countDocuments(),
+      Product.countDocuments(),
       Project.find({}).sort({ createdAt: -1 }).limit(6).lean(),
       Document.find({}).sort({ createdAt: -1 }).limit(6).lean(),
       Video.find({}).sort({ createdAt: -1 }).limit(6).lean(),
       Testimonial.find({}).sort({ createdAt: -1 }).limit(6).lean(),
+      Product.find({}).sort({ createdAt: -1 }).limit(6).lean(),
     ]);
 
     // Categories breakdown for documents
@@ -45,6 +50,7 @@ export async function GET() {
         documents: totalDocuments,
         videos: totalVideos,
         testimonials: totalTestimonials,
+        products: totalProducts,
       },
       categories: docCategories.map((c) => ({
         name: c._id || "Other",
@@ -55,6 +61,7 @@ export async function GET() {
         documents: recentDocuments,
         videos: recentVideos,
         testimonials: recentTestimonials,
+        products: recentProducts,
       },
     });
   } catch (error) {

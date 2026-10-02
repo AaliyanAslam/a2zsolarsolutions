@@ -18,9 +18,10 @@ import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
-  { label: "About Us", href: "/about" },
+  { label: "Products", href: "/products" },
   { label: "Solar Solutions", href: "/#services" },
   { label: "Recent Projects", href: "/#projects" },
+  { label: "About Us", href: "/about" },
   {
     label: "More",
     href: "#",

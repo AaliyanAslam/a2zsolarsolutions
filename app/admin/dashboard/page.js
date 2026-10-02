@@ -16,6 +16,7 @@ import {
   FaArrowUpRightFromSquare,
   FaLocationDot,
   FaXmark,
+  FaBoxOpen,
 } from "react-icons/fa6";
 
 export default function AdminDashboardPage() {
@@ -57,6 +58,7 @@ export default function AdminDashboardPage() {
   };
 
   const stats = data?.stats || {
+    products: 0,
     projects: 0,
     documents: 0,
     videos: 0,
@@ -64,6 +66,7 @@ export default function AdminDashboardPage() {
   };
 
   const recent = data?.recent || {
+    products: [],
     projects: [],
     documents: [],
     videos: [],
@@ -72,6 +75,9 @@ export default function AdminDashboardPage() {
 
   // Live filter across recent items
   const q = searchQuery.toLowerCase().trim();
+  const filteredProducts = (recent.products || []).filter(
+    (pr) => !q || pr.title?.toLowerCase().includes(q) || pr.category?.toLowerCase().includes(q) || pr.brand?.toLowerCase().includes(q)
+  );
   const filteredProjects = recent.projects.filter(
     (p) => !q || p.capacity?.toLowerCase().includes(q) || p.location?.toLowerCase().includes(q)
   );
@@ -172,8 +178,34 @@ export default function AdminDashboardPage() {
         )}
       </div>
 
-      {/* ── 3. Real KPI Counters Row (4 Grid KPI Cards) ── */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* ── 3. Real KPI Counters Row (5 Grid KPI Cards) ── */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        {/* KPI 0: Products */}
+        <Link
+          href="/admin/products"
+          className="bg-white border border-gray-200/90 hover:border-blue-400 rounded-xl p-4 sm:p-5 shadow-xs hover:shadow-md transition-all group flex flex-col justify-between"
+        >
+          <div>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-blue-600 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                Catalog
+              </span>
+              <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                <FaBoxOpen size={14} />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
+              {isLoading ? "..." : stats.products}
+            </div>
+            <div className="text-xs font-bold text-gray-700 mt-1">Products</div>
+            <p className="text-[10px] text-gray-400 mt-0.5">Live in Catalog</p>
+          </div>
+          <div className="pt-3 mt-3 border-t border-gray-100 flex items-center justify-between text-[11px] font-semibold text-blue-600 group-hover:underline">
+            <span>Manage Products</span>
+            <FaChevronRight size={9} />
+          </div>
+        </Link>
+
         {/* KPI 1: Projects */}
         <Link
           href="/admin/projects"
@@ -284,7 +316,17 @@ export default function AdminDashboardPage() {
         <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
           Quick Actions Hub
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+          <Link
+            href="/admin/products"
+            className="flex items-center gap-2.5 p-3.5 rounded-xl border border-gray-200 hover:border-blue-300 hover:bg-blue-50/40 text-gray-800 transition-all text-xs font-bold"
+          >
+            <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+              <FaPlus size={11} />
+            </div>
+            <span className="truncate">Add Product</span>
+          </Link>
+
           <Link
             href="/admin/projects"
             className="flex items-center gap-2.5 p-3.5 rounded-xl border border-gray-200 hover:border-emerald-300 hover:bg-emerald-50/40 text-gray-800 transition-all text-xs font-bold"
@@ -342,6 +384,16 @@ export default function AdminDashboardPage() {
           {/* Explorer Tabs */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none text-xs">
             <button
+              onClick={() => setActiveTab("products")}
+              className={`px-3 py-1.5 rounded-lg font-bold transition-all whitespace-nowrap ${
+                activeTab === "products"
+                  ? "bg-blue-600 text-white shadow-2xs"
+                  : "bg-gray-100 hover:bg-gray-200 text-gray-600"
+              }`}
+            >
+              Products ({stats.products})
+            </button>
+            <button
               onClick={() => setActiveTab("projects")}
               className={`px-3 py-1.5 rounded-lg font-bold transition-all whitespace-nowrap ${
                 activeTab === "projects"
@@ -383,6 +435,62 @@ export default function AdminDashboardPage() {
             </button>
           </div>
         </div>
+
+        {/* Tab 0: Live Products */}
+        {activeTab === "products" && (
+          <div>
+            {filteredProducts.length === 0 ? (
+              <div className="py-12 text-center text-gray-400 space-y-2">
+                <FaBoxOpen size={28} className="mx-auto text-gray-300" />
+                <p className="text-xs">No products found.</p>
+                <Link
+                  href="/admin/products"
+                  className="inline-block text-xs font-bold text-blue-600 hover:underline"
+                >
+                  Post your first product →
+                </Link>
+              </div>
+            ) : (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3.5">
+                {filteredProducts.map((prod) => (
+                  <Link
+                    key={prod._id}
+                    href={`/products/${prod.slug}`}
+                    target="_blank"
+                    className="group bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md hover:border-blue-400 transition-all flex flex-col"
+                  >
+                    <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                      {prod.images?.[0]?.url ? (
+                        <Image
+                          src={prod.images[0].url}
+                          alt={prod.title}
+                          fill
+                          sizes="160px"
+                          className="object-cover group-hover:scale-105 transition-transform"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-300">
+                          <FaBoxOpen size={24} />
+                        </div>
+                      )}
+                      <div className="absolute top-1.5 left-1.5 bg-blue-600 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">
+                        {prod.category}
+                      </div>
+                    </div>
+                    <div className="p-2.5 flex-1 flex flex-col justify-between">
+                      <p className="text-xs font-bold text-gray-900 line-clamp-1 group-hover:text-blue-600 transition-colors">
+                        {prod.title}
+                      </p>
+                      <p className="text-[10px] text-gray-400 mt-1">
+                        {prod.brand || "A2Z Solar"}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Tab 1: Live Projects */}
         {activeTab === "projects" && (
