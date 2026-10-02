@@ -77,7 +77,7 @@ const STATS = [
   {
     value: "100%",
     label: "Turnkey execution",
-    subtext: "From survey to net meter",
+    subtext: "From survey to commissioning",
   },
 ];
 

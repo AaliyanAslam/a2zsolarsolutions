@@ -7,6 +7,32 @@ import {
 } from "react-icons/fa6";
 
 const STEPS = [
+  {
+    title: "Consultation",
+    desc: "We understand your energy needs, budget and goals, then recommend the right solar setup for your home, business or industry.",
+    icon: FaComments,
+  },
+  {
+    title: "Site inspection",
+    desc: "Our certified engineers survey your rooftop: orientation, shading and your electrical distribution board.",
+    icon: FaMagnifyingGlassLocation,
+  },
+  {
+    title: "Custom structure design",
+    desc: "We prepare a 3D CAD layout and heavy-gauge galvanized frames built for maximum sunlight and strong wind.",
+    icon: FaCompassDrafting,
+  },
+  {
+    title: "Turnkey installation",
+    desc: "Our technicians handle alignment, secure mounting and clean integration with your electrical system.",
+    icon: FaScrewdriverWrench,
+  },
+  {
+    title: "After-sales support",
+    desc: "Ongoing maintenance and troubleshooting keep your system running at peak efficiency for years.",
+    icon: FaHeadset,
+  },
+];
 
 export default function HowWeDeliver() {
   return (
