@@ -99,41 +99,6 @@ export default function HowWeDeliver() {
             </li>
           ))}
         </ol>
-
-        {/* Closing CTA */}
-        <div className="mt-14 overflow-hidden rounded-sm bg-[#122116] text-white sm:mt-20">
-          <div className="flex flex-col gap-8 p-6 sm:p-10 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-xl">
-              <p className="text-xl font-bold leading-snug sm:text-2xl">
-                Seamless solar, every step of the way.
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-emerald-100/80">
-                We manage the full journey: site audit, K-Electric green-meter
-                sanctioning and 24/7 maintenance. Book a free site inspection
-                with our engineers in Karachi or Lahore.
-              </p>
-            </div>
-
-            <div className="flex w-full shrink-0 flex-col gap-3 sm:w-auto sm:flex-row">
-              <a
-                href={WHATSAPP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3e635]"
-              >
-                <FaWhatsapp className="text-base" aria-hidden="true" />
-                Book site inspection
-              </a>
-              <Link
-                href="/#calculator"
-                className="inline-flex items-center justify-center gap-2 rounded-sm border border-white/30 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#a3e635]"
-              >
-                Calculate your load
-                <FaArrowRight size={11} aria-hidden="true" />
-              </Link>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
