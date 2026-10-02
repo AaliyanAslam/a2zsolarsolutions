@@ -13,6 +13,8 @@ import {
   FaXmark,
   FaRotate,
   FaQuoteLeft,
+  FaCircleExclamation,
+  FaCircleCheck,
 } from "react-icons/fa6";
 
 export default function AdminTestimonialsPage() {
@@ -31,6 +33,7 @@ export default function AdminTestimonialsPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
+  const [modalErrorMsg, setModalErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
@@ -57,36 +60,85 @@ export default function AdminTestimonialsPage() {
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+    setModalErrorMsg("");
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const isImage = file.type?.startsWith("image/") || /\.(jpg|jpeg|png|webp|avif|gif)$/i.test(file.name);
+    if (!isImage) {
+      setModalErrorMsg(`Invalid file type "${file.name}". Please select an image file (JPG, PNG, WEBP, AVIF).`);
+      e.target.value = "";
+      return;
     }
+
+    // Validate file size (10MB limit)
+    const MAX_SIZE = 10 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+      setModalErrorMsg(`Selected image is too large (${sizeMB} MB). Maximum allowed size is 10 MB.`);
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size === 0) {
+      setModalErrorMsg("The selected image file is empty (0 bytes). Please choose another photo.");
+      e.target.value = "";
+      return;
+    }
+
+    setImageFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
+    };
+    reader.onerror = () => {
+      setModalErrorMsg("Failed to read image from your device. Please try another file.");
+      setImageFile(null);
+      setImagePreview("");
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleAddTestimonial = async (e) => {
     e.preventDefault();
+    setModalErrorMsg("");
     setErrorMsg("");
     setSuccessMsg("");
 
-    if (!name.trim()) {
-      setErrorMsg("Customer name is required.");
+    // Detailed client-side pre-validations
+    const trimmedName = name.trim();
+    if (!trimmedName) {
+      setModalErrorMsg("Customer Name is required. Please enter the customer's name.");
       return;
     }
-    if (!address.trim()) {
-      setErrorMsg("Address / Location is required.");
+    if (trimmedName.length < 2) {
+      setModalErrorMsg("Customer Name must be at least 2 characters long.");
       return;
     }
-    if (!review.trim()) {
-      setErrorMsg("Review / Feedback text is required.");
+
+    const trimmedAddress = address.trim();
+    if (!trimmedAddress) {
+      setModalErrorMsg("Address / Location is required (e.g. DHA Phase 6, Karachi).");
       return;
     }
+    if (trimmedAddress.length < 3) {
+      setModalErrorMsg("Address / Location must be at least 3 characters long.");
+      return;
+    }
+
+    const trimmedReview = review.trim();
+    if (!trimmedReview) {
+      setModalErrorMsg("Review / Feedback text is required.");
+      return;
+    }
+    if (trimmedReview.length < 10) {
+      setModalErrorMsg(`Review is too short (${trimmedReview.length} chars). Please enter at least 10 characters of customer feedback.`);
+      return;
+    }
+
     if (!imageFile) {
-      setErrorMsg("Please select a customer photo or avatar to upload.");
+      setModalErrorMsg("Customer photo / avatar is required. Please choose a photo from your device.");
       return;
     }
 
@@ -94,10 +146,10 @@ export default function AdminTestimonialsPage() {
 
     try {
       const formData = new FormData();
-      formData.append("name", name.trim());
-      formData.append("address", address.trim());
+      formData.append("name", trimmedName);
+      formData.append("address", trimmedAddress);
       formData.append("starQty", starQty.toString());
-      formData.append("review", review.trim());
+      formData.append("review", trimmedReview);
       formData.append("image", imageFile);
 
       const res = await fetch("/api/testimonials", {
@@ -105,24 +157,41 @@ export default function AdminTestimonialsPage() {
         body: formData,
       });
 
-      const data = await res.json();
-
-      if (data.success) {
-        setTestimonials([data.testimonial, ...testimonials]);
-        setName("");
-        setAddress("");
-        setStarQty(5);
-        setReview("");
-        setImageFile(null);
-        setImagePreview("");
-        setShowAddModal(false);
-        setSuccessMsg("Testimonial uploaded successfully!");
-        setTimeout(() => setSuccessMsg(""), 3500);
-      } else {
-        setErrorMsg(data.error || "Failed to upload testimonial.");
+      let data;
+      try {
+        const text = await res.text();
+        data = JSON.parse(text);
+      } catch (parseErr) {
+        throw new Error(`Server returned unexpected response (HTTP ${res.status}: ${res.statusText || "Server Error"}). Please check your server connection.`);
       }
+
+      if (!res.ok || !data.success) {
+        // Display the exact failure reason from server
+        const reason = data.error || data.details || `Server error (${res.status}). Failed to save testimonial.`;
+        setModalErrorMsg(reason);
+        return;
+      }
+
+      // Success
+      if (data.testimonial) {
+        setTestimonials([data.testimonial, ...testimonials]);
+      } else {
+        fetchTestimonials();
+      }
+
+      setName("");
+      setAddress("");
+      setStarQty(5);
+      setReview("");
+      setImageFile(null);
+      setImagePreview("");
+      setModalErrorMsg("");
+      setShowAddModal(false);
+      setSuccessMsg("Testimonial uploaded successfully and published to live website!");
+      setTimeout(() => setSuccessMsg(""), 4000);
     } catch (err) {
-      setErrorMsg(err.message || "Network error. Please try again.");
+      console.error("Testimonial upload error:", err);
+      setModalErrorMsg(err.message || "Network error. Please check your internet connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -353,34 +422,66 @@ export default function AdminTestimonialsPage() {
               onSubmit={handleAddTestimonial}
               className="p-5 space-y-4 overflow-y-auto flex-1 text-xs sm:text-sm"
             >
+              {/* Prominent Modal Error Alert Banner */}
+              {modalErrorMsg && (
+                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs sm:text-sm font-semibold flex items-start gap-2.5 shadow-xs animate-in fade-in duration-200">
+                  <FaCircleExclamation className="text-red-600 shrink-0 text-base mt-0.5" />
+                  <div className="flex-1">
+                    <p className="font-bold text-red-900">Upload Issue</p>
+                    <p className="mt-0.5 text-xs text-red-700 leading-relaxed font-normal">
+                      {modalErrorMsg}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setModalErrorMsg("")}
+                    className="text-red-400 hover:text-red-700 p-0.5 transition-colors"
+                  >
+                    <FaXmark size={14} />
+                  </button>
+                </div>
+              )}
+
               {/* Customer Name */}
               <div className="space-y-1">
-                <label className="font-bold text-gray-700 flex items-center gap-1.5">
-                  <FaUser className="text-[#0fa353]" />
-                  <span>Customer Name *</span>
+                <label className="font-bold text-gray-700 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <FaUser className="text-[#0fa353]" />
+                    <span>Customer Name *</span>
+                  </span>
+                  <span className="text-[10px] text-gray-400 font-normal">Min. 2 characters</span>
                 </label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. Tariq Mehmood / Engr. Salman Farooq"
                   value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                    if (modalErrorMsg) setModalErrorMsg("");
+                  }}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353] transition-colors"
                 />
               </div>
 
               {/* Address / Location */}
               <div className="space-y-1">
-                <label className="font-bold text-gray-700 flex items-center gap-1.5">
-                  <FaLocationDot className="text-[#0fa353]" />
-                  <span>Address / Location *</span>
+                <label className="font-bold text-gray-700 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5">
+                    <FaLocationDot className="text-[#0fa353]" />
+                    <span>Address / Location *</span>
+                  </span>
+                  <span className="text-[10px] text-gray-400 font-normal">Min. 3 characters</span>
                 </label>
                 <input
                   type="text"
                   required
                   placeholder="e.g. DHA Phase 6, Karachi / Bahria Town, Lahore"
                   value={address}
-                  onChange={(e) => setAddress(e.target.value)}
+                  onChange={(e) => {
+                    setAddress(e.target.value);
+                    if (modalErrorMsg) setModalErrorMsg("");
+                  }}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353] transition-colors"
                 />
               </div>
@@ -412,10 +513,13 @@ export default function AdminTestimonialsPage() {
 
               {/* Photo / Avatar Upload */}
               <div className="space-y-1.5">
-                <label className="font-bold text-gray-700 flex items-center gap-1.5">
-                  <FaImage className="text-[#0fa353]" />
-                  <span>Customer Photo / Avatar *</span>
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="font-bold text-gray-700 flex items-center gap-1.5">
+                    <FaImage className="text-[#0fa353]" />
+                    <span>Customer Photo / Avatar *</span>
+                  </label>
+                  <span className="text-[10px] text-gray-400">Max 10 MB (JPG, PNG, WEBP)</span>
+                </div>
 
                 <div className="flex items-center gap-4">
                   {imagePreview ? (
@@ -437,9 +541,16 @@ export default function AdminTestimonialsPage() {
                   <label className="flex-1 cursor-pointer">
                     <div className="px-4 py-3 border border-dashed border-gray-300 rounded-xl hover:bg-gray-50 transition-colors flex items-center gap-2.5 text-gray-600">
                       <FaUpload className="text-[#0fa353]" />
-                      <span className="text-xs font-semibold">
-                        {imageFile ? imageFile.name : "Choose photo from device"}
-                      </span>
+                      <div className="min-w-0 flex-1">
+                        <span className="text-xs font-semibold block truncate">
+                          {imageFile ? imageFile.name : "Choose photo from device"}
+                        </span>
+                        {imageFile && (
+                          <span className="text-[10px] text-gray-400">
+                            {(imageFile.size / (1024 * 1024)).toFixed(2)} MB
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <input
                       type="file"
@@ -453,24 +564,45 @@ export default function AdminTestimonialsPage() {
 
               {/* Review / Feedback Text */}
               <div className="space-y-1">
-                <label className="font-bold text-gray-700 flex items-center gap-1.5">
-                  <FaQuoteLeft className="text-[#0fa353]" />
-                  <span>Review / Feedback Message *</span>
-                </label>
+                <div className="flex items-center justify-between">
+                  <label className="font-bold text-gray-700 flex items-center gap-1.5">
+                    <FaQuoteLeft className="text-[#0fa353]" />
+                    <span>Review / Feedback Message *</span>
+                  </label>
+                  <span
+                    className={`text-[10px] font-semibold ${
+                      review.trim().length > 0 && review.trim().length < 10
+                        ? "text-red-500"
+                        : "text-gray-400"
+                    }`}
+                  >
+                    {review.trim().length}/10 min chars
+                  </span>
+                </div>
                 <textarea
                   required
                   rows={4}
                   placeholder="Share what the customer said about their hybrid solar system, installation quality, battery backup, or savings..."
                   value={review}
-                  onChange={(e) => setReview(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353] transition-colors resize-none"
+                  onChange={(e) => {
+                    setReview(e.target.value);
+                    if (modalErrorMsg) setModalErrorMsg("");
+                  }}
+                  className={`w-full px-3.5 py-2.5 rounded-xl border focus:outline-none transition-colors resize-none ${
+                    review.trim().length > 0 && review.trim().length < 10
+                      ? "border-red-300 focus:border-red-500 focus:ring-1 focus:ring-red-500"
+                      : "border-gray-200 focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353]"
+                  }`}
                 />
               </div>
 
               <div className="pt-3 border-t border-gray-100 flex items-center justify-end gap-2.5">
                 <button
                   type="button"
-                  onClick={() => setShowAddModal(false)}
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setModalErrorMsg("");
+                  }}
                   className="px-4 py-2.5 rounded-xl border border-gray-200 text-gray-600 font-semibold hover:bg-gray-50 transition-colors"
                 >
                   Cancel
@@ -478,9 +610,12 @@ export default function AdminTestimonialsPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="px-5 py-2.5 rounded-xl bg-[#0fa353] hover:bg-[#0c8a45] text-white font-bold transition-all shadow-sm active:scale-95 disabled:opacity-50"
+                  className="px-5 py-2.5 rounded-xl bg-[#0fa353] hover:bg-[#0c8a45] text-white font-bold transition-all shadow-sm active:scale-95 disabled:opacity-50 flex items-center gap-2"
                 >
-                  {isSubmitting ? "Uploading..." : "Save Testimonial"}
+                  {isSubmitting && (
+                    <div className="w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  )}
+                  <span>{isSubmitting ? "Uploading & Saving..." : "Save Testimonial"}</span>
                 </button>
               </div>
             </form>
