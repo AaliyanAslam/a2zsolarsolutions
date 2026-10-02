@@ -174,8 +174,16 @@ export async function POST(req) {
       );
     }
 
+    const baseSlug = title
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 100);
+    const slug = `${baseSlug}-${Date.now().toString(36).slice(-4)}`;
+
     const product = await Product.create({
       title: title.trim(),
+      slug,
       category,
       shortDescription: shortDescription.trim(),
       description: description.trim(),

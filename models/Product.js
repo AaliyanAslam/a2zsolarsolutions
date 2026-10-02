@@ -96,19 +96,17 @@ const ProductSchema = new mongoose.Schema(
 );
 
 // Auto-generate slug from title before validation
-ProductSchema.pre("validate", function (next) {
+ProductSchema.pre("validate", function () {
   if (this.title && (!this.slug || this.isModified("title"))) {
-    this.slug = this.title
+    const baseSlug = this.title
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
-      .slice(0, 120);
-    // Append a short unique suffix to prevent slug collisions
-    if (this.isNew) {
-      this.slug += "-" + Date.now().toString(36).slice(-4);
-    }
+      .slice(0, 100);
+    this.slug = this.isNew
+      ? `${baseSlug}-${Date.now().toString(36).slice(-4)}`
+      : baseSlug;
   }
-  next();
 });
 
 // Index for fast category and slug lookups
