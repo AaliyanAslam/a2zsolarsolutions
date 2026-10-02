@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 import { useAdminAuth } from "../components/AdminAuth";
 import {
   FaMagnifyingGlass,
@@ -21,41 +23,44 @@ import {
 
 export default function AdminDashboardPage() {
   const { adminUser } = useAdminAuth();
-  const [data, setData] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeTab, setActiveTab] = useState("projects");
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [dismissError, setDismissError] = useState(false);
 
   const displayName = adminUser?.name || "A2Z Solar Solutions";
 
-  useEffect(() => {
-    fetchDashboardStats();
-  }, []);
+  // SWR in-memory cache to prevent repeated API hits
+  const {
+    data,
+    error,
+    isLoading,
+    isValidating,
+    mutate,
+  } = useSWR("/api/admin/stats", fetcher, {
+    revalidateOnFocus: false, // Don't refetch on window/tab focus
+    revalidateIfStale: false, // Serve cached data without refetching immediately
+    dedupingInterval: 120000, // 2 minutes deduping cache window
+    revalidateOnReconnect: false,
+  });
 
-  const fetchDashboardStats = async (isManual = false) => {
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    setDismissError(false);
     try {
-      if (isManual) setIsRefreshing(true);
-      else setIsLoading(true);
-      setErrorMsg("");
-
-      const res = await fetch("/api/admin/stats", { cache: "no-store" });
-      const json = await res.json();
-
-      if (json.success) {
-        setData(json);
-      } else {
-        setErrorMsg(json.error || "Failed to fetch live portal stats.");
-      }
+      await mutate();
     } catch (err) {
-      console.error("Dashboard stats error:", err);
-      setErrorMsg("Network error fetching live portal stats.");
+      console.error("Manual refresh error:", err);
     } finally {
-      setIsLoading(false);
       setIsRefreshing(false);
     }
   };
+
+  const errorMsg = !dismissError && (error
+    ? error.message || "Failed to fetch live portal stats."
+    : data && !data.success
+    ? data.error || "Failed to load dashboard metrics."
+    : "");
 
   const stats = data?.stats || {
     products: 0,
@@ -121,13 +126,13 @@ export default function AdminDashboardPage() {
         {/* Top Actions: Refresh & Visit Website */}
         <div className="flex items-center gap-2.5 self-start md:self-auto">
           <button
-            onClick={() => fetchDashboardStats(true)}
-            disabled={isRefreshing || isLoading}
-            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 text-xs font-semibold shadow-2xs transition-all active:scale-95 disabled:opacity-60"
+            onClick={handleRefresh}
+            disabled={isRefreshing || isValidating}
+            className="inline-flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-gray-700 text-xs font-semibold shadow-2xs transition-all active:scale-95 disabled:opacity-60 cursor-pointer"
             title="Refresh database metrics"
           >
-            <FaRotate className={isRefreshing ? "animate-spin text-[#0fa353]" : "text-gray-500"} size={12} />
-            <span>{isRefreshing ? "Syncing..." : "Sync Live Data"}</span>
+            <FaRotate className={isRefreshing || isValidating ? "animate-spin text-[#0fa353]" : "text-gray-500"} size={12} />
+            <span>{isRefreshing || isValidating ? "Syncing..." : "Sync Live Data"}</span>
           </button>
 
           <Link
@@ -145,7 +150,7 @@ export default function AdminDashboardPage() {
       {errorMsg && (
         <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold flex items-center justify-between">
           <span>{errorMsg}</span>
-          <button onClick={() => setErrorMsg("")} className="text-red-500 hover:text-red-700">
+          <button onClick={() => setDismissError(true)} className="text-red-500 hover:text-red-700">
             <FaXmark />
           </button>
         </div>
