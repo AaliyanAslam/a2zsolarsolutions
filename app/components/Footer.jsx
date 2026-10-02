@@ -6,6 +6,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import {
   FaFacebookF,
+  FaTiktok,
   FaYoutube,
   FaEnvelope,
   FaPhone,
@@ -144,19 +145,28 @@ export default function Footer() {
             {/* Social Icons */}
             <div className="flex items-center gap-2.5 pt-2">
               <a
-                href="https://www.facebook.com/faizanelectronicsonline"
+                href="https://www.facebook.com/share/18PCFJQaZC/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Facebook"
+                aria-label="Facebook Page"
                 className="w-8 h-8 rounded-full bg-gray-100 hover:bg-[#1877F2] text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
               >
                 <FaFacebookF size={12} />
               </a>
               <a
+                href="https://www.tiktok.com/@a2z.solar.solutions"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-black text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
+              >
+                <FaTiktok size={12} />
+              </a>
+              <a
                 href="https://youtube.com/@A2ZSolarSolutions"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="YouTube"
+                aria-label="YouTube Channel"
                 className="w-8 h-8 rounded-full bg-gray-100 hover:bg-red-600 text-gray-600 hover:text-white flex items-center justify-center transition-all duration-200 text-xs shadow-2xs"
               >
                 <FaYoutube size={12} />

@@ -168,7 +168,8 @@ export default function RootLayout({ children }) {
     telephone: "+923214189298",
     email: "a2zsolarsolutions.com@gmail.com",
     sameAs: [
-      "https://www.facebook.com/faizanelectronicsonline",
+      "https://www.facebook.com/share/18PCFJQaZC/",
+      "https://www.tiktok.com/@a2z.solar.solutions",
       "https://youtube.com/@A2ZSolarSolutions",
     ],
     address: [
