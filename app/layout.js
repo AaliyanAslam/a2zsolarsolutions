@@ -144,12 +144,13 @@ export const metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/logo/a2zlogo.webp", sizes: "192x192", type: "image/webp" },
-      { url: "/logo/a2zlogo.webp", sizes: "512x512", type: "image/webp" },
+      { url: "/logo/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/logo/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/logo/icon-512x512.png", sizes: "512x512", type: "image/png" },
     ],
     shortcut: "/favicon.ico",
     apple: [
-      { url: "/logo/a2zlogo.webp", sizes: "180x180", type: "image/webp" },
+      { url: "/logo/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
 };

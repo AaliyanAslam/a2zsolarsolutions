@@ -4,6 +4,7 @@ import SolarCalculator from "./components/SolarCalculator";
 import WhySolar from "./components/WhySolar";
 import HowWeDeliver from "./components/HowWeDeliver";
 import Services from "./components/Services";
+import ProductsShowcase from "./components/ProductsShowcase";
 import RecentProjects from "./components/RecentProjects";
 import ClientsFeedback from "./components/ClientsFeedback";
 import YouTubeSection from "./components/YouTubeSection";
@@ -51,6 +52,7 @@ export default function Home() {
       <WhySolar />
       <HowWeDeliver />
       <Services />
+      <ProductsShowcase />
       <RecentProjects />
       <ClientsFeedback />
       <YouTubeSection />

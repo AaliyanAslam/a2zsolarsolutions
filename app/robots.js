@@ -9,6 +9,8 @@ export default function robots() {
           "/",
           "/about",
           "/contact",
+          "/products",
+          "/products/",
           "/documents",
           "/privacy-policy",
           "/terms-and-conditions",

@@ -1,6 +1,7 @@
 import connectDB from "@/lib/mongodb";
 import Project from "@/models/Project";
 import Document from "@/models/Document";
+import Product from "@/models/Product";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 3600; // Revalidate every hour
@@ -11,6 +12,7 @@ export default async function sitemap() {
 
   let latestProjectDate = now;
   let latestDocDate = now;
+  let productUrls = [];
 
   try {
     if (process.env.MONGODB_URI) {
@@ -30,18 +32,36 @@ export default async function sitemap() {
       if (latestDoc?.updatedAt) {
         latestDocDate = new Date(latestDoc.updatedAt);
       }
+
+      // Fetch all products for dynamic product URLs
+      const products = await Product.find({})
+        .select("slug updatedAt")
+        .lean();
+
+      productUrls = products.map((p) => ({
+        url: `${baseUrl}/products/${p.slug}`,
+        lastModified: p.updatedAt ? new Date(p.updatedAt) : now,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      }));
     }
   } catch (error) {
     console.warn("Sitemap: MongoDB query fallback to current timestamp:", error?.message);
   }
 
   // Core public routes with SEO priority and update frequencies
-  return [
+  const staticRoutes = [
     {
       url: baseUrl,
       lastModified: latestProjectDate,
       changeFrequency: "weekly",
       priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/products`,
+      lastModified: productUrls.length > 0 ? productUrls[0].lastModified : now,
+      changeFrequency: "daily",
+      priority: 0.9,
     },
     {
       url: `${baseUrl}/about`,
@@ -74,4 +94,6 @@ export default async function sitemap() {
       priority: 0.3,
     },
   ];
+
+  return [...staticRoutes, ...productUrls];
 }
