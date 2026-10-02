@@ -10,6 +10,9 @@ import {
   FaImage,
   FaUpload,
   FaClock,
+  FaCircleExclamation,
+  FaCircleCheck,
+  FaXmark,
 } from "react-icons/fa6";
 
 export default function AdminVideos() {
@@ -22,6 +25,8 @@ export default function AdminVideos() {
   const [thumbnailPreview, setThumbnailPreview] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [modalErrorMsg, setModalErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
 
   // Fetch videos from MongoDB on mount
   useEffect(() => {
@@ -31,41 +36,93 @@ export default function AdminVideos() {
   const fetchVideos = async () => {
     try {
       setIsLoading(true);
+      setErrorMsg("");
       const res = await fetch("/api/videos");
       const data = await res.json();
       if (data.success) {
         setVideos(data.videos || []);
+      } else {
+        setErrorMsg(data.error || "Failed to load videos from server.");
       }
     } catch (err) {
       console.error("Failed to load videos:", err);
+      setErrorMsg("Network error loading videos. Please refresh the page.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleThumbnailChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setThumbnailFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setThumbnailPreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+    setModalErrorMsg("");
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const isImage = file.type?.startsWith("image/") || /\.(jpg|jpeg|png|webp|avif|gif)$/i.test(file.name);
+    if (!isImage) {
+      setModalErrorMsg(`Invalid file type "${file.name}". Please select an image file (PNG, JPG, WEBP, AVIF).`);
+      e.target.value = "";
+      return;
     }
+
+    // Validate file size (10MB limit)
+    const MAX_SIZE = 10 * 1024 * 1024;
+    if (file.size > MAX_SIZE) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+      setModalErrorMsg(`Selected image is too large (${sizeMB} MB). Maximum allowed size is 10 MB.`);
+      e.target.value = "";
+      return;
+    }
+
+    if (file.size === 0) {
+      setModalErrorMsg("The selected image file is empty (0 bytes). Please choose another photo.");
+      e.target.value = "";
+      return;
+    }
+
+    setThumbnailFile(file);
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setThumbnailPreview(reader.result);
+    };
+    reader.onerror = () => {
+      setModalErrorMsg("Failed to read the selected image file from your device.");
+      setThumbnailFile(null);
+      setThumbnailPreview("");
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleAddVideo = async (e) => {
     e.preventDefault();
+    setModalErrorMsg("");
     setErrorMsg("");
+    setSuccessMsg("");
 
-    if (!title.trim() || !youtubeUrl.trim()) {
-      setErrorMsg("Please provide both Title and YouTube URL.");
+    const trimmedTitle = title.trim();
+    if (!trimmedTitle) {
+      setModalErrorMsg("Video Title is required. Please enter a title.");
+      return;
+    }
+    if (trimmedTitle.length < 3) {
+      setModalErrorMsg("Video Title must be at least 3 characters long.");
+      return;
+    }
+
+    const trimmedUrl = youtubeUrl.trim();
+    if (!trimmedUrl) {
+      setModalErrorMsg("YouTube Video URL is required.");
+      return;
+    }
+
+    const isYoutube = trimmedUrl.includes("youtube.com") || trimmedUrl.includes("youtu.be");
+    if (!isYoutube) {
+      setModalErrorMsg("Invalid video link. Please enter a valid YouTube URL (e.g. https://www.youtube.com/watch?v=... or https://youtu.be/...).");
       return;
     }
 
     if (!thumbnailFile) {
-      setErrorMsg("Please select a thumbnail image to upload.");
+      setModalErrorMsg("Thumbnail image is required. Please choose an image file.");
       return;
     }
 
@@ -73,8 +130,8 @@ export default function AdminVideos() {
 
     try {
       const formData = new FormData();
-      formData.append("title", title);
-      formData.append("youtubeUrl", youtubeUrl);
+      formData.append("title", trimmedTitle);
+      formData.append("youtubeUrl", trimmedUrl);
       formData.append("thumbnail", thumbnailFile);
 
       const res = await fetch("/api/videos", {
@@ -82,20 +139,39 @@ export default function AdminVideos() {
         body: formData,
       });
 
-      const data = await res.json();
-
-      if (data.success) {
-        setVideos([data.video, ...videos]);
-        setTitle("");
-        setYoutubeUrl("");
-        setThumbnailFile(null);
-        setThumbnailPreview("");
-        setShowAddModal(false);
-      } else {
-        setErrorMsg(data.error || "Failed to upload video.");
+      let data;
+      try {
+        const text = await res.text();
+        data = JSON.parse(text);
+      } catch (parseErr) {
+        throw new Error(`Server returned unexpected response (HTTP ${res.status}: ${res.statusText || "Server Error"}). Please check your server connection.`);
       }
+
+      if (!res.ok || !data.success) {
+        // Display exact reason from server
+        const reason = data.error || `Server error (${res.status}). Failed to save video.`;
+        setModalErrorMsg(reason);
+        return;
+      }
+
+      // Success
+      if (data.video) {
+        setVideos([data.video, ...videos]);
+      } else {
+        fetchVideos();
+      }
+
+      setTitle("");
+      setYoutubeUrl("");
+      setThumbnailFile(null);
+      setThumbnailPreview("");
+      setModalErrorMsg("");
+      setShowAddModal(false);
+      setSuccessMsg("YouTube video added successfully and published to live website!");
+      setTimeout(() => setSuccessMsg(""), 4000);
     } catch (err) {
-      setErrorMsg(err.message || "Network error. Please try again.");
+      console.error("Video upload error:", err);
+      setModalErrorMsg(err.message || "Network error. Please check your internet connection and try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -145,6 +221,32 @@ export default function AdminVideos() {
           Add New Video
         </button>
       </div>
+
+      {/* Success Notification */}
+      {successMsg && (
+        <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm font-semibold flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <FaCircleCheck className="text-[#0fa353]" />
+            {successMsg}
+          </span>
+          <button onClick={() => setSuccessMsg("")} className="text-emerald-600 hover:text-emerald-900">
+            <FaXmark />
+          </button>
+        </div>
+      )}
+
+      {/* Page Error Notification */}
+      {errorMsg && (
+        <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs sm:text-sm font-semibold flex items-center justify-between">
+          <span className="flex items-center gap-2">
+            <FaCircleExclamation className="text-red-600" />
+            {errorMsg}
+          </span>
+          <button onClick={() => setErrorMsg("")} className="text-red-600 hover:text-red-900">
+            <FaXmark />
+          </button>
+        </div>
+      )}
 
       {/* Videos List */}
       <div className="bg-white border border-gray-200/80 rounded-2xl overflow-hidden shadow-xs">
@@ -241,7 +343,7 @@ export default function AdminVideos() {
 
       {/* Add Video Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
           <div className="bg-white rounded-2xl border border-gray-100 shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in-95 duration-150">
             <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gray-50/70">
               <h3 className="text-sm font-bold text-gray-900 flex items-center gap-2">
@@ -249,58 +351,89 @@ export default function AdminVideos() {
                 Add YouTube Video
               </h3>
               <button
-                onClick={() => !isSubmitting && setShowAddModal(false)}
-                className="text-gray-400 hover:text-gray-900 transition-colors text-sm"
+                onClick={() => {
+                  if (!isSubmitting) {
+                    setShowAddModal(false);
+                    setModalErrorMsg("");
+                  }
+                }}
+                className="text-gray-400 hover:text-gray-900 transition-colors p-1 rounded-lg hover:bg-gray-100"
               >
-                ✕
+                <FaXmark size={16} />
               </button>
             </div>
 
             <form onSubmit={handleAddVideo} className="p-6 space-y-4">
-              {errorMsg && (
-                <div className="bg-red-50 border border-red-200 text-red-600 text-xs px-3.5 py-2.5 rounded-xl font-medium">
-                  {errorMsg}
+              {/* Prominent Modal Error Alert Banner */}
+              {modalErrorMsg && (
+                <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-semibold flex items-start gap-2.5 shadow-xs animate-in fade-in duration-200">
+                  <FaCircleExclamation className="text-red-600 shrink-0 text-base mt-0.5" />
+                  <div className="flex-1">
+                    <p className="font-bold text-red-900">Upload Issue</p>
+                    <p className="mt-0.5 text-xs text-red-700 leading-relaxed font-normal">
+                      {modalErrorMsg}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setModalErrorMsg("")}
+                    className="text-red-400 hover:text-red-700 p-0.5 transition-colors"
+                  >
+                    <FaXmark size={14} />
+                  </button>
                 </div>
               )}
 
               {/* Title */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                  Video Title
+              <div className="space-y-1">
+                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                  Video Title *
                 </label>
                 <input
                   type="text"
                   required
                   value={title}
-                  onChange={(e) => setTitle(e.target.value)}
+                  onChange={(e) => {
+                    setTitle(e.target.value);
+                    if (modalErrorMsg) setModalErrorMsg("");
+                  }}
                   placeholder="e.g. 10kW Hybrid Solar System in Karachi"
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-gray-900 outline-none focus:border-emerald-500 focus:bg-white transition-all"
                 />
               </div>
 
               {/* YouTube URL */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                  YouTube Video URL
-                </label>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                    YouTube Video URL *
+                  </label>
+                  <span className="text-[10px] text-gray-400">youtube.com or youtu.be</span>
+                </div>
                 <input
                   type="url"
                   required
                   value={youtubeUrl}
-                  onChange={(e) => setYoutubeUrl(e.target.value)}
+                  onChange={(e) => {
+                    setYoutubeUrl(e.target.value);
+                    if (modalErrorMsg) setModalErrorMsg("");
+                  }}
                   placeholder="https://www.youtube.com/watch?v=..."
                   className="w-full bg-gray-50 border border-gray-200 rounded-xl px-3.5 py-2.5 text-xs text-gray-900 outline-none focus:border-emerald-500 focus:bg-white transition-all"
                 />
               </div>
 
               {/* Thumbnail Image upload */}
-              <div>
-                <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                  Thumbnail Image
-                </label>
+              <div className="space-y-1">
+                <div className="flex items-center justify-between">
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                    Thumbnail Image *
+                  </label>
+                  <span className="text-[10px] text-gray-400">Max 10 MB (PNG, JPG, WEBP)</span>
+                </div>
 
                 {thumbnailPreview ? (
-                  <div className="relative w-full h-36 rounded-xl overflow-hidden border border-gray-200 group mb-2">
+                  <div className="relative w-full h-36 rounded-xl overflow-hidden border border-gray-200 group mb-2 shadow-xs">
                     <Image
                       src={thumbnailPreview}
                       alt="Thumbnail preview"
@@ -308,22 +441,26 @@ export default function AdminVideos() {
                       unoptimized
                       className="object-cover"
                     />
+                    <div className="absolute bottom-2 left-2 bg-black/75 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded max-w-[70%] truncate">
+                      {thumbnailFile ? thumbnailFile.name : "Custom thumbnail"}
+                      {thumbnailFile && ` (${(thumbnailFile.size / (1024 * 1024)).toFixed(2)} MB)`}
+                    </div>
                     <button
                       type="button"
                       onClick={() => {
                         setThumbnailFile(null);
                         setThumbnailPreview("");
                       }}
-                      className="absolute top-2 right-2 bg-black/70 hover:bg-black text-white p-1.5 rounded-lg text-xs transition-colors"
+                      className="absolute top-2 right-2 bg-black/70 hover:bg-black text-white px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors shadow-xs"
                     >
-                      Change
+                      Change Photo
                     </button>
                   </div>
                 ) : (
                   <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-200 hover:border-emerald-500 rounded-xl cursor-pointer bg-gray-50 hover:bg-emerald-50/30 transition-colors">
                     <FaUpload className="text-gray-400 text-lg mb-1" />
                     <span className="text-xs font-semibold text-gray-700">Choose thumbnail image</span>
-                    <span className="text-[10px] text-gray-400 mt-0.5">PNG, JPG, WEBP up to 5MB</span>
+                    <span className="text-[10px] text-gray-400 mt-0.5">PNG, JPG, WEBP up to 10MB</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -337,7 +474,10 @@ export default function AdminVideos() {
               <div className="flex gap-2.5 justify-end pt-3 border-t border-gray-100">
                 <button
                   type="button"
-                  onClick={() => setShowAddModal(false)}
+                  onClick={() => {
+                    setShowAddModal(false);
+                    setModalErrorMsg("");
+                  }}
                   disabled={isSubmitting}
                   className="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
                 >
@@ -351,7 +491,7 @@ export default function AdminVideos() {
                   {isSubmitting ? (
                     <>
                       <div className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Uploading thumbnail...
+                      Uploading &amp; Saving...
                     </>
                   ) : (
                     "Save & Upload"
