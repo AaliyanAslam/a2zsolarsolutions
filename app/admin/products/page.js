@@ -360,107 +360,134 @@ export default function AdminProductsPage() {
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
           {products.map((prod) => {
             const id = prod._id || prod.id;
             const mainImage = prod.images?.[0]?.url;
             return (
               <div
                 key={id}
-                className="group bg-white border border-gray-200/80 rounded-sm overflow-hidden hover:shadow-lg transition-all duration-300"
+                className="group bg-white border border-gray-200/90 rounded-sm overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col justify-between"
               >
-                {/* Image */}
-                <div className="relative aspect-square bg-gray-100">
-                  {mainImage ? (
-                    <Image
-                      src={mainImage}
-                      alt={prod.title}
-                      fill
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-gray-300">
-                      <FaImage size={40} />
-                    </div>
-                  )}
-
-                  {/* Badges */}
-                  <div className="absolute top-2 left-2 flex flex-col gap-1 z-10">
-                    <span className="text-[10px] font-bold bg-[#0fa353] text-white px-2 py-0.5 rounded-sm">
-                      {prod.category}
-                    </span>
-                    {prod.isFeatured && (
-                      <span className="text-[10px] font-bold bg-amber-500 text-white px-2 py-0.5 rounded-sm flex items-center gap-1">
-                        <FaStar size={8} /> Featured
-                      </span>
+                <div>
+                  {/* Image */}
+                  <div className="relative aspect-square bg-gray-100 overflow-hidden">
+                    {mainImage ? (
+                      <Image
+                        src={mainImage}
+                        alt={prod.title}
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-300">
+                        <FaImage size={32} />
+                      </div>
                     )}
-                    {!prod.inStock && (
-                      <span className="text-[10px] font-bold bg-red-500 text-white px-2 py-0.5 rounded-sm">
-                        Out of Stock
+
+                    {/* Badges */}
+                    <div className="absolute top-1.5 left-1.5 sm:top-2 sm:left-2 flex flex-col gap-1 z-10 max-w-[65%] sm:max-w-none">
+                      <span className="text-[9px] sm:text-[10px] font-bold bg-[#0fa353] text-white px-1.5 sm:px-2 py-0.5 rounded-sm truncate shadow-xs">
+                        {prod.category}
                       </span>
+                      {prod.isFeatured && (
+                        <span className="text-[8px] sm:text-[10px] font-bold bg-amber-500 text-white px-1.5 sm:px-2 py-0.5 rounded-sm flex items-center gap-1 shadow-xs">
+                          <FaStar size={7} /> Featured
+                        </span>
+                      )}
+                      {!prod.inStock && (
+                        <span className="text-[8px] sm:text-[10px] font-bold bg-red-500 text-white px-1.5 sm:px-2 py-0.5 rounded-sm shadow-xs">
+                          Out of Stock
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Top-Right Quick Action Icons (Always visible on mobile & desktop) */}
+                    <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 flex flex-col gap-1 sm:gap-1.5 z-10">
+                      <button
+                        type="button"
+                        onClick={() => openEditModal(prod)}
+                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-sm bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-md active:scale-90 transition-all cursor-pointer"
+                        title="Edit product"
+                      >
+                        <FaPen size={9} />
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(id)}
+                        disabled={deletingId === id}
+                        className="w-6 h-6 sm:w-7 sm:h-7 rounded-sm bg-red-600 hover:bg-red-700 text-white flex items-center justify-center shadow-md active:scale-90 transition-all disabled:opacity-50 cursor-pointer"
+                        title="Delete product"
+                      >
+                        <FaTrash size={9} />
+                      </button>
+                    </div>
+
+                    {/* Image count badge */}
+                    {prod.images?.length > 1 && (
+                      <div className="absolute bottom-1.5 right-1.5 sm:bottom-2 sm:right-2 bg-black/75 backdrop-blur-xs text-white text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center gap-1">
+                        <FaImage size={8} /> {prod.images.length}
+                      </div>
                     )}
                   </div>
 
-                  {/* Actions */}
-                  <div className="absolute top-2 right-2 flex flex-col gap-1.5 z-10 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <button
-                      onClick={() => openEditModal(prod)}
-                      className="w-7 h-7 rounded-sm bg-blue-600/90 hover:bg-blue-700 text-white flex items-center justify-center shadow-md transition-all"
-                      title="Edit"
-                    >
-                      <FaPen size={10} />
-                    </button>
-                    <button
-                      onClick={() => handleDelete(id)}
-                      disabled={deletingId === id}
-                      className="w-7 h-7 rounded-sm bg-red-600/90 hover:bg-red-700 text-white flex items-center justify-center shadow-md transition-all disabled:opacity-50"
-                      title="Delete"
-                    >
-                      <FaTrash size={10} />
-                    </button>
-                  </div>
-
-                  {/* Image count */}
-                  {prod.images?.length > 1 && (
-                    <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm flex items-center gap-1">
-                      <FaImage size={8} /> {prod.images.length}
+                  {/* Content */}
+                  <div className="p-2 sm:p-3 space-y-1">
+                    {prod.brand && (
+                      <p className="text-[9px] sm:text-[10px] font-bold text-[#0fa353] uppercase tracking-wider truncate">
+                        {prod.brand}
+                      </p>
+                    )}
+                    <h3 className="text-xs sm:text-sm font-bold text-gray-900 line-clamp-2 leading-snug">
+                      {prod.title}
+                    </h3>
+                    {prod.shortDescription && (
+                      <p className="text-[10px] sm:text-[11px] text-gray-500 line-clamp-1 sm:line-clamp-2">
+                        {prod.shortDescription}
+                      </p>
+                    )}
+                    <div className="flex items-center gap-1.5 pt-0.5 flex-wrap">
+                      {prod.discountPrice > 0 && (
+                        <span className="text-xs sm:text-sm font-black text-[#0fa353]">
+                          {formatPrice(prod.discountPrice)}
+                        </span>
+                      )}
+                      {prod.price > 0 && (
+                        <span
+                          className={`font-bold ${
+                            prod.discountPrice > 0
+                              ? "text-gray-400 line-through text-[10px] sm:text-xs"
+                              : "text-xs sm:text-sm text-gray-900 font-black"
+                          }`}
+                        >
+                          {formatPrice(prod.price)}
+                        </span>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-3 space-y-1.5">
-                  {prod.brand && (
-                    <p className="text-[10px] font-bold text-[#0fa353] uppercase tracking-wider">
-                      {prod.brand}
-                    </p>
-                  )}
-                  <h3 className="text-sm font-bold text-gray-900 line-clamp-2 leading-snug">
-                    {prod.title}
-                  </h3>
-                  {prod.shortDescription && (
-                    <p className="text-[11px] text-gray-500 line-clamp-2">
-                      {prod.shortDescription}
-                    </p>
-                  )}
-                  <div className="flex items-center gap-2 pt-1">
-                    {prod.discountPrice > 0 && (
-                      <span className="text-sm font-black text-[#0fa353]">
-                        {formatPrice(prod.discountPrice)}
-                      </span>
-                    )}
-                    {prod.price > 0 && (
-                      <span
-                        className={`text-sm font-bold ${
-                          prod.discountPrice > 0
-                            ? "text-gray-400 line-through text-xs"
-                            : "text-gray-900"
-                        }`}
-                      >
-                        {formatPrice(prod.price)}
-                      </span>
-                    )}
+                {/* Bottom Action Footer (Easy tap buttons) */}
+                <div className="p-2 sm:p-2.5 pt-0">
+                  <div className="grid grid-cols-2 gap-1.5 pt-2 border-t border-gray-100">
+                    <button
+                      type="button"
+                      onClick={() => openEditModal(prod)}
+                      className="flex items-center justify-center gap-1 py-1.5 px-2 bg-blue-50 hover:bg-blue-600 text-blue-700 hover:text-white rounded-sm text-[10px] sm:text-xs font-bold transition-all active:scale-95 border border-blue-200 hover:border-blue-600 cursor-pointer"
+                    >
+                      <FaPen size={9} />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(id)}
+                      disabled={deletingId === id}
+                      className="flex items-center justify-center gap-1 py-1.5 px-2 bg-red-50 hover:bg-red-600 text-red-700 hover:text-white rounded-sm text-[10px] sm:text-xs font-bold transition-all active:scale-95 border border-red-200 hover:border-red-600 disabled:opacity-50 cursor-pointer"
+                    >
+                      <FaTrash size={9} />
+                      <span>{deletingId === id ? "..." : "Delete"}</span>
+                    </button>
                   </div>
                 </div>
               </div>
