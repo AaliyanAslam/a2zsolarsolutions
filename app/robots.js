@@ -17,6 +17,7 @@ export default function robots() {
           "/images/",
           "/logo/",
           "/favicon.ico",
+          "/manifest.webmanifest",
         ],
         disallow: [
           "/admin",
@@ -24,8 +25,6 @@ export default function robots() {
           "/admin/*",
           "/api/",
           "/api/*",
-          "/_next/",
-          "/_next/*",
           "/private/",
           "/*.json$",
         ],

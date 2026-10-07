@@ -11,9 +11,11 @@ import YouTubeSection from "./components/YouTubeSection";
 import DocumentsSection from "./components/DocumentsSection";
 
 export const metadata = {
-  title: "A2Z Solar Solutions | Best Solar Energy Company in Karachi & Lahore",
+  title: {
+    absolute: "A2Z Solar Solutions | Best Solar Energy Company in Karachi & Lahore",
+  },
   description:
-    "Pakistan's trusted solar energy partner since 2015. Turnkey residential, commercial & industrial hybrid solar installations, Tier-1 panels, smart hybrid inverters & battery backup storage.",
+    "A2Z Solar Solutions (est. 2015) — Karachi's trusted solar company. Solar panels, hybrid inverters, lithium batteries & turnkey solar installations for homes, businesses & industries. Call 0321-4189298.",
   alternates: {
     canonical: "https://a2zsolarsolutions.com",
   },

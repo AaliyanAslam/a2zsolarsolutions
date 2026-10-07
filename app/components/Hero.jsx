@@ -29,6 +29,11 @@ const Hero = () => {
       <div className="relative z-10 w-full max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-xl md:max-w-2xl">
           <h1 className="hero-animate-title text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black leading-[1.18] sm:leading-[1.1] tracking-tight mb-3 sm:mb-6">
+            <span className="mb-2 sm:mb-4 inline-flex items-center gap-2 rounded-full bg-[#0fa353]/10 px-3 py-1 text-[11px] sm:text-sm font-bold uppercase tracking-[0.12em] text-[#0fa353]">
+              A2Z Solar Solutions
+              <span className="sr-only"> — Solar Energy Company in Karachi:</span>
+            </span>
+            <br />
             <span className="text-[#1a1c29]">Sustainable Power</span>{" "}
             <br className="hidden sm:inline" />
             <span className="text-[#0fa353]">Made Simple &amp;</span>{" "}

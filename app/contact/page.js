@@ -83,7 +83,8 @@ const CONTACT_CHANNELS = [
 const LOCATIONS = [
   {
     city: "Karachi head office",
-    address: "Gulistan-e-Johar / Malir City, Karachi, Sindh",
+    address:
+      "D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi, Karachi 78400",
     timing: "Mon - Sat, 9:00 AM - 7:00 PM",
   },
   {

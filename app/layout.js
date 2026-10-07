@@ -156,80 +156,119 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "A2Z Solar Solutions",
-    alternateName: "A to Z Solar Solutions",
-    url: "https://a2zsolarsolutions.com",
-    logo: "https://a2zsolarsolutions.com/logo/a2zlogo.webp",
-    description:
-      "A2Z Solar Solutions is a certified solar energy company providing smart hybrid and off-grid solar systems with advanced battery storage across Karachi and Lahore.",
-    telephone: "+923214189298",
-    email: "a2zsolarsolutions.com@gmail.com",
-    sameAs: [
-      "https://www.facebook.com/share/18PCFJQaZC/",
-      "https://www.tiktok.com/@a2z.solar.solutions",
-      "https://youtube.com/@A2ZSolarSolutions",
-    ],
-    address: [
-      {
-        "@type": "PostalAddress",
-        streetAddress: "Gulistan-e-Johar / Malir City",
-        addressLocality: "Karachi",
-        addressRegion: "Sindh",
-        addressCountry: "PK",
-      },
-      {
-        "@type": "PostalAddress",
-        streetAddress: "Model Town / DHA Phase 5",
-        addressLocality: "Lahore",
-        addressRegion: "Punjab",
-        addressCountry: "PK",
-      },
-    ],
+  const SITE_URL = "https://a2zsolarsolutions.com/";
+  const BRAND = "A2Z Solar Solutions";
+
+  // Address exactly as listed on the Google Business Profile (NAP consistency)
+  const karachiAddress = {
+    "@type": "PostalAddress",
+    streetAddress:
+      "D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi",
+    addressLocality: "Karachi",
+    addressRegion: "Sindh",
+    postalCode: "78400",
+    addressCountry: "PK",
   };
 
-  const localBusinessSchema = {
+  const sameAs = [
+    "https://www.facebook.com/share/18PCFJQaZC/",
+    "https://www.tiktok.com/@a2z.solar.solutions",
+    "https://youtube.com/@A2ZSolarSolutions",
+  ];
+
+  // Single connected @graph — WebSite (drives the site name shown in Google),
+  // Organization (brand/knowledge panel) and LocalBusiness (maps/local pack).
+  const schemaGraph = {
     "@context": "https://schema.org",
-    "@type": "HomeAndConstructionBusiness",
-    name: "A2Z Solar Solutions",
-    url: "https://a2zsolarsolutions.com",
-    logo: "https://a2zsolarsolutions.com/logo/a2zlogo.webp",
-    image: "https://a2zsolarsolutions.com/images/solar-image.webp",
-    telephone: "+923214189298",
-    priceRange: "$$",
-    currenciesAccepted: "PKR",
-    paymentAccepted: "Cash, Bank Transfer, Pay Order",
-    areaServed: ["Karachi", "Lahore", "Sindh", "Punjab", "Pakistan"],
-    openingHoursSpecification: [
+    "@graph": [
       {
-        "@type": "OpeningHoursSpecification",
-        dayOfWeek: [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday",
-          "Saturday",
+        "@type": "WebSite",
+        "@id": `${SITE_URL}#website`,
+        url: SITE_URL,
+        name: BRAND,
+        alternateName: [
+          "A2Z Solar Solutions Pakistan",
+          "A2Z Solar Solutions Karachi",
+          "A to Z Solar Solutions",
+          "A2ZSolarSolutions",
         ],
-        opens: "09:00",
-        closes: "19:00",
+        description:
+          "Official website of A2Z Solar Solutions — solar panels, hybrid inverters, lithium batteries and turnkey solar installations in Karachi and Lahore.",
+        inLanguage: "en-PK",
+        publisher: { "@id": `${SITE_URL}#organization` },
+      },
+      {
+        "@type": "Organization",
+        "@id": `${SITE_URL}#organization`,
+        name: BRAND,
+        legalName: BRAND,
+        alternateName: ["A to Z Solar Solutions", "A2ZSolarSolutions"],
+        url: SITE_URL,
+        logo: {
+          "@type": "ImageObject",
+          "@id": `${SITE_URL}#logo`,
+          url: "https://a2zsolarsolutions.com/logo/icon-512x512.png",
+          width: 512,
+          height: 512,
+          caption: BRAND,
+        },
+        image: { "@id": `${SITE_URL}#logo` },
+        description:
+          "A2Z Solar Solutions is a Karachi-based solar energy company (est. 2015) providing hybrid, on-grid and off-grid solar systems, Tier-1 panels, inverters and lithium battery storage across Pakistan.",
+        foundingDate: "2015",
+        telephone: "+92-321-4189298",
+        email: "a2zsolarsolutions.com@gmail.com",
+        address: karachiAddress,
+        contactPoint: {
+          "@type": "ContactPoint",
+          telephone: "+92-321-4189298",
+          contactType: "customer service",
+          areaServed: "PK",
+          availableLanguage: ["English", "Urdu"],
+        },
+        sameAs,
+      },
+      {
+        "@type": ["LocalBusiness", "HomeAndConstructionBusiness"],
+        "@id": `${SITE_URL}#localbusiness`,
+        name: BRAND,
+        url: SITE_URL,
+        parentOrganization: { "@id": `${SITE_URL}#organization` },
+        logo: { "@id": `${SITE_URL}#logo` },
+        image: "https://a2zsolarsolutions.com/images/solar-image.webp",
+        description:
+          "Solar energy company in Karachi — solar panel installation, hybrid inverters, lithium batteries and complete solar systems for homes, businesses and industries.",
+        telephone: "+92-321-4189298",
+        email: "a2zsolarsolutions.com@gmail.com",
+        address: karachiAddress,
+        hasMap:
+          "https://www.google.com/maps/search/?api=1&query=A2Z+Solar+Solutions+Korangi+Karachi",
+        priceRange: "$$",
+        currenciesAccepted: "PKR",
+        paymentAccepted: "Cash, Bank Transfer, Pay Order",
+        areaServed: [
+          { "@type": "City", name: "Karachi" },
+          { "@type": "City", name: "Lahore" },
+          { "@type": "Country", name: "Pakistan" },
+        ],
+        openingHoursSpecification: [
+          {
+            "@type": "OpeningHoursSpecification",
+            dayOfWeek: [
+              "Monday",
+              "Tuesday",
+              "Wednesday",
+              "Thursday",
+              "Friday",
+              "Saturday",
+            ],
+            opens: "09:00",
+            closes: "19:00",
+          },
+        ],
+        sameAs,
       },
     ],
-  };
-
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "A2Z Solar Solutions",
-    alternateName: "A to Z Solar Solutions Pakistan",
-    url: "https://a2zsolarsolutions.com/",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: "https://a2zsolarsolutions.com/documents?search={search_term_string}",
-      "query-input": "required name=search_term_string",
-    },
   };
 
   return (
@@ -239,44 +278,21 @@ export default function RootLayout({ children }) {
       className={`${font.variable} font-sans h-full antialiased overflow-x-hidden`}
     >
       <head>
-        <meta
-          name="google-site-verification"
-          content="XVfiMRA9Dl5ji9U4pqlRVj8xbZgPteVYqKLUxt-Jfzc"
-        />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-        <link rel="icon" type="image/png" sizes="32x32" href="/logo/favicon-32x32.png" />
-        <link rel="icon" type="image/png" sizes="192x192" href="/logo/icon-192x192.png" />
-        <link rel="icon" type="image/png" sizes="512x512" href="/logo/icon-512x512.png" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/logo/apple-touch-icon.png" />
+        {/* Favicons, verification & app name are emitted via `metadata` above */}
+        <meta name="apple-mobile-web-app-title" content="A2Z Solar Solutions" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(schemaGraph).replace(/</g, "\\u003c"),
+          }}
+        />
       </head>
       <body
         className="min-h-full flex flex-col bg-white text-gray-900 overflow-x-hidden w-full relative"
         suppressHydrationWarning
       >
-        <h1 className="sr-only">
-          A2Z Solar Solutions - Best Solar Energy Company in Karachi and Lahore
-        </h1>
-
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(organizationSchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(localBusinessSchema),
-          }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(websiteSchema),
-          }}
-        />
 
         <Navbar />
         <div className="flex-1 w-full overflow-x-hidden">{children}</div>
