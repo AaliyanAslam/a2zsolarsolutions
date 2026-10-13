@@ -12,6 +12,7 @@ import {
   FaWhatsapp,
   FaArrowRight,
 } from "react-icons/fa6";
+import SocialShareButton from "@/app/components/SocialShareButton";
 
 const CATEGORIES = [
   "All",
@@ -173,6 +174,19 @@ export default function ProductsPageClient() {
                       {prod.discountPrice > 0 && prod.price > 0 && (
                         <div className="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm">
                           {Math.round(((prod.price - prod.discountPrice) / prod.price) * 100)}% OFF
+                        </div>
+                      )}
+                      {/* Share button — only shown when no discount badge */}
+                      {!(prod.discountPrice > 0 && prod.price > 0) && (
+                        <div
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+                          onClick={(e) => e.preventDefault()}
+                        >
+                          <SocialShareButton
+                            title={prod.title}
+                            url={`https://a2zsolarsolutions.com/products/${prod.slug}`}
+                            size="sm"
+                          />
                         </div>
                       )}
                     </div>

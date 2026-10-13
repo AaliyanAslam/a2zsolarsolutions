@@ -15,6 +15,7 @@ import {
   FaBoxOpen,
   FaArrowRight,
 } from "react-icons/fa6";
+import SocialShareButton from "@/app/components/SocialShareButton";
 
 const formatPrice = (p) => {
   if (!p || p === 0) return "";
@@ -157,9 +158,16 @@ export default function ProductDetailClient({ product, related }) {
               )}
             </div>
 
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a1c29] tracking-tight leading-tight">
-              {product.title}
-            </h1>
+            <div className="flex items-start justify-between gap-3">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a1c29] tracking-tight leading-tight flex-1">
+                {product.title}
+              </h1>
+              <SocialShareButton
+                title={product.title}
+                size="md"
+                className="mt-1 shrink-0"
+              />
+            </div>
 
             {product.shortDescription && (
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
