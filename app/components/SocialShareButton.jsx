@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
@@ -8,19 +8,22 @@ import {
   Check,
 } from "lucide-react";
 import { FaWhatsapp, FaFacebook } from "react-icons/fa6";
+import Image from "next/image";
 
 /**
  * SocialShareButton
  *
  * Props:
- *   title   {string}  – text shown in the native share sheet & WhatsApp message
+ *   title   {string}  – text for native share sheet & WhatsApp message
  *   url     {string}  – URL to share. Defaults to window.location.href (client-side only).
+ *   image   {string}  – product thumbnail URL shown in the preview card
  *   className {string} – extra Tailwind classes on the trigger button
  *   size    {"sm"|"md"|"lg"}
  */
 export default function SocialShareButton({
   title = "",
   url,
+  image,
   className = "",
   size = "md",
 }) {
@@ -61,7 +64,6 @@ export default function SocialShareButton({
 
   // ── share handler ──────────────────────────────────────────────────────────
   const handleShare = useCallback(async () => {
-    // 1. Native Web Share API — preferred on mobile
     if (
       typeof navigator !== "undefined" &&
       typeof navigator.share === "function" &&
@@ -69,13 +71,11 @@ export default function SocialShareButton({
     ) {
       try {
         await navigator.share({ title, url: shareUrl });
-        return; // success — no dropdown needed
+        return;
       } catch (err) {
-        // User cancelled — do nothing. Other errors fall through to dropdown.
         if (err?.name === "AbortError") return;
       }
     }
-    // 2. Fallback dropdown
     setOpen((prev) => !prev);
   }, [title, shareUrl]);
 
@@ -85,7 +85,6 @@ export default function SocialShareButton({
     try {
       await navigator.clipboard.writeText(shareUrl);
     } catch {
-      // Fallback for browsers without clipboard API
       const ta = document.createElement("textarea");
       ta.value = shareUrl;
       ta.style.position = "fixed";
@@ -109,6 +108,11 @@ export default function SocialShareButton({
   );
   const waUrl = `https://wa.me/?text=${waText}`;
   const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+
+  // ── display domain ─────────────────────────────────────────────────────────
+  const displayDomain = shareUrl
+    ? shareUrl.replace(/^https?:\/\//, "").split("/")[0]
+    : "a2zsolarsolutions.com";
 
   // ── size variants ──────────────────────────────────────────────────────────
   const sizeMap = {
@@ -152,15 +156,15 @@ export default function SocialShareButton({
             role="dialog"
             aria-label="Share options"
             className="
-              absolute right-0 z-50 mt-2 w-56
-              rounded-xl border border-gray-100 bg-white shadow-xl
-              ring-1 ring-black/5
+              absolute right-0 z-50 mt-2 w-64
+              rounded-xl border border-gray-100 bg-white shadow-2xl
+              ring-1 ring-black/5 overflow-hidden
               sm:origin-top-right
               max-sm:fixed max-sm:bottom-4 max-sm:left-1/2 max-sm:-translate-x-1/2
               max-sm:right-auto max-sm:w-[calc(100vw-2rem)] max-sm:max-w-xs
             "
           >
-            {/* Header */}
+            {/* ── Header ── */}
             <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-gray-100">
               <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
                 Share Product
@@ -175,7 +179,54 @@ export default function SocialShareButton({
               </button>
             </div>
 
-            {/* Share options */}
+            {/* ── Link Preview Card ── */}
+            <div className="mx-3 mt-3 mb-2 flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-2.5 overflow-hidden">
+              {/* Product thumbnail or A2Z logo fallback */}
+              <div className="relative h-14 w-14 shrink-0 rounded-md overflow-hidden bg-white border border-gray-200">
+                {image ? (
+                  <Image
+                    src={image}
+                    alt={title || "Product"}
+                    fill
+                    sizes="56px"
+                    className="object-cover"
+                    unoptimized
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#0fa353] to-[#0c8a45]">
+                    <span className="text-white text-[10px] font-black leading-none">
+                      A2Z
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {/* Text + site logo */}
+              <div className="flex-1 min-w-0">
+                {title && (
+                  <p className="text-xs font-bold text-gray-900 line-clamp-2 leading-snug mb-1">
+                    {title}
+                  </p>
+                )}
+                <div className="flex items-center gap-1.5">
+                  <div className="relative h-4 w-4 shrink-0 rounded-sm overflow-hidden">
+                    <Image
+                      src="/logo/favicon-32x32.png"
+                      alt="A2Z Solar"
+                      width={16}
+                      height={16}
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                  <span className="text-[10px] text-gray-400 font-medium truncate">
+                    {displayDomain}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* ── Share options ── */}
             <div className="p-1.5 space-y-0.5">
               {/* WhatsApp */}
               <a

@@ -164,6 +164,7 @@ export default function ProductDetailClient({ product, related }) {
               </h1>
               <SocialShareButton
                 title={product.title}
+                image={images[0]?.url}
                 size="md"
                 className="mt-1 shrink-0"
               />

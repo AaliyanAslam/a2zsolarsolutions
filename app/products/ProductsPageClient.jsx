@@ -185,6 +185,7 @@ export default function ProductsPageClient() {
                           <SocialShareButton
                             title={prod.title}
                             url={`https://a2zsolarsolutions.com/products/${prod.slug}`}
+                            image={prod.images?.[0]?.url}
                             size="sm"
                           />
                         </div>
