@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
@@ -19,6 +19,8 @@ import Image from "next/image";
  *   image   {string}  – product thumbnail URL shown in the preview card
  *   className {string} – extra Tailwind classes on the trigger button
  *   size    {"sm"|"md"|"lg"}
+ *   fullWidth {boolean} – render full-width button with label instead of icon-only
+ *   label   {string}  – button text when fullWidth is true
  */
 export default function SocialShareButton({
   title = "",
@@ -26,6 +28,8 @@ export default function SocialShareButton({
   image,
   className = "",
   size = "md",
+  fullWidth = false,
+  label = "Share this Product",
 }) {
   // ── client-side URL resolution (SSR-safe) ─────────────────────────────────
   const [shareUrl, setShareUrl] = useState("");
@@ -123,23 +127,45 @@ export default function SocialShareButton({
   const s = sizeMap[size] || sizeMap.md;
 
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div
+      className={`relative ${fullWidth ? "w-full block" : "inline-block"}`}
+      ref={dropdownRef}
+    >
       {/* ── Trigger button ── */}
-      <button
-        type="button"
-        aria-label="Share this product"
-        aria-expanded={open}
-        onClick={handleShare}
-        className={`
-          inline-flex items-center justify-center rounded-full
-          border border-gray-200 bg-white text-gray-500
-          shadow-sm hover:border-[#0fa353] hover:text-[#0fa353] hover:shadow-md
-          active:scale-95 transition-all duration-200
-          ${s.btn} ${className}
-        `}
-      >
-        <Share2 size={s.icon} strokeWidth={2.2} />
-      </button>
+      {fullWidth ? (
+        <button
+          type="button"
+          aria-label={label}
+          aria-expanded={open}
+          onClick={handleShare}
+          className={`
+            w-full inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-sm
+            border-2 border-gray-200 hover:border-[#0fa353] bg-white hover:bg-emerald-50/40
+            text-gray-700 hover:text-[#0fa353] text-sm font-bold transition-all shadow-sm
+            active:scale-[0.99] cursor-pointer
+            ${className}
+          `}
+        >
+          <Share2 size={17} strokeWidth={2.2} className="text-[#0fa353]" />
+          <span>{label}</span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          aria-label="Share this product"
+          aria-expanded={open}
+          onClick={handleShare}
+          className={`
+            inline-flex items-center justify-center rounded-full
+            border border-gray-200 bg-white text-gray-500
+            shadow-sm hover:border-[#0fa353] hover:text-[#0fa353] hover:shadow-md
+            active:scale-95 transition-all duration-200 cursor-pointer
+            ${s.btn} ${className}
+          `}
+        >
+          <Share2 size={s.icon} strokeWidth={2.2} />
+        </button>
+      )}
 
       {/* ── Fallback dropdown ── */}
       {open && (
@@ -155,14 +181,19 @@ export default function SocialShareButton({
           <div
             role="dialog"
             aria-label="Share options"
-            className="
-              absolute right-0 z-50 mt-2 w-64
+            className={`
+              absolute z-50 mt-2
+              ${
+                fullWidth
+                  ? "left-0 right-0 sm:left-0 sm:right-auto sm:w-80"
+                  : "right-0 w-72"
+              }
               rounded-xl border border-gray-100 bg-white shadow-2xl
               ring-1 ring-black/5 overflow-hidden
-              sm:origin-top-right
+              ${fullWidth ? "sm:origin-top-left" : "sm:origin-top-right"}
               max-sm:fixed max-sm:bottom-4 max-sm:left-1/2 max-sm:-translate-x-1/2
-              max-sm:right-auto max-sm:w-[calc(100vw-2rem)] max-sm:max-w-xs
-            "
+              max-sm:right-auto max-sm:w-[calc(100vw-2rem)] max-sm:max-w-sm
+            `}
           >
             {/* ── Header ── */}
             <div className="flex items-center justify-between px-3.5 py-2.5 border-b border-gray-100">

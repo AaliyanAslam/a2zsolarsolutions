@@ -158,17 +158,9 @@ export default function ProductDetailClient({ product, related }) {
               )}
             </div>
 
-            <div className="flex items-start justify-between gap-3">
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a1c29] tracking-tight leading-tight flex-1">
-                {product.title}
-              </h1>
-              <SocialShareButton
-                title={product.title}
-                image={images[0]?.url}
-                size="md"
-                className="mt-1 shrink-0"
-              />
-            </div>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-[#1a1c29] tracking-tight leading-tight">
+              {product.title}
+            </h1>
 
             {product.shortDescription && (
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
@@ -251,6 +243,14 @@ export default function ProductDetailClient({ product, related }) {
                 Call Now
               </a>
             </div>
+
+            {/* Share this Product */}
+            <SocialShareButton
+              title={product.title}
+              image={images[0]?.url}
+              fullWidth
+              label="Share this Product"
+            />
           </div>
         </div>
 
