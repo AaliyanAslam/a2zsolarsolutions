@@ -6,6 +6,7 @@ import useSWR from "swr";
 import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import { FaYoutube, FaPlay, FaPause, FaXmark } from "react-icons/fa6";
 import { FaWhatsapp } from "react-icons/fa";
+import SocialShareButton from "@/app/components/SocialShareButton";
 
 const WHATSAPP_NUMBER = "923214189298";
 const CHANNEL_URL = "https://www.youtube.com/@A2ZSolarSolutions";
@@ -59,14 +60,14 @@ function VideoCard({ video, duplicate, onOpen }) {
       className={`${CARD_WIDTH} shrink-0 pr-4 sm:pr-6 box-content`}
       aria-hidden={duplicate ? "true" : undefined}
     >
-      <button
-        type="button"
-        tabIndex={duplicate ? -1 : 0}
-        onClick={(e) => onOpen(video, e)}
-        aria-label={`Play video: ${video.title}`}
-        className={`group block w-full text-left ${FOCUS}`}
-      >
-        <span className="relative block aspect-video w-full overflow-hidden rounded-sm bg-gray-900">
+      <div className="group block w-full text-left">
+        <button
+          type="button"
+          tabIndex={duplicate ? -1 : 0}
+          onClick={(e) => onOpen(video, e)}
+          aria-label={`Play video: ${video.title}`}
+          className={`relative block aspect-video w-full overflow-hidden rounded-sm bg-gray-900 cursor-pointer ${FOCUS}`}
+        >
           <Image
             src={video.thumbnailUrl}
             alt=""
@@ -82,12 +83,33 @@ function VideoCard({ video, duplicate, onOpen }) {
               <FaPlay className="ml-0.5 text-sm sm:text-base" />
             </span>
           </span>
-        </span>
+        </button>
 
-        <span className="mt-3 line-clamp-2 block text-sm font-bold leading-snug text-[#1a1c29] transition-colors group-hover:text-[#0fa353] sm:text-base">
-          {video.title}
-        </span>
-      </button>
+        <div className="mt-2.5 flex items-start justify-between gap-2.5">
+          <button
+            type="button"
+            tabIndex={duplicate ? -1 : 0}
+            onClick={(e) => onOpen(video, e)}
+            className="flex-1 text-left cursor-pointer"
+          >
+            <span className="line-clamp-2 block text-sm font-bold leading-snug text-[#1a1c29] transition-colors hover:text-[#0fa353] sm:text-base">
+              {video.title}
+            </span>
+          </button>
+
+          <div className="shrink-0 pt-0.5">
+            <SocialShareButton
+              title={`${video.title} — A2Z Solar Solutions`}
+              url={video.youtubeUrl || "https://a2zsolarsolutions.com/#videos"}
+              image={video.thumbnailUrl}
+              variant="outline"
+              label="Share"
+              headerTitle="Share Video"
+              size="sm"
+            />
+          </div>
+        </div>
+      </div>
     </li>
   );
 }
@@ -133,17 +155,20 @@ export default function YouTubeSection() {
   useEffect(() => {
     if (!activeVideo) return;
 
-    const previousOverflow = document.body.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
     const handleKeyDown = (e) => {
       if (e.key === "Escape") setActiveVideo(null);
     };
 
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     document.addEventListener("keydown", handleKeyDown);
     closeButtonRef.current?.focus();
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
       document.removeEventListener("keydown", handleKeyDown);
       lastTriggerRef.current?.focus();
     };
@@ -365,17 +390,29 @@ export default function YouTubeSection() {
                 {activeVideo.title}
               </h3>
 
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                  `Salam, I watched your solar video "${activeVideo.title}" and want to discuss a similar setup for my property.`,
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] ${FOCUS}`}
-              >
-                <FaWhatsapp size={16} aria-hidden="true" />
-                Ask about a similar project
-              </a>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <SocialShareButton
+                  title={`${activeVideo.title} — A2Z Solar Solutions`}
+                  url={activeVideo.youtubeUrl || "https://a2zsolarsolutions.com/#videos"}
+                  image={activeVideo.thumbnailUrl}
+                  variant="outline"
+                  label="Share Video"
+                  headerTitle="Share Video"
+                  className="min-h-12! px-4! rounded-sm!"
+                />
+
+                <a
+                  href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                    `Salam, I watched your solar video "${activeVideo.title}" and want to discuss a similar setup for my property.`,
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`inline-flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] ${FOCUS}`}
+                >
+                  <FaWhatsapp size={16} aria-hidden="true" />
+                  Ask about a similar project
+                </a>
+              </div>
             </div>
           </div>
         </div>

@@ -12,6 +12,7 @@ import {
   FaXmark,
   FaChevronDown,
 } from "react-icons/fa6";
+import SocialShareButton from "@/app/components/SocialShareButton";
 
 const PAGE_SIZE = 10;
 const WHATSAPP_NUMBER = "923214189298";
@@ -60,17 +61,20 @@ export default function RecentProjects() {
   useEffect(() => {
     if (!activeProject) return;
 
-    const previousOverflow = document.body.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
     const handleKeyDown = (e) => {
       if (e.key === "Escape") setActiveProject(null);
     };
 
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     document.addEventListener("keydown", handleKeyDown);
     closeButtonRef.current?.focus();
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
       document.removeEventListener("keydown", handleKeyDown);
       lastTriggerRef.current?.focus();
     };
@@ -283,74 +287,92 @@ export default function RecentProjects() {
         </div>
       </div>
 
-      {/* Image modal */}
-      {activeProject && (
-        <div
-          onClick={() => setActiveProject(null)}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-3 sm:p-4"
-        >
+      {/* ── Premium Project Modal ── */}
+      {activeProject && (() => {
+        const modalImgSrc = activeProject.imageUrl || activeProject.image;
+        const shareTitle = `${activeProject.capacity} Solar Installation in ${activeProject.location} — A2Z Solar Solutions`;
+
+        return (
           <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${activeProject.capacity} solar installation in ${activeProject.location}`}
-            onClick={(e) => e.stopPropagation()}
-            className="flex max-h-[92dvh] w-full max-w-xl flex-col overflow-hidden rounded-sm bg-white shadow-2xl"
+            onClick={() => setActiveProject(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-3.5 sm:p-5 animate-[fadeIn_150ms_ease-out]"
           >
-            <div className="flex items-center justify-between gap-3 border-b border-gray-100 bg-gray-50 p-3 sm:p-4">
-              <div className="flex min-w-0 items-center gap-2.5">
-                <span className="shrink-0 rounded-sm bg-[#0fa353] px-2.5 py-0.5 text-xs font-black text-white sm:text-sm">
-                  {activeProject.capacity}
-                </span>
-                <span className="flex min-w-0 items-center gap-1.5 text-sm font-bold text-[#1a1c29]">
-                  <FaLocationDot
-                    className="shrink-0 text-[#0fa353]"
-                    aria-hidden="true"
-                  />
-                  <span className="truncate">{activeProject.location}</span>
-                </span>
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-label={`${activeProject.capacity} solar installation in ${activeProject.location}`}
+              onClick={(e) => e.stopPropagation()}
+              className="flex max-h-[90vh] w-full max-w-xl flex-col overflow-hidden rounded-xs sm:rounded-sm bg-white shadow-2xl ring-1 ring-black/5 animate-[modalSlide_200ms_ease-out]"
+            >
+              {/* Clean Google-style Header */}
+              <div className="flex items-center justify-between gap-3 px-5 py-3.5 sm:px-6 sm:py-4 border-b border-gray-100">
+                <div className="min-w-0">
+                  <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
+                    {activeProject.capacity} Solar Installation
+                  </h3>
+                  <p className="flex items-center gap-1.5 text-xs sm:text-sm text-gray-500 truncate mt-0.5">
+                    <FaLocationDot size={11} className="shrink-0 text-gray-400" aria-hidden="true" />
+                    <span>{activeProject.location}</span>
+                  </p>
+                </div>
+
+                <button
+                  ref={closeButtonRef}
+                  type="button"
+                  onClick={() => setActiveProject(null)}
+                  aria-label="Close"
+                  className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-gray-400 hover:bg-gray-100 hover:text-gray-700 transition-colors cursor-pointer ${FOCUS}`}
+                >
+                  <FaXmark size={16} aria-hidden="true" />
+                </button>
               </div>
 
-              <button
-                ref={closeButtonRef}
-                type="button"
-                onClick={() => setActiveProject(null)}
-                aria-label="Close image"
-                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-sm text-gray-500 transition-colors hover:bg-gray-200 hover:text-gray-800 ${FOCUS}`}
-              >
-                <FaXmark size={18} aria-hidden="true" />
-              </button>
-            </div>
+              {/* Image presentation - Clean & Natural */}
+              <div className="relative min-h-[200px] max-h-[52vh] w-full flex-1 bg-neutral-900 flex items-center justify-center overflow-hidden">
+                <div className="relative aspect-[4/3] sm:aspect-[16/10] w-full h-full max-h-[52vh]">
+                  <Image
+                    src={modalImgSrc}
+                    alt={`${activeProject.capacity} solar installation in ${activeProject.location}`}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 576px"
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              </div>
 
-            <div className="relative aspect-4/3 min-h-0 w-full bg-gray-900">
-              <Image
-                src={activeProject.imageUrl || activeProject.image}
-                alt={`${activeProject.capacity} solar installation in ${activeProject.location}`}
-                fill
-                sizes="(max-width: 768px) 100vw, 672px"
-                className="object-contain"
-              />
-            </div>
+              {/* Actions Bar - Simple & Google Clean */}
+              <div className="border-t border-gray-100 bg-white px-5 py-3.5 sm:px-6 sm:py-4">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                  <a
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                      `Salam A2Z Solar, I am interested in a ${activeProject.capacity} solar system like your setup at ${activeProject.location}.`,
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`inline-flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-[#0fa353] px-4 text-sm font-semibold text-white transition-all hover:bg-[#0c8a45] active:scale-[0.98] ${FOCUS}`}
+                  >
+                    <FaWhatsapp size={17} aria-hidden="true" />
+                    <span>Inquire on WhatsApp</span>
+                  </a>
 
-            <div className="flex flex-col gap-3 border-t border-gray-100 bg-gray-50 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4">
-              <p className="truncate text-xs font-medium text-gray-600">
-                Verified installation in {activeProject.location}
-              </p>
-
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                  `Salam A2Z Solar, I am interested in a ${activeProject.capacity} solar system like your setup at ${activeProject.location}.`,
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-sm bg-[#0fa353] px-4 py-2 text-sm font-bold text-white transition-colors hover:bg-[#0c8a45] ${FOCUS}`}
-              >
-                <FaWhatsapp size={16} aria-hidden="true" />
-                Inquire on WhatsApp
-              </a>
+                  <div className="flex-1">
+                    <SocialShareButton
+                      title={shareTitle}
+                      image={modalImgSrc}
+                      fullWidth
+                      dropUp
+                      variant="outline"
+                      label="Share Project"
+                      headerTitle="Share Project"
+                    />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </section>
   );
 }

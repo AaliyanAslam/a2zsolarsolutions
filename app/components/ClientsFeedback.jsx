@@ -2,17 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import useSWR from "swr";
 import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import {
   FaStar,
   FaQuoteLeft,
   FaCheckCircle,
-  FaWhatsapp,
-  FaGlobe,
   FaMapMarkerAlt,
-  FaArrowRight,
   FaHeart,
 } from "react-icons/fa";
 import { HiOutlineSparkles } from "react-icons/hi2";
@@ -28,9 +24,6 @@ const ClientsFeedback = () => {
     fetcher,
     SWR_CACHE_CONFIG
   );
-
-  const WHATSAPP_FEEDBACK_URL =
-    "https://wa.me/923214189298?text=Hello%20A2Z%20Solar%20Solutions%2C%20I%20would%20like%20to%20share%20my%20feedback%20regarding%20your%20solar%20services";
 
   useEffect(() => {
     if (data?.success && Array.isArray(data.testimonials)) {
@@ -271,47 +264,6 @@ const ClientsFeedback = () => {
             </button>
           </div>
         )}
-
-        {/* Action & Official Website Bar (with rounded-sm) */}
-        <div className="mt-12 sm:mt-16 p-4 sm:p-6 rounded-sm bg-white border border-emerald-200/80 shadow-2xs flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3 text-center sm:text-left">
-            <div className="w-10 h-10 rounded-sm bg-emerald-50 border border-emerald-200 flex items-center justify-center shrink-0 text-[#0fa353]">
-              <FaGlobe className="text-lg" />
-            </div>
-            <div>
-              <div className="text-xs uppercase tracking-wider text-gray-500 font-bold">
-                Visit Our Official Website
-              </div>
-              <a
-                href="https://www.a2zsolarsolutions.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm sm:text-base font-black text-[#0fa353] hover:text-[#0c8a45] transition-colors"
-              >
-                www.A2ZSolarSolutions.com
-              </a>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <a
-              href={WHATSAPP_FEEDBACK_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-sm bg-[#0fa353] text-white text-xs sm:text-sm font-bold hover:bg-[#0c8a45] transition-colors shadow-2xs active:scale-95"
-            >
-              <FaWhatsapp className="text-base" />
-              <span>Share Your Feedback</span>
-            </a>
-            <Link
-              href="/#calculator"
-              className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-sm bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs sm:text-sm font-semibold transition-colors active:scale-95"
-            >
-              <span>Get Free Quote</span>
-              <FaArrowRight className="text-xs" />
-            </Link>
-          </div>
-        </div>
       </div>
     </section>
   );
