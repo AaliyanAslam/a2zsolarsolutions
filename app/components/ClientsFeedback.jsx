@@ -10,8 +10,12 @@ import {
   FaCheckCircle,
   FaMapMarkerAlt,
   FaHeart,
+  FaWhatsapp,
 } from "react-icons/fa";
 import { HiOutlineSparkles } from "react-icons/hi2";
+
+const WHATSAPP_FEEDBACK_URL =
+  "https://wa.me/923214189298?text=Hello%20A2Z%20Solar%20Solutions%2C%20I%20would%20like%20to%20share%20my%20feedback%20regarding%20your%20solar%20services";
 
 const ClientsFeedback = () => {
   const [testimonials, setTestimonials] = useState([]);
