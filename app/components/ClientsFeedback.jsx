@@ -11,6 +11,7 @@ import {
   FaMapMarkerAlt,
   FaHeart,
   FaWhatsapp,
+  FaChevronDown,
 } from "react-icons/fa";
 import { HiOutlineSparkles } from "react-icons/hi2";
 
@@ -21,6 +22,14 @@ const ClientsFeedback = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [hasMore, setHasMore] = useState(false);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [expandedReviews, setExpandedReviews] = useState({});
+
+  const toggleExpand = (id) => {
+    setExpandedReviews((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   // SWR basic cache for client testimonials
   const { data, error, isLoading: isLoadingInitial } = useSWR(
@@ -183,69 +192,105 @@ const ClientsFeedback = () => {
             </a>
           </div>
         ) : (
-          <div className="mt-10 sm:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
-            {testimonials.map((item) => (
-              <div
-                key={item._id}
-                className="bg-white rounded-sm p-5 sm:p-6 border border-gray-200/90 shadow-2xs hover:shadow-md hover:border-[#0fa353]/50 transition-all duration-300 flex flex-col justify-between group relative"
-              >
-                <div className="space-y-3.5">
-                  {/* Header: Avatar, Name & Address, Quote / Stars icon */}
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden shrink-0 border border-gray-200 bg-gray-50 shadow-2xs">
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fill
-                          unoptimized
-                          className="object-cover"
-                          sizes="48px"
-                        />
+          <div className="mt-10 sm:mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 items-start">
+            {testimonials.map((item) => {
+              const isLong = Boolean(item.review && item.review.length > 160);
+              const isExpanded = Boolean(expandedReviews[item._id]);
+
+              return (
+                <div
+                  key={item._id}
+                  className="bg-white rounded-sm p-5 sm:p-6 border border-gray-200/90 shadow-2xs hover:shadow-md hover:border-[#0fa353]/50 transition-all duration-300 flex flex-col justify-between group relative"
+                >
+                  <div className="space-y-3.5">
+                    {/* Header: Avatar, Name & Address, Quote / Stars icon */}
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex items-center gap-3">
+                        <div className="relative w-11 h-11 sm:w-12 sm:h-12 rounded-full overflow-hidden shrink-0 border border-gray-200 bg-gray-50 shadow-2xs">
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fill
+                            unoptimized
+                            className="object-cover"
+                            sizes="48px"
+                          />
+                        </div>
+                        <div>
+                          <div className="font-bold text-sm sm:text-base text-[#1a1c29] leading-tight">
+                            {item.name}
+                          </div>
+                          <div className="flex items-center gap-1 text-[11px] sm:text-xs text-gray-500 mt-0.5 font-medium">
+                            <FaMapMarkerAlt className="text-[#0fa353] text-[9px]" />
+                            <span>{item.address}</span>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <div className="font-bold text-sm sm:text-base text-[#1a1c29] leading-tight">
-                          {item.name}
-                        </div>
-                        <div className="flex items-center gap-1 text-[11px] sm:text-xs text-gray-500 mt-0.5 font-medium">
-                          <FaMapMarkerAlt className="text-[#0fa353] text-[9px]" />
-                          <span>{item.address}</span>
-                        </div>
+
+                      {/* Top right icon / verification */}
+                      <div className="text-gray-300 group-hover:text-emerald-500 transition-colors">
+                        <FaQuoteLeft className="text-sm opacity-60" />
                       </div>
                     </div>
 
-                    {/* Top right icon / verification */}
-                    <div className="text-gray-300 group-hover:text-emerald-500 transition-colors">
-                      <FaQuoteLeft className="text-sm opacity-60" />
+                    {/* Star Rating */}
+                    <div className="flex items-center gap-1 text-amber-400">
+                      {[...Array(item.starQty || 5)].map((_, i) => (
+                        <FaStar key={i} className="text-xs" />
+                      ))}
+                      <span className="text-[10px] font-bold text-gray-400 ml-1">
+                        ({item.starQty || 5}.0)
+                      </span>
+                    </div>
+
+                    {/* Review Feedback Text with Smooth Expand/Collapse Animation */}
+                    <div>
+                      <div className="relative">
+                        <div
+                          className={`overflow-hidden transition-[max-height] duration-500 ease-in-out ${
+                            isLong && !isExpanded ? "max-h-[5.75rem]" : "max-h-[1200px]"
+                          }`}
+                        >
+                          <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-normal whitespace-pre-line">
+                            &ldquo;{item.review}&rdquo;
+                          </p>
+                        </div>
+
+                        {/* Subtle fade gradient overlay when collapsed */}
+                        {isLong && !isExpanded && (
+                          <div className="pointer-events-none absolute bottom-0 inset-x-0 h-7 bg-gradient-to-t from-white via-white/80 to-transparent transition-opacity duration-300" />
+                        )}
+                      </div>
+
+                      {isLong && (
+                        <button
+                          type="button"
+                          onClick={() => toggleExpand(item._id)}
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0fa353] hover:text-[#0c8a45] transition-colors mt-2.5 cursor-pointer focus-visible:outline-hidden select-none"
+                          aria-expanded={isExpanded}
+                        >
+                          <span>{isExpanded ? "See less" : "See more"}</span>
+                          <FaChevronDown
+                            className={`text-[9px] transition-transform duration-300 ease-in-out ${
+                              isExpanded ? "rotate-180" : "rotate-0"
+                            }`}
+                          />
+                        </button>
+                      )}
                     </div>
                   </div>
 
-                  {/* Star Rating */}
-                  <div className="flex items-center gap-1 text-amber-400">
-                    {[...Array(item.starQty || 5)].map((_, i) => (
-                      <FaStar key={i} className="text-xs" />
-                    ))}
-                    <span className="text-[10px] font-bold text-gray-400 ml-1">
-                      ({item.starQty || 5}.0)
+                  {/* Card Footer: Verified Client Tag */}
+                  <div className="pt-3.5 mt-4 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
+                    <span className="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50/80 px-2 py-0.5 rounded-sm border border-emerald-200/60">
+                      <FaCheckCircle className="text-[10px]" />
+                      Verified Client
                     </span>
+                    <span className="text-gray-400">A2Z Solar</span>
                   </div>
-
-                  {/* Review Feedback Text */}
-                  <p className="text-xs sm:text-sm text-gray-700 leading-relaxed font-normal">
-                    &ldquo;{item.review}&rdquo;
-                  </p>
                 </div>
-
-                {/* Card Footer: Verified Client Tag */}
-                <div className="pt-3.5 mt-4 border-t border-gray-100 flex items-center justify-between text-[11px] text-gray-400">
-                  <span className="inline-flex items-center gap-1 font-semibold text-emerald-700 bg-emerald-50/80 px-2 py-0.5 rounded-sm border border-emerald-200/60">
-                    <FaCheckCircle className="text-[10px]" />
-                    Verified Client
-                  </span>
-                  <span className="text-gray-400">A2Z Solar</span>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
