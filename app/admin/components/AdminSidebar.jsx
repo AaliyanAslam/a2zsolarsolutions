@@ -49,20 +49,27 @@ export default function AdminSidebar({ mobileMenuOpen, setMobileMenuOpen }) {
               key={item.label}
               href={item.href}
               onClick={() => setMobileMenuOpen && setMobileMenuOpen(false)}
-              className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all whitespace-nowrap ${
+              className={`flex items-center justify-between px-3 py-2 rounded-xl text-sm transition-all whitespace-nowrap group ${
                 active
-                  ? "bg-white text-gray-900 shadow-sm border border-gray-200/90 font-semibold"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100/70"
+                  ? "bg-emerald-50 text-emerald-950 shadow-xs border border-emerald-200/80 font-bold"
+                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-100/70 font-medium"
               }`}
             >
-              <Icon
-                className={`text-base shrink-0 ${
-                  active
-                    ? item.color || "text-green-600"
-                    : "text-gray-400 group-hover:text-gray-600"
-                }`}
-              />
-              <span className="truncate whitespace-nowrap">{item.label}</span>
+              <div className="flex items-center gap-3">
+                <span
+                  className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-colors shrink-0 ${
+                    active
+                      ? "bg-[#0fa353] text-white shadow-xs"
+                      : "bg-gray-100 text-gray-500 group-hover:bg-emerald-50 group-hover:text-[#0fa353]"
+                  }`}
+                >
+                  <Icon className="text-sm shrink-0" />
+                </span>
+                <span className="truncate whitespace-nowrap">{item.label}</span>
+              </div>
+              {active && (
+                <span className="w-1.5 h-1.5 rounded-full bg-[#0fa353]" />
+              )}
             </Link>
           );
         })}

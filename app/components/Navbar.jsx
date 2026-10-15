@@ -13,29 +13,45 @@ import {
   FaPhoneAlt,
   FaChevronDown,
 } from "react-icons/fa";
+import {
+  FaHouse,
+  FaBoxOpen,
+  FaSolarPanel,
+  FaBriefcase,
+  FaUsers,
+  FaCompass,
+  FaStar,
+  FaCalculator,
+  FaLeaf,
+  FaTruck,
+  FaCertificate,
+  FaFilePdf,
+  FaChevronRight,
+} from "react-icons/fa6";
 import { HiOutlineSparkles } from "react-icons/hi2";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 
 const NAV_LINKS = [
-  { label: "Home", href: "/" },
-  { label: "Products", href: "/products" },
-  { label: "Solar Solutions", href: "/#services" },
-  { label: "Recent Projects", href: "/#projects" },
-  { label: "About Us", href: "/about" },
+  { label: "Home", href: "/", icon: FaHouse },
+  { label: "Products", href: "/products", icon: FaBoxOpen },
+  { label: "Solar Solutions", href: "/#services", icon: FaSolarPanel },
+  { label: "Recent Projects", href: "/#projects", icon: FaBriefcase },
+  { label: "About Us", href: "/about", icon: FaUsers },
   {
     label: "More",
     href: "#",
+    icon: FaCompass,
     dropdownItems: [
-      { label: "Clients Feedback", href: "/#reviews" },
-      { label: "Solar Calculator", href: "/#calculator" },
-      { label: "Why Solar?", href: "/#why-solar" },
-      { label: "How We Deliver", href: "/#process" },
-      { label: "Video Showcase", href: "/#videos" },
-      { label: "Certifications", href: "/#certifications" },
-      { label: "Downloads & PDFs", href: "/documents" },
+      { label: "Clients Feedback", href: "/#reviews", icon: FaStar, color: "text-amber-500" },
+      { label: "Solar Calculator", href: "/#calculator", icon: FaCalculator, color: "text-emerald-500" },
+      { label: "Why Solar?", href: "/#why-solar", icon: FaLeaf, color: "text-emerald-600" },
+      { label: "How We Deliver", href: "/#process", icon: FaTruck, color: "text-blue-500" },
+      { label: "Video Showcase", href: "/#videos", icon: FaYoutube, color: "text-red-500" },
+      { label: "Certifications", href: "/#certifications", icon: FaCertificate, color: "text-purple-500" },
+      { label: "Downloads & PDFs", href: "/documents", icon: FaFilePdf, color: "text-rose-500" },
     ],
   },
-  { label: "Contact", href: "/contact" },
+  { label: "Contact", href: "/contact", icon: FaPhoneAlt },
 ];
 
 const WHATSAPP_NUMBER = "923214189298";
@@ -43,6 +59,7 @@ const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20inte
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -220,17 +237,27 @@ const Navbar = () => {
 
                   {link.dropdownItems && (
                     <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                      <div className="w-52 bg-white shadow-xl rounded-xl border border-gray-100 py-2 flex flex-col">
-                        {link.dropdownItems.map((item) => (
-                          <Link
-                            key={item.label}
-                            href={item.href}
-                            onClick={(e) => handleNavClick(e, item.href)}
-                            className="px-4 py-2.5 text-[14px] font-medium text-gray-700 hover:bg-emerald-50 hover:text-[#0fa353] transition-colors"
-                          >
-                            {item.label}
-                          </Link>
-                        ))}
+                      <div className="w-56 bg-white shadow-xl rounded-xl border border-gray-100 py-2 flex flex-col">
+                        {link.dropdownItems.map((item) => {
+                          const SubIcon = item.icon;
+                          return (
+                            <Link
+                              key={item.label}
+                              href={item.href}
+                              onClick={(e) => handleNavClick(e, item.href)}
+                              className="flex items-center gap-2.5 px-4 py-2.5 text-[14px] font-medium text-gray-700 hover:bg-emerald-50 hover:text-[#0fa353] transition-colors group/item"
+                            >
+                              {SubIcon && (
+                                <SubIcon
+                                  className={`text-xs ${
+                                    item.color || "text-gray-400"
+                                  } group-hover/item:scale-110 transition-transform`}
+                                />
+                              )}
+                              <span>{item.label}</span>
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -282,13 +309,14 @@ const Navbar = () => {
         </div>
       </nav>
 
+      {/* Mobile Drawer (Sidebar) */}
       <div
         className={`fixed inset-0 z-60 lg:hidden overflow-hidden transition-all duration-300 ${
           isOpen ? "pointer-events-auto visible" : "pointer-events-none invisible"
         }`}
       >
         <div
-          className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 ${
             isOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={closeDrawer}
@@ -296,93 +324,180 @@ const Navbar = () => {
         />
 
         <div
-          className={`absolute top-0 right-0 h-full w-[min(80vw,300px)] sm:w-[min(85vw,320px)] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out ${
+          className={`absolute top-0 right-0 h-full w-[min(86vw,340px)] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out border-l border-gray-100 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          <div className="flex items-center justify-between px-4 sm:px-5 py-3 sm:py-4 border-b border-gray-100 shrink-0">
-            <div className="relative w-28 h-8 flex items-center">
-              <Image
-                src="/logo/a2zlogo.webp"
-                alt="A to Z Solar Solutions Logo"
-                fill
-                className="object-contain object-left"
-              />
-            </div>
+          {/* Header */}
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-gray-100 shrink-0 bg-white">
+            <Link
+              href="/"
+              onClick={(e) => handleNavClick(e, "/")}
+              className="flex items-center gap-2"
+            >
+              <div className="relative w-28 h-8 flex items-center">
+                <Image
+                  src="/logo/a2zlogo.webp"
+                  alt="A to Z Solar Solutions"
+                  fill
+                  className="object-contain object-left"
+                />
+              </div>
+            </Link>
             <button
               onClick={closeDrawer}
-              className="flex items-center justify-center w-8 h-8 rounded-md text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors"
+              className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200 transition-colors cursor-pointer"
               aria-label="Close menu"
             >
-              <HiOutlineX className="text-xl" />
+              <HiOutlineX className="text-lg" />
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto px-3 sm:px-4 py-3 sm:py-4">
-            <ul className="space-y-0.5 sm:space-y-1">
-              {NAV_LINKS.map((link) => (
-                <li key={link.label}>
-                  {link.dropdownItems ? (
-                    <details className="group">
-                      <summary
-                        className="flex items-center justify-between px-3 sm:px-4 py-3 sm:py-3.5 text-[14px] sm:text-[15px] font-semibold rounded-lg transition-colors text-gray-800 hover:bg-gray-50 cursor-pointer list-none [&::-webkit-details-marker]:hidden"
+          {/* Navigation Links List */}
+          <nav className="flex-1 overflow-y-auto px-3.5 py-3 space-y-4">
+            {/* Main Navigation */}
+            <div>
+              <p className="px-2.5 pb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest select-none">
+                Main Menu
+              </p>
+              <ul className="space-y-1">
+                {NAV_LINKS.filter((l) => !l.dropdownItems).map((link) => {
+                  const active = isActive(link.href);
+                  const Icon = link.icon;
+                  return (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        onClick={(e) => handleNavClick(e, link.href)}
+                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-200 group cursor-pointer ${
+                          active
+                            ? "bg-emerald-50 text-[#0fa353] font-bold shadow-xs border border-emerald-200/50"
+                            : "text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium"
+                        }`}
                       >
-                        {link.label}
-                        <FaChevronDown className="text-xs text-gray-400 group-open:rotate-180 transition-transform" />
-                      </summary>
-                      <div className="pl-6 pr-4 pb-2 space-y-1">
-                        {link.dropdownItems.map((item) => (
-                          <Link
-                            key={item.label}
-                            href={item.href}
-                            onClick={(e) => handleNavClick(e, item.href)}
-                            className="block px-3 sm:px-4 py-2 sm:py-2.5 text-[13px] sm:text-[14px] font-medium text-gray-600 rounded-lg hover:text-[#0fa353] hover:bg-emerald-50/50 transition-colors"
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-colors ${
+                              active
+                                ? "bg-[#0fa353] text-white shadow-xs"
+                                : "bg-gray-100 text-gray-500 group-hover:bg-emerald-50 group-hover:text-[#0fa353]"
+                            }`}
                           >
-                            {item.label}
-                          </Link>
-                        ))}
-                      </div>
-                    </details>
-                  ) : (
-                    <Link
-                      href={link.href}
-                      onClick={(e) => handleNavClick(e, link.href)}
-                      className={`
-                        flex items-center justify-between px-3 sm:px-4 py-3 sm:py-3.5 text-[14px] sm:text-[15px] font-semibold rounded-lg transition-colors
-                        ${
-                          isActive(link.href)
-                            ? "text-[#0fa353] bg-emerald-50/50"
-                            : "text-gray-800 hover:bg-gray-50"
-                        }
-                      `}
-                    >
-                      {link.label}
-                    </Link>
-                  )}
-                </li>
+                            {Icon && <Icon />}
+                          </span>
+                          <span className="text-[14px]">{link.label}</span>
+                        </div>
+                        {active ? (
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#0fa353]" />
+                        ) : (
+                          <FaChevronRight className="text-[10px] text-gray-300 group-hover:text-gray-400 group-hover:translate-x-0.5 transition-all" />
+                        )}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+
+            {/* Explore & Tools Section (Accordion) */}
+            <div className="pt-2 border-t border-gray-100">
+              <p className="px-2.5 pb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest select-none">
+                Explore & Tools
+              </p>
+
+              {NAV_LINKS.filter((l) => l.dropdownItems).map((link) => (
+                <div key={link.label}>
+                  <button
+                    type="button"
+                    onClick={() => setIsMoreOpen((prev) => !prev)}
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors group cursor-pointer"
+                    aria-expanded={isMoreOpen}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span className="w-8 h-8 rounded-lg bg-gray-100 text-gray-500 group-hover:bg-emerald-50 group-hover:text-[#0fa353] flex items-center justify-center text-sm transition-colors">
+                        <FaCompass />
+                      </span>
+                      <span className="text-[14px] font-semibold text-gray-800">
+                        More Pages & Tools
+                      </span>
+                    </div>
+                    <FaChevronDown
+                      className={`text-xs text-gray-400 transition-transform duration-300 ${
+                        isMoreOpen ? "rotate-180 text-[#0fa353]" : ""
+                      }`}
+                    />
+                  </button>
+
+                  <div
+                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                      isMoreOpen
+                        ? "max-h-[500px] opacity-100 mt-1"
+                        : "max-h-0 opacity-0"
+                    }`}
+                  >
+                    <ul className="pl-3 pr-1 py-1 space-y-1 border-l-2 border-emerald-100 ml-4 my-1">
+                      {link.dropdownItems.map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <li key={item.label}>
+                            <Link
+                              href={item.href}
+                              onClick={(e) => handleNavClick(e, item.href)}
+                              className="flex items-center justify-between px-3 py-2 text-[13px] font-medium text-gray-600 rounded-lg hover:text-[#0fa353] hover:bg-emerald-50/60 transition-colors group cursor-pointer"
+                            >
+                              <div className="flex items-center gap-2.5">
+                                <span
+                                  className={`text-xs ${
+                                    item.color || "text-gray-400"
+                                  } group-hover:scale-110 transition-transform`}
+                                >
+                                  {Icon && <Icon />}
+                                </span>
+                                <span>{item.label}</span>
+                              </div>
+                              <FaChevronRight className="text-[9px] text-gray-300 group-hover:text-[#0fa353] group-hover:translate-x-0.5 transition-all" />
+                            </Link>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </nav>
 
-          <div className="px-3 sm:px-4 pb-5 sm:pb-6 pt-3 sm:pt-4 border-t border-gray-100 shrink-0 space-y-2 sm:space-y-3">
+          {/* Footer CTAs */}
+          <div className="px-4 py-4 border-t border-gray-100 bg-gray-50/60 shrink-0 space-y-2.5">
             <Link
               href="/#calculator"
               onClick={(e) => handleNavClick(e, "/#calculator")}
-              className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 text-[13px] sm:text-[15px] font-bold text-white bg-[#0fa353] rounded-md shadow-md shadow-green-600/20 active:scale-[0.98] transition-transform cursor-pointer"
+              className="flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-bold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-xl shadow-md shadow-green-600/20 active:scale-[0.98] transition-all cursor-pointer"
             >
-              <HiOutlineSparkles className="text-yellow-300 text-lg" />
-              Get Free Quote
+              <HiOutlineSparkles className="text-yellow-300 text-base" />
+              <span>Get Free Quote</span>
             </Link>
+
             <a
               href={WHATSAPP_URL}
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeDrawer}
-              className="flex items-center justify-center gap-2 w-full py-2.5 sm:py-3 text-[13px] sm:text-[15px] font-bold text-[#0fa353] bg-emerald-50 border border-[#0fa353]/30 rounded-md active:scale-[0.98] transition-transform"
+              className="flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-bold text-[#0fa353] bg-white border border-[#0fa353]/30 hover:bg-emerald-50/50 rounded-xl shadow-2xs active:scale-[0.98] transition-all"
             >
-              <FaWhatsapp className="text-lg" />
-              WhatsApp Us
+              <FaWhatsapp className="text-base text-[#0fa353]" />
+              <span>WhatsApp Us</span>
             </a>
+
+            <div className="pt-1 flex items-center justify-center gap-2 text-xs font-semibold text-gray-500">
+              <FaPhoneAlt className="text-[10px] text-[#F47C20]" />
+              <a
+                href="tel:+923214189298"
+                className="hover:text-[#0fa353] transition-colors"
+              >
+                Call: +92 321 4189298
+              </a>
+            </div>
           </div>
         </div>
       </div>
