@@ -54,6 +54,20 @@ export default function RecentProjects() {
     if (data?.success && Array.isArray(data.projects)) {
       setProjects(data.projects);
       setHasMore(Boolean(data.hasMore));
+
+      // Auto-open modal if URL contains ?project=ID or #project-ID
+      if (typeof window !== "undefined") {
+        const params = new URLSearchParams(window.location.search);
+        const targetId =
+          params.get("project") ||
+          (window.location.hash.startsWith("#project-")
+            ? window.location.hash.replace("#project-", "")
+            : "");
+        if (targetId) {
+          const matched = data.projects.find((p) => String(p._id) === targetId);
+          if (matched) setActiveProject(matched);
+        }
+      }
     }
   }, [data]);
 
@@ -150,12 +164,12 @@ export default function RecentProjects() {
             projects.map((proj, idx) => {
               const imgSrc = proj.imageUrl || proj.image;
               return (
-                <li key={projectKey(proj) || idx}>
+                <li key={projectKey(proj) || idx} className="relative group">
                   <button
                     type="button"
                     onClick={(e) => openProject(proj, e)}
                     aria-label={`View ${proj.capacity} solar installation in ${proj.location}`}
-                    className={`group relative block aspect-3/4 w-full overflow-hidden rounded-sm bg-gray-900 sm:aspect-4/5 ${FOCUS}`}
+                    className={`relative block aspect-3/4 w-full overflow-hidden rounded-sm bg-gray-900 sm:aspect-4/5 cursor-pointer ${FOCUS}`}
                   >
                     <Image
                       src={imgSrc}
@@ -183,6 +197,25 @@ export default function RecentProjects() {
                       </span>
                     </span>
                   </button>
+
+                  {/* Quick Share Button on Card */}
+                  <div
+                    className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <SocialShareButton
+                      title={`${proj.capacity} Solar Installation in ${proj.location}`}
+                      url={
+                        proj._id
+                          ? `https://a2zsolarsolutions.com/projects/${proj._id}`
+                          : "https://a2zsolarsolutions.com/#projects"
+                      }
+                      image={imgSrc}
+                      location={proj.location}
+                      capacity={proj.capacity}
+                      size="sm"
+                    />
+                  </div>
                 </li>
               );
             })}
@@ -290,7 +323,14 @@ export default function RecentProjects() {
       {/* ── Premium Project Modal ── */}
       {activeProject && (() => {
         const modalImgSrc = activeProject.imageUrl || activeProject.image;
-        const shareTitle = `${activeProject.capacity} Solar Installation in ${activeProject.location} — A2Z Solar Solutions`;
+        const shareTitle = `${activeProject.capacity} Solar Installation in ${activeProject.location}`;
+        const projectId = activeProject._id;
+        const projectShareUrl =
+          typeof window !== "undefined" && projectId
+            ? `${window.location.origin}/projects/${projectId}`
+            : typeof window !== "undefined"
+            ? `${window.location.origin}/#projects`
+            : "https://a2zsolarsolutions.com/#projects";
 
         return (
           <div
@@ -359,7 +399,10 @@ export default function RecentProjects() {
                   <div className="flex-1">
                     <SocialShareButton
                       title={shareTitle}
+                      url={projectShareUrl}
                       image={modalImgSrc}
+                      location={activeProject.location}
+                      capacity={activeProject.capacity}
                       fullWidth
                       dropUp
                       variant="outline"

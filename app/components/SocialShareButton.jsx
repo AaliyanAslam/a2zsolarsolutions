@@ -8,7 +8,7 @@ import {
   Link2,
   Check,
 } from "lucide-react";
-import { FaWhatsapp, FaFacebook } from "react-icons/fa6";
+import { FaWhatsapp, FaFacebook, FaLocationDot } from "react-icons/fa6";
 import Image from "next/image";
 
 /**
@@ -17,7 +17,9 @@ import Image from "next/image";
  * Props:
  *   title   {string}  – text for native share sheet & WhatsApp message
  *   url     {string}  – URL to share. Defaults to window.location.href (client-side only).
- *   image   {string}  – product thumbnail URL shown in the preview card
+ *   image   {string}  – thumbnail / photo URL (passed to Web Share API & preview card)
+ *   location {string} – place name / city (e.g. "DHA Lahore")
+ *   capacity {string} – system capacity (e.g. "10kW")
  *   className {string} – extra Tailwind classes on the trigger button
  *   size    {"sm"|"md"|"lg"}
  *   fullWidth {boolean} – render full-width button with label instead of icon-only
@@ -30,6 +32,8 @@ export default function SocialShareButton({
   title = "",
   url,
   image,
+  location = "",
+  capacity = "",
   className = "",
   size = "md",
   fullWidth = false,
@@ -97,14 +101,43 @@ export default function SocialShareButton({
       shareUrl
     ) {
       try {
-        await navigator.share({ title, url: shareUrl });
+        let filesToShare = null;
+        // On mobile devices, attempt to attach the real image file
+        if (image && typeof navigator.canShare === "function") {
+          try {
+            const res = await fetch(image, { mode: "cors" });
+            if (res.ok) {
+              const blob = await res.blob();
+              const mime = blob.type || "image/jpeg";
+              const ext = mime.includes("png") ? "png" : mime.includes("webp") ? "webp" : "jpg";
+              const file = new File([blob], `solar-project.${ext}`, { type: mime });
+              if (navigator.canShare({ files: [file] })) {
+                filesToShare = [file];
+              }
+            }
+          } catch {
+            // Silently fall back to text/url
+          }
+        }
+
+        const shareData = {
+          title: title || "A2Z Solar Solutions",
+          text: location ? `${title} (📍 ${location})` : title,
+          url: shareUrl,
+        };
+
+        if (filesToShare && filesToShare.length > 0) {
+          shareData.files = filesToShare;
+        }
+
+        await navigator.share(shareData);
         return;
       } catch (err) {
         if (err?.name === "AbortError") return;
       }
     }
     setOpen((prev) => !prev);
-  }, [title, shareUrl]);
+  }, [title, shareUrl, image, location]);
 
   // ── copy link ─────────────────────────────────────────────────────────────
   const copyLink = useCallback(async () => {
@@ -130,9 +163,18 @@ export default function SocialShareButton({
   }, [shareUrl]);
 
   // ── WhatsApp & Facebook URLs ───────────────────────────────────────────────
-  const waText = encodeURIComponent(
-    title ? `${title}\n${shareUrl}` : shareUrl
-  );
+  const waText = (() => {
+    const lines = [];
+    if (title) lines.push(`☀️ *${title}*`);
+    if (location) lines.push(`📍 *Location:* ${location}`);
+    if (capacity) lines.push(`⚡ *System:* ${capacity}`);
+    if (image && !shareUrl.includes(image)) {
+      lines.push(`📸 *Project Photo:* ${image}`);
+    }
+    if (shareUrl) lines.push(`🔗 *View Details:* ${shareUrl}`);
+    return encodeURIComponent(lines.length > 0 ? lines.join("\n\n") : title ? `${title}\n${shareUrl}` : shareUrl);
+  })();
+
   const waUrl = `https://wa.me/?text=${waText}`;
   const fbUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
 
@@ -256,6 +298,12 @@ export default function SocialShareButton({
                     {title && (
                       <p className="text-xs font-medium text-gray-900 line-clamp-2 leading-snug mb-0.5">
                         {title}
+                      </p>
+                    )}
+                    {location && (
+                      <p className="flex items-center gap-1 text-[11px] font-semibold text-emerald-700 mb-1">
+                        <FaLocationDot size={10} className="shrink-0 text-[#0fa353]" />
+                        <span className="truncate">{location}</span>
                       </p>
                     )}
                     <div className="flex items-center gap-1.5">
