@@ -4,13 +4,19 @@ import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import useSWR from "swr";
 import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
-import { FaYoutube, FaPlay, FaPause, FaXmark } from "react-icons/fa6";
+import {
+  FaYoutube,
+  FaPlay,
+  FaPause,
+  FaXmark,
+  FaChevronLeft,
+  FaChevronRight,
+} from "react-icons/fa6";
 import { FaWhatsapp } from "react-icons/fa";
 import SocialShareButton from "@/app/components/SocialShareButton";
 
 const WHATSAPP_NUMBER = "923214189298";
 const CHANNEL_URL = "https://www.youtube.com/@A2ZSolarSolutions";
-const SECONDS_PER_VIDEO = 7; // lower = faster
 const MIN_ITEMS_PER_SET = 5; // keeps the loop wider than the screen
 
 const FOCUS =
@@ -57,7 +63,7 @@ function VideoSkeleton() {
 function VideoCard({ video, duplicate, onOpen }) {
   return (
     <li
-      className={`${CARD_WIDTH} shrink-0 pr-4 sm:pr-6 box-content`}
+      className={`${CARD_WIDTH} shrink-0 pr-4 sm:pr-6 box-content select-none`}
       aria-hidden={duplicate ? "true" : undefined}
     >
       <div className="group block w-full text-left">
@@ -73,7 +79,8 @@ function VideoCard({ video, duplicate, onOpen }) {
             alt=""
             fill
             sizes="(max-width: 640px) 272px, (max-width: 1024px) 380px, 420px"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-cover transition-transform duration-500 group-hover:scale-105 pointer-events-none select-none"
+            draggable={false}
           />
           <span
             aria-hidden="true"
@@ -92,7 +99,7 @@ function VideoCard({ video, duplicate, onOpen }) {
             onClick={(e) => onOpen(video, e)}
             className="flex-1 text-left cursor-pointer"
           >
-            <span className="line-clamp-2 block text-sm font-bold leading-snug text-[#1a1c29] transition-colors hover:text-[#0fa353] sm:text-base">
+            <span className="line-clamp-2 block text-sm font-bold leading-snug text-[#1a1c29] transition-colors hover:text-[#0fa353] sm:text-base select-text">
               {video.title}
             </span>
           </button>
@@ -117,8 +124,15 @@ function VideoCard({ video, duplicate, onOpen }) {
 export default function YouTubeSection() {
   const [activeVideo, setActiveVideo] = useState(null);
   const [userPaused, setUserPaused] = useState(false);
-  const [touchPaused, setTouchPaused] = useState(false);
-  const touchTimeoutRef = useRef(null);
+  const containerRef = useRef(null);
+  const isInteractingRef = useRef(false);
+  const isMouseDownRef = useRef(false);
+  const mouseStartXRef = useRef(0);
+  const mouseStartScrollRef = useRef(0);
+  const resumeTimeoutRef = useRef(null);
+  const hasDraggedRef = useRef(false);
+  const touchStartPosRef = useRef({ x: 0, y: 0 });
+  const accumulatedScrollRef = useRef(0);
   const closeButtonRef = useRef(null);
   const lastTriggerRef = useRef(null);
 
@@ -130,26 +144,192 @@ export default function YouTubeSection() {
 
   const videos = data?.success && Array.isArray(data.videos) ? data.videos : [];
 
-  // One "set" is long enough to fill the screen; the track shows the set twice
-  // and slides by exactly half its width, so the loop has no visible jump.
+  // Generate a set wide enough for infinite wrap
   const copies = videos.length
     ? Math.max(1, Math.ceil(MIN_ITEMS_PER_SET / videos.length))
     : 1;
   const set = Array.from({ length: copies }).flatMap(() => videos);
-  const duration = Math.max(20, set.length * SECONDS_PER_VIDEO);
 
-  const isPaused = userPaused || touchPaused || Boolean(activeVideo);
+  // Initialize scroll position to center set so user can scroll left or right immediately
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
 
-  // Pause while a finger is on the carousel, resume shortly after.
-  const handleTouchStart = () => {
-    clearTimeout(touchTimeoutRef.current);
-    setTouchPaused(true);
+    const initScroll = () => {
+      if (el && el.scrollWidth > el.clientWidth) {
+        const oneSetWidth = el.scrollWidth / 3;
+        if (el.scrollLeft === 0 && oneSetWidth > 0) {
+          el.scrollLeft = oneSetWidth;
+          accumulatedScrollRef.current = oneSetWidth;
+        }
+      }
+    };
+
+    initScroll();
+    const timeout = setTimeout(initScroll, 120);
+    return () => clearTimeout(timeout);
+  }, [videos]);
+
+  // Butter-smooth continuous auto-scroll via requestAnimationFrame
+  useEffect(() => {
+    if (videos.length === 0) return;
+
+    let animationFrameId;
+    let lastTime = performance.now();
+    const pixelsPerSecond = 42; // smooth and legible pace
+
+    const step = (time) => {
+      const dt = Math.min((time - lastTime) / 1000, 0.1);
+      lastTime = time;
+
+      const el = containerRef.current;
+      if (el) {
+        const oneSetWidth = el.scrollWidth / 3;
+
+        if (
+          !isInteractingRef.current &&
+          !userPaused &&
+          !activeVideo &&
+          oneSetWidth > 0
+        ) {
+          accumulatedScrollRef.current += pixelsPerSecond * dt;
+          if (accumulatedScrollRef.current >= oneSetWidth * 2) {
+            accumulatedScrollRef.current -= oneSetWidth;
+          }
+          el.scrollLeft = accumulatedScrollRef.current;
+        } else {
+          accumulatedScrollRef.current = el.scrollLeft;
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(step);
+    };
+
+    animationFrameId = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [videos.length, userPaused, activeVideo]);
+
+  // Touch handlers for mobile thumb scrolling
+  const handleTouchStart = (e) => {
+    isInteractingRef.current = true;
+    hasDraggedRef.current = false;
+    if (e.touches && e.touches[0]) {
+      touchStartPosRef.current = {
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY,
+      };
+    }
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
   };
+
+  const handleTouchMove = (e) => {
+    if (!hasDraggedRef.current && e.touches && e.touches[0]) {
+      const dx = Math.abs(e.touches[0].clientX - touchStartPosRef.current.x);
+      const dy = Math.abs(e.touches[0].clientY - touchStartPosRef.current.y);
+      if (dx > 8 && dx > dy) {
+        hasDraggedRef.current = true;
+      }
+    }
+  };
+
   const handleTouchEnd = () => {
-    clearTimeout(touchTimeoutRef.current);
-    touchTimeoutRef.current = setTimeout(() => setTouchPaused(false), 2500);
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+    resumeTimeoutRef.current = setTimeout(() => {
+      isInteractingRef.current = false;
+    }, 3000);
+
+    setTimeout(() => {
+      hasDraggedRef.current = false;
+    }, 150);
   };
-  useEffect(() => () => clearTimeout(touchTimeoutRef.current), []);
+
+  // Infinite wrap handling on native scroll (thumb fling / momentum)
+  const handleScroll = () => {
+    const el = containerRef.current;
+    if (!el) return;
+    accumulatedScrollRef.current = el.scrollLeft;
+
+    const oneSetWidth = el.scrollWidth / 3;
+    if (oneSetWidth > 0) {
+      if (el.scrollLeft >= oneSetWidth * 2) {
+        el.scrollLeft -= oneSetWidth;
+        accumulatedScrollRef.current = el.scrollLeft;
+      } else if (el.scrollLeft <= 10) {
+        el.scrollLeft += oneSetWidth;
+        accumulatedScrollRef.current = el.scrollLeft;
+      }
+    }
+  };
+
+  // Mouse drag handlers for desktop
+  const handleMouseDown = (e) => {
+    if (e.button !== 0) return;
+    const el = containerRef.current;
+    if (!el) return;
+    isMouseDownRef.current = true;
+    isInteractingRef.current = true;
+    hasDraggedRef.current = false;
+    mouseStartXRef.current = e.pageX - el.offsetLeft;
+    mouseStartScrollRef.current = el.scrollLeft;
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isMouseDownRef.current) return;
+    const el = containerRef.current;
+    if (!el) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const walk = x - mouseStartXRef.current;
+    if (Math.abs(walk) > 6) {
+      hasDraggedRef.current = true;
+    }
+    el.scrollLeft = mouseStartScrollRef.current - walk;
+    accumulatedScrollRef.current = el.scrollLeft;
+  };
+
+  const handleMouseUp = () => {
+    if (isMouseDownRef.current) {
+      isMouseDownRef.current = false;
+      setTimeout(() => {
+        hasDraggedRef.current = false;
+      }, 150);
+      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = setTimeout(() => {
+        isInteractingRef.current = false;
+      }, 2500);
+    }
+  };
+
+  const handleMouseEnter = () => {
+    isInteractingRef.current = true;
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+  };
+
+  const handleMouseLeave = () => {
+    if (isMouseDownRef.current) {
+      handleMouseUp();
+    } else {
+      if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+      resumeTimeoutRef.current = setTimeout(() => {
+        isInteractingRef.current = false;
+      }, 1500);
+    }
+  };
+
+  // Nudge left or right via button
+  const scrollByDirection = (dir) => {
+    const el = containerRef.current;
+    if (!el) return;
+    isInteractingRef.current = true;
+    if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+
+    el.scrollBy({ left: dir * 360, behavior: "smooth" });
+
+    resumeTimeoutRef.current = setTimeout(() => {
+      isInteractingRef.current = false;
+    }, 3500);
+  };
 
   // Modal: Escape to close, lock page scroll, move focus in and back out.
   useEffect(() => {
@@ -175,6 +355,8 @@ export default function YouTubeSection() {
   }, [activeVideo]);
 
   const openVideo = (video, e) => {
+    // If the user was swiping with thumb or dragging with mouse, ignore click
+    if (hasDraggedRef.current) return;
     lastTriggerRef.current = e.currentTarget;
     setActiveVideo(video);
   };
@@ -188,16 +370,12 @@ export default function YouTubeSection() {
       className="relative scroll-mt-20 overflow-hidden bg-white py-12 sm:py-20 md:py-24"
     >
       <style>{`
-        @keyframes yt-marquee { to { transform: translateX(-50%); } }
-        .yt-track { animation: yt-marquee var(--yt-duration) linear infinite; }
-        .yt-paused .yt-track { animation-play-state: paused; }
-        @media (hover: hover) {
-          .yt-marquee:hover .yt-track { animation-play-state: paused; }
+        .scrollbar-none {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
         }
-        .yt-marquee:focus-within .yt-track { animation-play-state: paused; }
-        @media (prefers-reduced-motion: reduce) {
-          .yt-track { animation: none; }
-          .yt-marquee { overflow-x: auto; }
+        .scrollbar-none::-webkit-scrollbar {
+          display: none;
         }
       `}</style>
 
@@ -224,37 +402,65 @@ export default function YouTubeSection() {
             </p>
           </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
             {videos.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setUserPaused((p) => !p)}
-                aria-pressed={userPaused}
-                className={`inline-flex min-h-12 items-center justify-center gap-2.5 rounded-sm border border-gray-300 bg-white px-5 py-3 text-sm font-bold text-[#1a1c29] transition-colors hover:bg-gray-50 ${FOCUS}`}
-              >
-                {userPaused ? (
-                  <FaPlay className="text-xs" aria-hidden="true" />
-                ) : (
-                  <FaPause className="text-xs" aria-hidden="true" />
-                )}
-                {userPaused ? "Play scrolling" : "Pause scrolling"}
-              </button>
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <button
+                  type="button"
+                  onClick={() => scrollByDirection(-1)}
+                  aria-label="Previous video"
+                  className={`inline-flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-sm border border-gray-300 bg-white text-[#1a1c29] transition-colors hover:bg-gray-50 cursor-pointer ${FOCUS}`}
+                >
+                  <FaChevronLeft className="text-xs" aria-hidden="true" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => scrollByDirection(1)}
+                  aria-label="Next video"
+                  className={`inline-flex h-11 w-11 sm:h-12 sm:w-12 items-center justify-center rounded-sm border border-gray-300 bg-white text-[#1a1c29] transition-colors hover:bg-gray-50 cursor-pointer ${FOCUS}`}
+                >
+                  <FaChevronRight className="text-xs" aria-hidden="true" />
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setUserPaused((p) => !p)}
+                  aria-pressed={userPaused}
+                  className={`inline-flex min-h-11 sm:min-h-12 items-center justify-center gap-2 rounded-sm border border-gray-300 bg-white px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#1a1c29] transition-colors hover:bg-gray-50 cursor-pointer ${FOCUS}`}
+                >
+                  {userPaused ? (
+                    <FaPlay
+                      className="text-[10px] sm:text-xs text-[#0fa353]"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <FaPause
+                      className="text-[10px] sm:text-xs"
+                      aria-hidden="true"
+                    />
+                  )}
+                  <span>{userPaused ? "Play" : "Pause"}</span>
+                </button>
+              </div>
             )}
 
             <a
               href={CHANNEL_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className={`inline-flex min-h-12 items-center justify-center gap-2.5 rounded-sm border border-gray-300 bg-white px-5 py-3 text-sm font-bold text-[#1a1c29] transition-colors hover:bg-gray-50 ${FOCUS}`}
+              className={`inline-flex min-h-11 sm:min-h-12 items-center justify-center gap-2 rounded-sm border border-gray-300 bg-white px-4 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-[#1a1c29] transition-colors hover:bg-gray-50 cursor-pointer ${FOCUS}`}
             >
-              <FaYoutube className="text-lg text-red-600" aria-hidden="true" />
-              Visit our YouTube channel
+              <FaYoutube
+                className="text-base sm:text-lg text-red-600"
+                aria-hidden="true"
+              />
+              <span className="hidden xs:inline">Visit our </span>YouTube
             </a>
           </div>
         </div>
       </div>
 
-      {/* Running carousel (full width) */}
+      {/* Running carousel (full width with native touch scroll + auto-flow) */}
       {isLoading ? (
         <div className="flex gap-4 overflow-hidden px-4 sm:gap-6 sm:px-8">
           {Array.from({ length: 4 }).map((_, i) => (
@@ -289,23 +495,31 @@ export default function YouTubeSection() {
         </div>
       ) : (
         <div
+          ref={containerRef}
           role="region"
           aria-label="Project videos"
           onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={handleTouchEnd}
-          className={`yt-marquee overflow-hidden ${isPaused ? "yt-paused" : ""}`}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onScroll={handleScroll}
+          className="scrollbar-none overflow-x-auto cursor-grab active:cursor-grabbing select-none"
           style={{
             maskImage:
               "linear-gradient(to right, transparent, #000 4%, #000 96%, transparent)",
             WebkitMaskImage:
               "linear-gradient(to right, transparent, #000 4%, #000 96%, transparent)",
+            WebkitOverflowScrolling: "touch",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
-          <ul
-            className="yt-track flex w-max"
-            style={{ "--yt-duration": `${duration}s` }}
-          >
+          <ul className="flex w-max py-2">
             {set.map((video, idx) => (
               <VideoCard
                 key={`a-${video._id || idx}-${idx}`}
@@ -316,6 +530,14 @@ export default function YouTubeSection() {
             {set.map((video, idx) => (
               <VideoCard
                 key={`b-${video._id || idx}-${idx}`}
+                video={video}
+                duplicate
+                onOpen={openVideo}
+              />
+            ))}
+            {set.map((video, idx) => (
+              <VideoCard
+                key={`c-${video._id || idx}-${idx}`}
                 video={video}
                 duplicate
                 onOpen={openVideo}
