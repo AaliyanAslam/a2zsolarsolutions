@@ -10,6 +10,7 @@ const PRODUCT_CATEGORIES = [
   "EV Charging Solutions",
   "Electrical DB Accessories",
   "DB Accessories",
+  "Tools",
 ];
 
 const ProductSchema = new mongoose.Schema(

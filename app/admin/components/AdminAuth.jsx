@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
 const AuthContext = createContext(null);
@@ -9,8 +9,11 @@ export function AdminAuthProvider({ children }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [adminUser, setAdminUser] = useState(null);
+  const hasMounted = useRef(false);
 
   useEffect(() => {
+    // Only run auth check after hydration is complete
+    hasMounted.current = true;
     const stored = localStorage.getItem("a2z_admin_auth");
     if (stored) {
       try {
@@ -78,14 +81,20 @@ export function useAdminAuth() {
 export function ProtectedRoute({ children }) {
   const { isAuthenticated, isLoading } = useAdminAuth();
   const router = useRouter();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (mounted && !isLoading && !isAuthenticated) {
       router.replace("/admin");
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [mounted, isLoading, isAuthenticated, router]);
 
-  if (isLoading) {
+  // SSR and first client render both return the same spinner — no hydration mismatch
+  if (!mounted || isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="w-8 h-8 border-3 border-green-500 border-t-transparent rounded-full animate-spin" />
@@ -97,3 +106,4 @@ export function ProtectedRoute({ children }) {
 
   return children;
 }
+

@@ -25,6 +25,7 @@ const CATEGORIES = [
   "EV Charging Solutions",
   "Electrical DB Accessories",
   "DB Accessories",
+  "Tools",
 ];
 
 const formatPrice = (p) => {

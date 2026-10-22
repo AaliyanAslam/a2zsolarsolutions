@@ -28,6 +28,7 @@ const CATEGORIES = [
   "EV Charging Solutions",
   "Electrical DB Accessories",
   "DB Accessories",
+  "Tools",
 ];
 
 export default function AdminProductsPage() {
