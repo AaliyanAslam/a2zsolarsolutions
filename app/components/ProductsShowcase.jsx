@@ -1,8 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import useSWR from "swr";
+import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import {
   FaArrowRight,
   FaChevronLeft,
@@ -195,32 +197,24 @@ function CategoryRow({ category, products }) {
 }
 
 export default function ProductsShowcase() {
-  const [grouped, setGrouped] = useState({});
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading } = useSWR(
+    "/api/products?limit=50",
+    fetcher,
+    SWR_CACHE_CONFIG,
+  );
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const res = await fetch("/api/products?limit=50");
-        const data = await res.json();
-        if (data.success && data.products?.length > 0) {
-          const groups = {};
-          data.products.forEach((p) => {
-            if (!groups[p.category]) groups[p.category] = [];
-            if (groups[p.category].length < 8) groups[p.category].push(p);
-          });
-          setGrouped(groups);
-        }
-      } catch {
-        // silent fail
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+  const grouped = useMemo(() => {
+    if (!data?.success || !data.products?.length) return {};
+    const groups = {};
+    data.products.forEach((p) => {
+      if (!groups[p.category]) groups[p.category] = [];
+      if (groups[p.category].length < 8) groups[p.category].push(p);
+    });
+    return groups;
+  }, [data]);
 
   const categories = Object.keys(grouped);
-  if (loading || categories.length === 0) return null;
+  if (isLoading || categories.length === 0) return null;
 
   return (
     <section

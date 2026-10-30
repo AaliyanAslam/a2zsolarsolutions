@@ -87,6 +87,10 @@ export async function GET(req) {
       success: true,
       products,
       total,
+    }, {
+      headers: {
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      },
     });
   } catch (error) {
     console.error("GET /api/products error:", error);

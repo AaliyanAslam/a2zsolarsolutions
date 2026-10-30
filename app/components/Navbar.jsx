@@ -63,9 +63,9 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
-  if (pathname?.startsWith("/admin")) {
-    return null;
-  }
+  // NOTE: admin check moved AFTER all hooks to comply with React Rules of Hooks.
+  // Returning early before hooks causes crashes and hydration mismatches.
+  const isAdminPage = pathname?.startsWith("/admin");
 
   useEffect(() => {
     let ticking = false;
@@ -153,6 +153,9 @@ const Navbar = () => {
     if (href.startsWith("/#") || href === "#") return false;
     return pathname.startsWith(href);
   };
+
+  // Early return for admin pages — placed AFTER all hooks
+  if (isAdminPage) return null;
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300">

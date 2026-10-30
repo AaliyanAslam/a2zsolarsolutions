@@ -8,7 +8,11 @@ export async function GET() {
   try {
     await connectDB();
     const videos = await Video.find({}).sort({ createdAt: -1 });
-    return NextResponse.json({ success: true, videos });
+    return NextResponse.json({ success: true, videos }, {
+      headers: {
+        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      },
+    });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
