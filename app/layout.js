@@ -282,6 +282,13 @@ export default function RootLayout({ children }) {
         <meta name="apple-mobile-web-app-title" content="A2Z Solar Solutions" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+        <link rel="preconnect" href="https://pagead2.googlesyndication.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4154546329201101"
+          crossOrigin="anonymous"
+        />
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){try{var b={'bis_skin_checked':1,'cz-shortcut-listen':1,'data-new-gr-c-s-check-loaded':1,'data-gr-ext-installed':1};var o=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){if(b[n])return;return o.apply(this,arguments);};}catch(e){}})();`,
