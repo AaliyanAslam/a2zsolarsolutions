@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Image from "next/image";
 import { FaTrash, FaPlus, FaCheck, FaBolt, FaWhatsapp } from "react-icons/fa";
 import confetti from "canvas-confetti";
@@ -70,6 +70,7 @@ function EnergyBar({ label, units, maxUnits, color }) {
 }
 
 export default function SolarCalculator() {
+  const [mounted, setMounted] = useState(false);
   const [phase, setPhase] = useState("single");
   const [appliances, setAppliances] = useState([
     { id: 1, name: "Ceiling fan (standard)", qty: 1, watts: 80, hours: 12 },
@@ -77,6 +78,10 @@ export default function SolarCalculator() {
   const [showResult, setShowResult] = useState(false);
   const [isCalculating, setIsCalculating] = useState(false);
   const resultRef = useRef(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const totalLoadW = appliances.reduce((sum, app) => sum + app.qty * app.watts, 0);
   const totalDailyUnits = appliances.reduce(
@@ -291,8 +296,26 @@ export default function SolarCalculator() {
     </div>
   );
 
+  if (!mounted) {
+    return (
+      <section id="calculator" className="scroll-mt-20 py-12 sm:py-16 md:py-24 bg-gray-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-6 sm:mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-2 md:mb-4 tracking-tight">
+              Solar Load <span className="text-green-600">Calculator</span>
+            </h2>
+            <p className="text-xs sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
+              Estimate your solar requirements by adding your home appliances below.
+            </p>
+          </div>
+          <div className="h-96 w-full max-w-4xl mx-auto bg-white rounded-md border border-gray-200 animate-pulse" />
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section id="calculator" className="scroll-mt-20 py-12 sm:py-16 md:py-24 bg-gray-50 overflow-hidden">
+    <section id="calculator" suppressHydrationWarning className="scroll-mt-20 py-12 sm:py-16 md:py-24 bg-gray-50 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-6 sm:mb-8 md:mb-12">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-gray-900 mb-2 md:mb-4 tracking-tight">
@@ -304,7 +327,7 @@ export default function SolarCalculator() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start justify-center">
-          <div className="bg-white rounded-md shadow-sm border border-gray-200 p-3.5 sm:p-6 md:p-8 w-full lg:w-[58%]">
+          <div suppressHydrationWarning className="bg-white rounded-md shadow-sm border border-gray-200 p-3.5 sm:p-6 md:p-8 w-full lg:w-[58%]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 md:mb-8 gap-2.5 sm:gap-3">
               <div>
                 <h3 className="text-base sm:text-xl font-bold text-gray-900">Your appliances</h3>
@@ -330,7 +353,7 @@ export default function SolarCalculator() {
               </div>
             </div>
 
-            <div className="hidden md:grid grid-cols-12 gap-4 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-3 mb-4">
+            <div suppressHydrationWarning className="hidden md:grid grid-cols-12 gap-4 text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-gray-100 pb-3 mb-4">
               <div className="col-span-4">Appliance</div>
               <div className="col-span-2 text-center">Qty</div>
               <div className="col-span-2 text-center">Watts</div>
@@ -338,7 +361,7 @@ export default function SolarCalculator() {
               <div className="col-span-2 text-right">Units/Day</div>
             </div>
 
-            <div className="space-y-3 md:space-y-3">
+            <div suppressHydrationWarning className="space-y-3 md:space-y-3">
               {appliances.map((app) => {
                 const unitsPerDay = ((app.qty * app.watts * app.hours) / 1000).toFixed(1);
                 return (

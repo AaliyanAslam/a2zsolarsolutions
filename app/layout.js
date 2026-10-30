@@ -283,6 +283,11 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://res.cloudinary.com" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
         <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var b={'bis_skin_checked':1,'cz-shortcut-listen':1,'data-new-gr-c-s-check-loaded':1,'data-gr-ext-installed':1};var o=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){if(b[n])return;return o.apply(this,arguments);};}catch(e){}})();`,
+          }}
+        />
+        <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(schemaGraph).replace(/</g, "\\u003c"),
