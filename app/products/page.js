@@ -1,4 +1,6 @@
 import { Suspense } from "react";
+import connectDB from "@/lib/mongodb";
+import Product from "@/models/Product";
 import ProductsPageClient from "./ProductsPageClient";
 
 export const metadata = {
@@ -34,7 +36,24 @@ export const metadata = {
   },
 };
 
-export default function ProductsPage() {
+async function getProducts() {
+  try {
+    await connectDB();
+    const products = await Product.find({})
+      .sort({ order: 1, createdAt: -1 })
+      .select("-description -specifications -features")
+      .lean();
+    // Serialize MongoDB ObjectIds and dates to plain JSON
+    return JSON.parse(JSON.stringify(products));
+  } catch (error) {
+    console.error("Failed to fetch products for SSR:", error?.message);
+    return [];
+  }
+}
+
+export default async function ProductsPage() {
+  const initialProducts = await getProducts();
+
   return (
     <Suspense
       fallback={
@@ -43,7 +62,7 @@ export default function ProductsPage() {
         </div>
       }
     >
-      <ProductsPageClient />
+      <ProductsPageClient initialProducts={initialProducts} />
     </Suspense>
   );
 }

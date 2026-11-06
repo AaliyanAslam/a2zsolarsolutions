@@ -324,10 +324,10 @@ export default function PrivacyPolicyPage() {
                   <div>
                     <strong className="text-gray-900 block">Email:</strong>
                     <a
-                      href="mailto:solarwala2023@gmail.com"
+                      href="mailto:a2zsolarsolutions.com@gmail.com"
                       className="text-[#0fa353] font-semibold hover:underline"
                     >
-                      solarwala2023@gmail.com
+                      a2zsolarsolutions.com@gmail.com
                     </a>
                   </div>
                 </div>
@@ -353,7 +353,7 @@ export default function PrivacyPolicyPage() {
                   <div>
                     <strong className="text-gray-900 block">Office:</strong>
                     <span className="text-gray-600">
-                      2nd Floor, Plot No. D164, Korangi No. 6, D-Area, Karachi, Pakistan
+                      D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi, Karachi 78400, Pakistan
                     </span>
                   </div>
                 </div>

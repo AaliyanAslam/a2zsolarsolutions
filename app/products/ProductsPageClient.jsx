@@ -37,14 +37,15 @@ const formatPrice = (p) => {
   }).format(p);
 };
 
-export default function ProductsPageClient() {
+export default function ProductsPageClient({ initialProducts = [] }) {
   const searchParams = useSearchParams();
   const initialCategory = searchParams.get("category") || "All";
 
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState(initialProducts);
+  const [loading, setLoading] = useState(false);
   const [category, setCategory] = useState(initialCategory);
   const [search, setSearch] = useState("");
+  const [hasFetched, setHasFetched] = useState(false);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -62,9 +63,19 @@ export default function ProductsPageClient() {
     }
   }, [category, search]);
 
+  // Only fetch client-side when user changes filters (not on initial mount)
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    if (hasFetched) {
+      fetchProducts();
+    } else {
+      setHasFetched(true);
+      // If a category filter was set via URL on load, do a filtered fetch
+      if (initialCategory !== "All") {
+        fetchProducts();
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category, search]);
 
   return (
     <main className="min-h-screen bg-white text-[#1a1c29] pt-24 sm:pt-28 pb-20">

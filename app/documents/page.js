@@ -1,3 +1,5 @@
+import connectDB from "@/lib/mongodb";
+import Document from "@/models/Document";
 import DocumentsClient from "./DocumentsClient";
 
 export const metadata = {
@@ -33,6 +35,20 @@ export const metadata = {
   },
 };
 
-export default function DocumentsPage() {
-  return <DocumentsClient />;
+async function getDocuments() {
+  try {
+    await connectDB();
+    const documents = await Document.find({}).sort({ createdAt: -1 }).lean();
+    // Serialize MongoDB ObjectIds and dates to plain JSON
+    return JSON.parse(JSON.stringify(documents));
+  } catch (error) {
+    console.error("Failed to fetch documents for SSR:", error?.message);
+    return [];
+  }
+}
+
+export default async function DocumentsPage() {
+  const initialDocuments = await getDocuments();
+
+  return <DocumentsClient initialDocuments={initialDocuments} />;
 }

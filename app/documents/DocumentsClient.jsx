@@ -46,7 +46,7 @@ function DocSkeleton() {
   );
 }
 
-export default function DocumentsClient() {
+export default function DocumentsClient({ initialDocuments = [] }) {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState(""); // debounced value
@@ -70,7 +70,12 @@ export default function DocumentsClient() {
     queryParams.append("category", selectedCategory);
   if (searchQuery) queryParams.append("search", searchQuery);
   const queryStr = queryParams.toString();
-  const swrKey = `/api/documents${queryStr ? `?${queryStr}` : ""}`;
+
+  // Only fetch from API when user has applied filters; otherwise use SSR data
+  const shouldFetch = selectedCategory !== "All" || searchQuery;
+  const swrKey = shouldFetch
+    ? `/api/documents${queryStr ? `?${queryStr}` : ""}`
+    : null;
 
   // keepPreviousData: the list stays on screen while new results load.
   const { data, error, isLoading, isValidating } = useSWR(swrKey, fetcher, {
@@ -78,8 +83,12 @@ export default function DocumentsClient() {
     keepPreviousData: true,
   });
 
-  const documents =
-    data?.success && Array.isArray(data.documents) ? data.documents : [];
+  // Use API data when fetching with filters, otherwise use SSR initial data
+  const documents = shouldFetch
+    ? data?.success && Array.isArray(data.documents)
+      ? data.documents
+      : []
+    : initialDocuments;
 
   // Safety net in case the API does not filter by search itself.
   const q = searchQuery.toLowerCase();
@@ -240,7 +249,7 @@ export default function DocumentsClient() {
         </p>
 
         {/* Results */}
-        {isLoading ? (
+        {isLoading && shouldFetch ? (
           <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
               <DocSkeleton key={i} />

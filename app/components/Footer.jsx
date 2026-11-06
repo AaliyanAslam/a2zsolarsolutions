@@ -281,14 +281,14 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <FaEnvelope className="text-[#0fa353] text-xs shrink-0" />
-                <a href="mailto:solarwala2023@gmail.com" className="hover:text-gray-900 transition-colors truncate">
-                  solarwala2023@gmail.com
+                <a href="mailto:a2zsolarsolutions.com@gmail.com" className="hover:text-gray-900 transition-colors truncate">
+                  a2zsolarsolutions.com@gmail.com
                 </a>
               </li>
               <li className="flex items-start gap-2 pt-0.5">
                 <FaLocationDot className="text-[#F47C20] text-xs shrink-0 mt-0.5" />
                 <span className="text-[11px] leading-relaxed text-gray-600">
-                  <strong className="text-gray-800 font-semibold">Karachi HQ:</strong> Shop No.2, Korangi No.6, Karachi
+                  <strong className="text-gray-800 font-semibold">Karachi HQ:</strong> D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi, Karachi 78400
                 </span>
               </li>
               <li className="flex items-start gap-2 pt-0.5">
