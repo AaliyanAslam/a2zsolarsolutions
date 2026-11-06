@@ -59,7 +59,16 @@ const TOC_SECTIONS = [
     ],
   },
   { id: "sec-2", label: "2. How We Use Your Information" },
-  { id: "sec-3", label: "3. Cookies and Advertising" },
+  {
+    id: "sec-3",
+    label: "3. Cookies and Advertising",
+    subItems: [
+      { id: "sec-3-1", label: "3.1 What Are Cookies" },
+      { id: "sec-3-2", label: "3.2 Google AdSense & DoubleClick" },
+      { id: "sec-3-3", label: "3.3 Third-Party Ad Vendors" },
+      { id: "sec-3-4", label: "3.4 Opt-Out Options" },
+    ],
+  },
   { id: "sec-4", label: "4. Data Protection & Sharing" },
   { id: "sec-5", label: "5. Third-Party Links" },
   { id: "sec-6", label: "6. Contact Us" },
@@ -272,13 +281,115 @@ export default function PrivacyPolicyPage() {
             </section>
 
             {/* 3. Cookies and Advertising */}
-            <section id="sec-3" className="scroll-mt-28 space-y-4 pt-4 border-t border-gray-100">
+            <section id="sec-3" className="scroll-mt-28 space-y-5 pt-4 border-t border-gray-100">
               <h3 className="text-xl sm:text-2xl font-bold text-[#1a1c29] tracking-tight">
                 3. Cookies and Advertising
               </h3>
               <p className="text-sm sm:text-base text-gray-600 leading-relaxed">
-                Our website may use standard cookies to enhance user experience, remember preferences, and serve relevant advertisements (such as Google AdSense). You have the option to disable cookies through your personal browser settings at any time.
+                Our website uses cookies and similar tracking technologies to enhance your browsing experience, remember your preferences, analyse site traffic, and display relevant advertisements. Below we explain how cookies work on our site, how third-party advertising partners use them, and how you can manage or opt out of personalised advertising.
               </p>
+
+              {/* 3.1 What Are Cookies */}
+              <div id="sec-3-1" className="scroll-mt-28 pl-3 sm:pl-4 border-l-2 border-emerald-400 space-y-1.5 py-1">
+                <h4 className="text-sm sm:text-base font-bold text-[#1a1c29]">
+                  3.1 What Are Cookies
+                </h4>
+                <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
+                  Cookies are small text files stored on your device (computer, tablet, or mobile phone) when you visit a website. They allow the site to recognise your device and store information about your preferences or past actions. Cookies may be &ldquo;session&rdquo; cookies (deleted when you close your browser) or &ldquo;persistent&rdquo; cookies (remain until they expire or you delete them).
+                </p>
+              </div>
+
+              {/* 3.2 Google AdSense & DoubleClick DART Cookie */}
+              <div id="sec-3-2" className="scroll-mt-28 pl-3 sm:pl-4 border-l-2 border-emerald-400 space-y-1.5 py-1">
+                <h4 className="text-sm sm:text-base font-bold text-[#1a1c29]">
+                  3.2 Google AdSense &amp; the DoubleClick DART Cookie
+                </h4>
+                <div className="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-2">
+                  <p>
+                    We use <strong className="text-[#1a1c29]">Google AdSense</strong>, an advertising service provided by Google LLC (&ldquo;Google&rdquo;), to display advertisements on our website. Google AdSense uses the <strong className="text-[#1a1c29]">DoubleClick DART cookie</strong> to serve ads to you based on your visits to this website and other websites on the Internet.
+                  </p>
+                  <p>
+                    The DART cookie enables Google and its partners to serve advertisements based on your browsing history and interests. It does <strong className="text-[#1a1c29]">not</strong> track personally identifiable information such as your name, email address, or physical address.
+                  </p>
+                  <p>
+                    You may opt out of the use of the DART cookie by visiting the{" "}
+                    <a
+                      href="https://adssettings.google.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#0fa353] font-semibold underline underline-offset-2 hover:text-[#0c8a45]"
+                    >
+                      Google Ads Settings
+                    </a>{" "}
+                    page.
+                  </p>
+                </div>
+              </div>
+
+              {/* 3.3 Third-Party Ad Vendors */}
+              <div id="sec-3-3" className="scroll-mt-28 pl-3 sm:pl-4 border-l-2 border-emerald-400 space-y-1.5 py-1">
+                <h4 className="text-sm sm:text-base font-bold text-[#1a1c29]">
+                  3.3 Third-Party Advertising Vendors
+                </h4>
+                <div className="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-2">
+                  <p>
+                    Third-party ad networks and vendors, including Google, use cookies, web beacons, and similar technologies to collect information about your browsing activity across websites. This information is used to provide you with advertisements that may be relevant to your interests.
+                  </p>
+                  <p>
+                    These third-party advertising companies may use information (not including your name, address, email address, or telephone number) about your visits to this and other websites in order to deliver targeted advertisements about goods and services of interest to you.
+                  </p>
+                </div>
+              </div>
+
+              {/* 3.4 Opt-Out Options */}
+              <div id="sec-3-4" className="scroll-mt-28 pl-3 sm:pl-4 border-l-2 border-emerald-400 space-y-1.5 py-1">
+                <h4 className="text-sm sm:text-base font-bold text-[#1a1c29]">
+                  3.4 Your Opt-Out Options
+                </h4>
+                <div className="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-2">
+                  <p>
+                    You have the right to manage, disable, or opt out of cookies and personalised advertising at any time using any of the following methods:
+                  </p>
+                  <ul className="space-y-2.5 pl-1">
+                    {[
+                      {
+                        text: "Google Ads Settings",
+                        desc: "Review and control the ads Google shows you.",
+                        href: "https://adssettings.google.com",
+                      },
+                      {
+                        text: "Digital Advertising Alliance (DAA)",
+                        desc: "Opt out of interest-based advertising from participating companies.",
+                        href: "https://www.aboutads.info/choices/",
+                      },
+                      {
+                        text: "Network Advertising Initiative (NAI)",
+                        desc: "Opt out of targeted advertising from NAI member companies.",
+                        href: "https://optout.networkadvertising.org/",
+                      },
+                    ].map((link, idx) => (
+                      <li key={idx} className="flex items-start gap-2.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#0fa353] mt-2 shrink-0" />
+                        <span className="leading-relaxed">
+                          <a
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#0fa353] font-semibold underline underline-offset-2 hover:text-[#0c8a45]"
+                          >
+                            {link.text}
+                          </a>
+                          {" — "}
+                          {link.desc}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p>
+                    Additionally, most web browsers allow you to control cookies through their settings. You can typically set your browser to refuse all cookies, accept only first-party cookies, or delete cookies when you close the browser. Please note that disabling cookies may affect the functionality of certain features on our website.
+                  </p>
+                </div>
+              </div>
             </section>
 
             {/* 4. Data Protection & Sharing */}
