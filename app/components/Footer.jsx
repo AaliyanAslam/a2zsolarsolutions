@@ -312,7 +312,7 @@ export default function Footer() {
 
         {/* ── 3. Bottom Bar (Legal & Compliance) ── */}
         <div className="pt-6 border-t border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-gray-500">
-          <p>
+          <p suppressHydrationWarning>
             &copy; {new Date().getFullYear()} A2Z Solar Solutions. All rights reserved. “Lighting the Nation with Clean Energy.”
           </p>
 

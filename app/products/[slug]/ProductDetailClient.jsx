@@ -18,12 +18,9 @@ import {
 import SocialShareButton from "@/app/components/SocialShareButton";
 
 const formatPrice = (p) => {
-  if (!p || p === 0) return "";
-  return new Intl.NumberFormat("en-PK", {
-    style: "currency",
-    currency: "PKR",
-    minimumFractionDigits: 0,
-  }).format(p);
+  if (!p || Number(p) === 0) return "";
+  const num = Math.round(Number(p));
+  return `PKR ${num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 };
 
 export default function ProductDetailClient({ product, related }) {
@@ -311,65 +308,76 @@ export default function ProductDetailClient({ product, related }) {
 
         {/* Related Products */}
         {related?.length > 0 && (
-          <div className="border-t border-gray-200 pt-12">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl sm:text-2xl font-black text-[#1a1c29] tracking-tight">
+          <div className="border-t border-gray-100 pt-12">
+            <div className="flex items-center justify-between mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                 Related Products
               </h2>
               <Link
                 href={`/products?category=${encodeURIComponent(product.category)}`}
-                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold text-[#0fa353] hover:text-[#0c8a45]"
+                className="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors"
               >
-                View All <FaArrowRight size={10} />
+                View all <FaArrowRight size={10} />
               </Link>
             </div>
 
-            <div className="flex gap-3 sm:gap-4 overflow-x-auto pb-2" style={{ scrollbarWidth: "none" }}>
+            <div className="flex gap-4 sm:gap-5 overflow-x-auto pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
               {related.map((r) => {
                 const img = r.images?.[0]?.url;
+                const hasDiscount = r.discountPrice > 0 && r.price > 0;
                 return (
                   <Link
                     key={r._id}
                     href={`/products/${r.slug}`}
-                    className="flex-shrink-0 w-[160px] sm:w-[200px] group"
+                    className="flex-shrink-0 w-[165px] sm:w-[210px] group"
                   >
-                    <div className="bg-white border border-gray-200/80 rounded-lg overflow-hidden hover:shadow-lg transition-all h-full flex flex-col">
-                      <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                    <div className="h-full flex flex-col">
+                      <div className="relative aspect-square rounded-xl bg-[#f5f5f5] overflow-hidden mb-3">
                         {img ? (
                           <Image
                             src={img}
                             alt={r.title}
                             fill
-                            sizes="200px"
-                            className="object-cover group-hover:scale-110 transition-transform duration-500"
+                            sizes="210px"
+                            className="object-cover group-hover:scale-105 transition-transform duration-500"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-200">
+                          <div className="w-full h-full flex items-center justify-center text-gray-300">
                             <FaBoxOpen size={28} />
                           </div>
                         )}
+                        {hasDiscount && (
+                          <span className="absolute top-2.5 left-2.5 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                            {Math.round(((r.price - r.discountPrice) / r.price) * 100)}% OFF
+                          </span>
+                        )}
                       </div>
-                      <div className="p-2.5 flex-1 flex flex-col">
+                      <div className="flex-1 flex flex-col">
                         {r.brand && (
-                          <p className="text-[9px] font-bold text-[#0fa353] uppercase mb-0.5">
+                          <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wide mb-0.5">
                             {r.brand}
                           </p>
                         )}
-                        <h3 className="text-xs font-bold text-gray-900 line-clamp-2 leading-snug mb-auto">
+                        <h3 className="text-xs sm:text-[13px] font-medium text-gray-900 line-clamp-2 leading-snug group-hover:text-[#0fa353] transition-colors mb-auto">
                           {r.title}
                         </h3>
-                        <div className="mt-1.5">
-                          {r.discountPrice > 0 ? (
-                            <span className="text-xs font-black text-[#0fa353]">
-                              {formatPrice(r.discountPrice)}
-                            </span>
+                        <div className="mt-2">
+                          {hasDiscount ? (
+                            <div className="flex items-baseline gap-1.5">
+                              <span className="text-sm font-semibold text-gray-900">
+                                {formatPrice(r.discountPrice)}
+                              </span>
+                              <span className="text-[10px] text-gray-400 line-through">
+                                {formatPrice(r.price)}
+                              </span>
+                            </div>
                           ) : r.price > 0 ? (
-                            <span className="text-xs font-bold text-gray-900">
+                            <span className="text-sm font-semibold text-gray-900">
                               {formatPrice(r.price)}
                             </span>
                           ) : (
-                            <span className="text-[9px] font-bold text-gray-400 uppercase">
-                              Contact for Price
+                            <span className="text-[10px] font-medium text-gray-400">
+                              Contact for price
                             </span>
                           )}
                         </div>

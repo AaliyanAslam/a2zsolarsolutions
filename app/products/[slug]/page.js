@@ -104,8 +104,9 @@ export default async function ProductPage({ params }) {
       <>
         <script
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(productSchema),
+            __html: JSON.stringify(productSchema).replace(/</g, "\\u003c"),
           }}
         />
         <ProductDetailClient product={serialized} related={serializedRelated} />

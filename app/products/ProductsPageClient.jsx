@@ -29,23 +29,29 @@ const CATEGORIES = [
 ];
 
 const formatPrice = (p) => {
-  if (!p || p === 0) return "";
-  return new Intl.NumberFormat("en-PK", {
-    style: "currency",
-    currency: "PKR",
-    minimumFractionDigits: 0,
-  }).format(p);
+  if (!p || Number(p) === 0) return "";
+  const num = Math.round(Number(p));
+  return `PKR ${num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 };
 
 export default function ProductsPageClient({ initialProducts = [] }) {
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get("category") || "All";
 
   const [products, setProducts] = useState(initialProducts);
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState(initialCategory);
+  // Default to "All" on mount to match SSR HTML exactly
+  const [category, setCategory] = useState("All");
   const [search, setSearch] = useState("");
-  const [hasFetched, setHasFetched] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Sync category from URL parameter after mount to prevent hydration mismatch
+  useEffect(() => {
+    const urlCategory = searchParams.get("category");
+    if (urlCategory && urlCategory !== "All") {
+      setCategory(urlCategory);
+    }
+    setIsMounted(true);
+  }, [searchParams]);
 
   const fetchProducts = useCallback(async () => {
     setLoading(true);
@@ -63,19 +69,12 @@ export default function ProductsPageClient({ initialProducts = [] }) {
     }
   }, [category, search]);
 
-  // Only fetch client-side when user changes filters (not on initial mount)
+  // Only fetch client-side when user changes filters after mount
   useEffect(() => {
-    if (hasFetched) {
+    if (isMounted) {
       fetchProducts();
-    } else {
-      setHasFetched(true);
-      // If a category filter was set via URL on load, do a filtered fetch
-      if (initialCategory !== "All") {
-        fetchProducts();
-      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [category, search]);
+  }, [isMounted, category, search, fetchProducts]);
 
   return (
     <main className="min-h-screen bg-white text-[#1a1c29] pt-24 sm:pt-28 pb-20">
@@ -149,47 +148,47 @@ export default function ProductsPageClient({ initialProducts = [] }) {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-4 gap-y-8 sm:gap-x-5 sm:gap-y-10">
             {products.map((prod) => {
               const mainImage = prod.images?.[0]?.url;
+              const hasDiscount = prod.discountPrice > 0 && prod.price > 0;
               return (
                 <Link
                   key={prod._id}
                   href={`/products/${prod.slug}`}
                   className="group"
                 >
-                  <article className="bg-white border border-gray-200/80 rounded-lg overflow-hidden hover:shadow-xl transition-all duration-300 h-full flex flex-col">
-                    <div className="relative aspect-square bg-gray-50 overflow-hidden">
+                  <article className="h-full flex flex-col">
+                    <div className="relative aspect-square rounded-xl bg-[#f5f5f5] overflow-hidden mb-3">
                       {mainImage ? (
                         <Image
                           src={mainImage}
                           alt={prod.title}
                           fill
                           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-gray-200">
+                        <div className="w-full h-full flex items-center justify-center text-gray-300">
                           <FaBoxOpen size={32} />
                         </div>
                       )}
-                      <div className="absolute top-2 left-2 flex flex-col gap-1">
-                        <span className="text-[9px] font-bold bg-[#0fa353]/90 text-white px-1.5 py-0.5 rounded-sm backdrop-blur-sm">
-                          {prod.category}
+                      {/* Category tag */}
+                      <span className="absolute top-2.5 left-2.5 text-[9px] font-semibold bg-white/90 text-gray-700 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                        {prod.category}
+                      </span>
+                      {prod.isFeatured && (
+                        <span className="absolute top-2.5 right-2.5 text-[9px] font-semibold bg-amber-400 text-amber-900 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                          <FaStar size={7} /> Featured
                         </span>
-                        {prod.isFeatured && (
-                          <span className="text-[9px] font-bold bg-amber-500/90 text-white px-1.5 py-0.5 rounded-sm flex items-center gap-0.5">
-                            <FaStar size={7} /> Featured
-                          </span>
-                        )}
-                      </div>
-                      {prod.discountPrice > 0 && prod.price > 0 && (
-                        <div className="absolute top-2 right-2 bg-red-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-sm">
-                          {Math.round(((prod.price - prod.discountPrice) / prod.price) * 100)}% OFF
-                        </div>
                       )}
-                      {/* Share button — only shown when no discount badge */}
-                      {!(prod.discountPrice > 0 && prod.price > 0) && (
+                      {hasDiscount && !prod.isFeatured && (
+                        <span className="absolute top-2.5 right-2.5 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                          {Math.round(((prod.price - prod.discountPrice) / prod.price) * 100)}% OFF
+                        </span>
+                      )}
+                      {/* Share button — only shown when no discount or featured badge */}
+                      {!hasDiscount && !prod.isFeatured && (
                         <div
                           className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
                           onClick={(e) => e.preventDefault()}
@@ -203,19 +202,19 @@ export default function ProductsPageClient({ initialProducts = [] }) {
                         </div>
                       )}
                     </div>
-                    <div className="p-2.5 sm:p-3 flex-1 flex flex-col">
+                    <div className="flex-1 flex flex-col">
                       {prod.brand && (
-                        <p className="text-[9px] sm:text-[10px] font-bold text-[#0fa353] uppercase tracking-wider mb-0.5">
+                        <p className="text-[10px] sm:text-[11px] font-medium text-gray-400 uppercase tracking-wide mb-0.5">
                           {prod.brand}
                         </p>
                       )}
-                      <h2 className="text-xs sm:text-sm font-bold text-gray-900 line-clamp-2 leading-snug mb-auto">
+                      <h2 className="text-[13px] sm:text-sm font-medium text-gray-900 line-clamp-2 leading-snug group-hover:text-[#0fa353] transition-colors mb-auto">
                         {prod.title}
                       </h2>
-                      <div className="mt-2 flex items-center gap-1.5">
-                        {prod.discountPrice > 0 ? (
+                      <div className="mt-2 flex items-baseline gap-1.5">
+                        {hasDiscount ? (
                           <>
-                            <span className="text-xs sm:text-sm font-black text-[#0fa353]">
+                            <span className="text-sm sm:text-[15px] font-semibold text-gray-900">
                               {formatPrice(prod.discountPrice)}
                             </span>
                             <span className="text-[10px] sm:text-xs text-gray-400 line-through">
@@ -223,12 +222,12 @@ export default function ProductsPageClient({ initialProducts = [] }) {
                             </span>
                           </>
                         ) : prod.price > 0 ? (
-                          <span className="text-xs sm:text-sm font-black text-gray-900">
+                          <span className="text-sm sm:text-[15px] font-semibold text-gray-900">
                             {formatPrice(prod.price)}
                           </span>
                         ) : (
-                          <span className="text-[10px] font-bold text-gray-400 uppercase">
-                            Contact for Price
+                          <span className="text-[10px] font-medium text-gray-400">
+                            Contact for price
                           </span>
                         )}
                       </div>

@@ -166,11 +166,13 @@ const Navbar = () => {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2 text-[#0fa353]">
               <FaMapMarkerAlt className="text-[#F47C20]" />
-              <span>Shop No.2, Korangi No.6, Karachi</span>
+              <span>D-164, Korangi No. 6, Sector 51-A, Karachi 78400</span>
             </div>
             <div className="flex items-center gap-2 text-gray-300">
               <FaEnvelope className="text-[#0fa353]" />
-              <span>solarwala2023@gmail.com</span>
+              <a href="mailto:a2zsolarsolutions.com@gmail.com" className="hover:text-white transition-colors">
+                a2zsolarsolutions.com@gmail.com
+              </a>
             </div>
           </div>
           <div className="flex items-center gap-5">
