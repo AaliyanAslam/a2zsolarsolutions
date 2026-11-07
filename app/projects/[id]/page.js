@@ -139,8 +139,8 @@ export default async function ProjectDetailPage({ params }) {
             </div>
           </div>
 
-          {/* Photo Showcase */}
-          <div className="relative w-full aspect-[4/3] sm:aspect-[16/10] max-h-[60vh] bg-neutral-900 flex items-center justify-center overflow-hidden">
+          {/* Photo Showcase - optimized for vertical installation photography */}
+          <div className="relative w-full h-[60vh] sm:h-[72vh] max-h-[720px] bg-neutral-950 flex items-center justify-center overflow-hidden p-2 sm:p-4">
             <Image
               src={imgSrc}
               alt={`${project.capacity} solar installation in ${project.location}`}

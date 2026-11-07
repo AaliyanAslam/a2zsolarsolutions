@@ -39,15 +39,15 @@ function ProductCard({ product }) {
       href={`/products/${product.slug}`}
       className="group flex flex-col h-full"
     >
-      {/* Image */}
-      <div className="relative aspect-square rounded-xl bg-[#f5f5f5] overflow-hidden mb-3">
+      {/* Image Canvas */}
+      <div className="relative aspect-square rounded-2xl bg-[#fafafa] border border-gray-100 overflow-hidden mb-3 group-hover:border-gray-200 transition-all flex items-center justify-center">
         {img ? (
           <Image
             src={img}
             alt={product.title}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            className="object-contain p-3.5 sm:p-4 transition-transform duration-500 group-hover:scale-105"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-gray-300">
@@ -55,33 +55,40 @@ function ProductCard({ product }) {
           </div>
         )}
 
-        {/* Discount badge */}
-        {hasDiscount && (
-          <span className="absolute top-2.5 left-2.5 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wide">
-            {discountPct}% OFF
-          </span>
-        )}
+        {/* Badges */}
+        <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 items-start">
+          {hasDiscount && (
+            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full tracking-wide shadow-2xs">
+              {discountPct}% OFF
+            </span>
+          )}
+          {product.isFeatured && (
+            <span className="bg-amber-400 text-amber-950 text-[10px] font-semibold px-2 py-0.5 rounded-full tracking-wide shadow-2xs">
+              Featured
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Details */}
       <div className="flex flex-col flex-1">
         {/* Brand */}
         {product.brand && (
-          <p className="text-[10px] sm:text-[11px] font-medium text-gray-400 uppercase tracking-wide mb-0.5">
+          <p className="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">
             {product.brand}
           </p>
         )}
 
         {/* Title */}
-        <h3 className="text-[13px] sm:text-sm font-medium text-gray-900 leading-snug line-clamp-2 group-hover:text-[#0fa353] transition-colors mb-auto">
+        <h3 className="text-[13px] sm:text-sm font-semibold text-gray-900 leading-snug line-clamp-2 group-hover:text-[#0fa353] transition-colors mb-auto">
           {product.title}
         </h3>
 
         {/* Price */}
-        <div className="mt-2 flex items-baseline gap-2">
+        <div className="mt-2.5 flex items-baseline gap-2">
           {hasDiscount ? (
             <>
-              <span className="text-sm sm:text-[15px] font-semibold text-gray-900">
+              <span className="text-sm sm:text-[15px] font-bold text-gray-900">
                 {formatPrice(product.discountPrice)}
               </span>
               <span className="text-xs text-gray-400 line-through">
@@ -89,7 +96,7 @@ function ProductCard({ product }) {
               </span>
             </>
           ) : product.price > 0 ? (
-            <span className="text-sm sm:text-[15px] font-semibold text-gray-900">
+            <span className="text-sm sm:text-[15px] font-bold text-gray-900">
               {formatPrice(product.price)}
             </span>
           ) : (

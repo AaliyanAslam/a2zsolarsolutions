@@ -329,58 +329,56 @@ export default function ProductDetailClient({ product, related }) {
                   <Link
                     key={r._id}
                     href={`/products/${r.slug}`}
-                    className="flex-shrink-0 w-[165px] sm:w-[210px] group"
+                    className="flex-shrink-0 w-[170px] sm:w-[215px] group flex flex-col"
                   >
-                    <div className="h-full flex flex-col">
-                      <div className="relative aspect-square rounded-xl bg-[#f5f5f5] overflow-hidden mb-3">
-                        {img ? (
-                          <Image
-                            src={img}
-                            alt={r.title}
-                            fill
-                            sizes="210px"
-                            className="object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center text-gray-300">
-                            <FaBoxOpen size={28} />
-                          </div>
-                        )}
-                        {hasDiscount && (
-                          <span className="absolute top-2.5 left-2.5 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
-                            {Math.round(((r.price - r.discountPrice) / r.price) * 100)}% OFF
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex-1 flex flex-col">
-                        {r.brand && (
-                          <p className="text-[10px] font-medium text-gray-400 uppercase tracking-wide mb-0.5">
-                            {r.brand}
-                          </p>
-                        )}
-                        <h3 className="text-xs sm:text-[13px] font-medium text-gray-900 line-clamp-2 leading-snug group-hover:text-[#0fa353] transition-colors mb-auto">
-                          {r.title}
-                        </h3>
-                        <div className="mt-2">
-                          {hasDiscount ? (
-                            <div className="flex items-baseline gap-1.5">
-                              <span className="text-sm font-semibold text-gray-900">
-                                {formatPrice(r.discountPrice)}
-                              </span>
-                              <span className="text-[10px] text-gray-400 line-through">
-                                {formatPrice(r.price)}
-                              </span>
-                            </div>
-                          ) : r.price > 0 ? (
-                            <span className="text-sm font-semibold text-gray-900">
+                    <div className="relative aspect-square rounded-2xl bg-[#fafafa] border border-gray-100 overflow-hidden mb-3.5 group-hover:border-gray-200 transition-all flex items-center justify-center">
+                      {img ? (
+                        <Image
+                          src={img}
+                          alt={r.title}
+                          fill
+                          sizes="215px"
+                          className="object-contain p-3.5 sm:p-4 group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-300">
+                          <FaBoxOpen size={28} />
+                        </div>
+                      )}
+                      {hasDiscount && (
+                        <span className="absolute top-2.5 left-2.5 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-2xs">
+                          {Math.round(((r.price - r.discountPrice) / r.price) * 100)}% OFF
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex-1 flex flex-col">
+                      {r.brand && (
+                        <p className="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">
+                          {r.brand}
+                        </p>
+                      )}
+                      <h3 className="text-xs sm:text-[13px] font-semibold text-gray-900 line-clamp-2 leading-snug group-hover:text-[#0fa353] transition-colors mb-auto">
+                        {r.title}
+                      </h3>
+                      <div className="mt-2.5">
+                        {hasDiscount ? (
+                          <div className="flex items-baseline gap-1.5">
+                            <span className="text-sm font-bold text-gray-900">
+                              {formatPrice(r.discountPrice)}
+                            </span>
+                            <span className="text-[10px] text-gray-400 line-through">
                               {formatPrice(r.price)}
                             </span>
-                          ) : (
-                            <span className="text-[10px] font-medium text-gray-400">
-                              Contact for price
-                            </span>
-                          )}
-                        </div>
+                          </div>
+                        ) : r.price > 0 ? (
+                          <span className="text-sm font-bold text-gray-900">
+                            {formatPrice(r.price)}
+                          </span>
+                        ) : (
+                          <span className="text-[10px] font-medium text-gray-400">
+                            Contact for price
+                          </span>
+                        )}
                       </div>
                     </div>
                   </Link>

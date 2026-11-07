@@ -159,14 +159,14 @@ export default function ProductsPageClient({ initialProducts = [] }) {
                   className="group"
                 >
                   <article className="h-full flex flex-col">
-                    <div className="relative aspect-square rounded-xl bg-[#f5f5f5] overflow-hidden mb-3">
+                    <div className="relative aspect-square rounded-2xl bg-[#fafafa] border border-gray-100 overflow-hidden mb-3.5 group-hover:border-gray-200 transition-all flex items-center justify-center">
                       {mainImage ? (
                         <Image
                           src={mainImage}
                           alt={prod.title}
                           fill
                           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="object-contain p-3.5 sm:p-4 group-hover:scale-105 transition-transform duration-500"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-gray-300">
@@ -174,16 +174,16 @@ export default function ProductsPageClient({ initialProducts = [] }) {
                         </div>
                       )}
                       {/* Category tag */}
-                      <span className="absolute top-2.5 left-2.5 text-[9px] font-semibold bg-white/90 text-gray-700 px-2 py-0.5 rounded-full backdrop-blur-sm">
+                      <span className="absolute top-2.5 left-2.5 text-[9px] font-semibold bg-white/95 text-gray-700 px-2 py-0.5 rounded-full shadow-2xs border border-white/40">
                         {prod.category}
                       </span>
                       {prod.isFeatured && (
-                        <span className="absolute top-2.5 right-2.5 text-[9px] font-semibold bg-amber-400 text-amber-900 px-2 py-0.5 rounded-full flex items-center gap-0.5">
+                        <span className="absolute top-2.5 right-2.5 text-[9px] font-semibold bg-amber-400 text-amber-950 px-2 py-0.5 rounded-full flex items-center gap-0.5 shadow-2xs">
                           <FaStar size={7} /> Featured
                         </span>
                       )}
                       {hasDiscount && !prod.isFeatured && (
-                        <span className="absolute top-2.5 right-2.5 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full">
+                        <span className="absolute top-2.5 right-2.5 bg-red-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full shadow-2xs">
                           {Math.round(((prod.price - prod.discountPrice) / prod.price) * 100)}% OFF
                         </span>
                       )}
@@ -204,17 +204,17 @@ export default function ProductsPageClient({ initialProducts = [] }) {
                     </div>
                     <div className="flex-1 flex flex-col">
                       {prod.brand && (
-                        <p className="text-[10px] sm:text-[11px] font-medium text-gray-400 uppercase tracking-wide mb-0.5">
+                        <p className="text-[10px] sm:text-[11px] font-semibold text-gray-400 uppercase tracking-wider mb-0.5">
                           {prod.brand}
                         </p>
                       )}
-                      <h2 className="text-[13px] sm:text-sm font-medium text-gray-900 line-clamp-2 leading-snug group-hover:text-[#0fa353] transition-colors mb-auto">
+                      <h2 className="text-[13px] sm:text-sm font-semibold text-gray-900 line-clamp-2 leading-snug group-hover:text-[#0fa353] transition-colors mb-auto">
                         {prod.title}
                       </h2>
-                      <div className="mt-2 flex items-baseline gap-1.5">
+                      <div className="mt-2.5 flex items-baseline gap-1.5">
                         {hasDiscount ? (
                           <>
-                            <span className="text-sm sm:text-[15px] font-semibold text-gray-900">
+                            <span className="text-sm sm:text-[15px] font-bold text-gray-900">
                               {formatPrice(prod.discountPrice)}
                             </span>
                             <span className="text-[10px] sm:text-xs text-gray-400 line-through">
@@ -222,7 +222,7 @@ export default function ProductsPageClient({ initialProducts = [] }) {
                             </span>
                           </>
                         ) : prod.price > 0 ? (
-                          <span className="text-sm sm:text-[15px] font-semibold text-gray-900">
+                          <span className="text-sm sm:text-[15px] font-bold text-gray-900">
                             {formatPrice(prod.price)}
                           </span>
                         ) : (

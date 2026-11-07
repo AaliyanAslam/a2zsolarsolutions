@@ -327,13 +327,13 @@ export default function AdminProjectsPage() {
                 </label>
 
                 {imagePreview ? (
-                  <div className="relative aspect-4/3 rounded-sm overflow-hidden border border-emerald-300 bg-gray-900 mb-2">
+                  <div className="relative aspect-3/4 max-h-[320px] rounded-sm overflow-hidden border border-emerald-300 bg-gray-900 mb-2">
                     <Image
                       src={imagePreview}
                       alt="Preview"
                       fill
                       unoptimized
-                      className="object-cover"
+                      className="object-contain"
                     />
                     <button
                       type="button"
