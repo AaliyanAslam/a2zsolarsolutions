@@ -106,7 +106,7 @@ const Hero = () => {
               </div>
               <div>
                 <p className="text-[11px] sm:text-sm font-bold text-gray-900 leading-tight">
-                  250+ Successful Installs
+                  150+ Successful Installs
                 </p>
                 <p className="text-[10px] sm:text-xs text-gray-500 leading-tight mt-0.5">
                   Across Pakistan
