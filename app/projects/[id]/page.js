@@ -104,9 +104,10 @@ export default async function ProjectDetailPage({ params }) {
       address: [
         {
           "@type": "PostalAddress",
-          streetAddress: "DHA Phase 2 Ext, Main Commercial Area",
+          streetAddress: "D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi",
           addressLocality: "Karachi",
           addressRegion: "Sindh",
+          postalCode: "78400",
           addressCountry: "PK",
         },
         {
@@ -114,6 +115,7 @@ export default async function ProjectDetailPage({ params }) {
           streetAddress: "House: 31, Lane 1, Muslimabad, Station Road, Mughalpura",
           addressLocality: "Lahore",
           addressRegion: "Punjab",
+          postalCode: "54840",
           addressCountry: "PK",
         },
       ],

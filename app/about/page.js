@@ -420,7 +420,7 @@ export default function AboutPage() {
                     Call {PHONE_DISPLAY}
                   </a>
                   <p className="text-sm text-gray-600">
-                    Mon - Sat, 9 AM - 8 PM
+                    Mon - Sat, 9:00 AM - 7:00 PM
                   </p>
                 </div>
               </article>

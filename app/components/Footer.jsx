@@ -13,6 +13,7 @@ import {
   FaLocationDot,
   FaArrowRight,
   FaCheck,
+  FaClock,
 } from "react-icons/fa6";
 
 export default function Footer() {
@@ -284,6 +285,10 @@ export default function Footer() {
                 <a href="mailto:info@a2zsolarsolutions.com" className="hover:text-gray-900 transition-colors truncate">
                   info@a2zsolarsolutions.com
                 </a>
+              </li>
+              <li className="flex items-center gap-2 text-[11px] text-gray-600">
+                <FaClock className="text-[#0fa353] text-xs shrink-0" />
+                <span>Mon - Sat: 9:00 AM - 7:00 PM</span>
               </li>
               <li className="flex items-start gap-2 pt-0.5">
                 <FaLocationDot className="text-[#F47C20] text-xs shrink-0 mt-0.5" />

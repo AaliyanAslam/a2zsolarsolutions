@@ -98,7 +98,7 @@ const LOCATIONS = [
   {
     city: "Lahore regional office",
     address: "House: 31, Lane 1, Muslimabad, Station Road, Mughalpura, Lahore",
-    timing: "Mon - Sat, 9:00 AM - 6:00 PM",
+    timing: "Mon - Sat, 9:00 AM - 7:00 PM",
   },
 ];
 

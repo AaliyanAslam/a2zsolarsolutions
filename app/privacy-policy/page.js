@@ -446,16 +446,15 @@ export default function PrivacyPolicyPage() {
                 <div className="flex items-start gap-3">
                   <FaPhone className="text-[#0fa353] mt-1 shrink-0" />
                   <div>
-                    <strong className="text-gray-900 block">Phone:</strong>
-                    <div className="space-x-2">
+                    <strong className="text-gray-900 block">Phone &amp; Hours:</strong>
+                    <div>
                       <a href="tel:03214189298" className="hover:text-[#0fa353] font-medium">
-                        +92-321-4189298
-                      </a>
-                      <span>/</span>
-                      <a href="tel:03201864588" className="hover:text-[#0fa353] font-medium">
-                        +92-320-1864588
+                        +92 321 4189298
                       </a>
                     </div>
+                    <span className="text-gray-500 text-xs mt-0.5 block">
+                      Mon - Sat: 9:00 AM - 7:00 PM
+                    </span>
                   </div>
                 </div>
 

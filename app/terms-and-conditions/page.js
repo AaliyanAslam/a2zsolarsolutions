@@ -298,23 +298,29 @@ export default function TermsAndConditionsPage() {
                 <div className="flex items-start gap-3">
                   <FaLocationDot className="text-[#0fa353] mt-1 shrink-0" />
                   <div>
-                    <strong className="text-gray-900 block">Address:</strong>
-                    <span className="text-gray-600">
-                      2nd Floor, Plot No. D164, Korangi No. 6, D-Area, Karachi, Pakistan
-                    </span>
+                    <strong className="text-gray-900 block">Offices:</strong>
+                    <p className="text-gray-600">
+                      <strong className="text-gray-800">Karachi HQ:</strong> D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi, Karachi 78400
+                    </p>
+                    <p className="text-gray-600 mt-1">
+                      <strong className="text-gray-800">Lahore Office:</strong> House: 31, Lane 1, Muslimabad, Station Road, Mughalpura, Lahore
+                    </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <FaPhone className="text-[#0fa353] mt-1 shrink-0" />
                   <div>
-                    <strong className="text-gray-900 block">Contact:</strong>
+                    <strong className="text-gray-900 block">Contact &amp; Hours:</strong>
                     <a
                       href="tel:03214189298"
-                      className="text-[#0fa353] font-semibold hover:underline"
+                      className="text-[#0fa353] font-semibold hover:underline block"
                     >
-                      +92-321-4189298
+                      +92 321 4189298
                     </a>
+                    <span className="text-gray-500 text-xs mt-0.5 block">
+                      Mon - Sat: 9:00 AM - 7:00 PM
+                    </span>
                   </div>
                 </div>
               </div>
