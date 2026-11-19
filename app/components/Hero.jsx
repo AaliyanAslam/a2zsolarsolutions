@@ -7,20 +7,12 @@ const Hero = () => {
     <section className="relative min-h-0 md:min-h-[90svh] flex items-start md:items-center pt-20 md:pt-20 pb-8 md:pb-0 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/mobbackhero.webp"
+          src="/images/a2z-new-bg.webp"
           alt="A2Z Solar Solutions Karachi Background"
           fill
           priority
           sizes="100vw"
-          className="md:hidden object-cover object-[82%_center]"
-        />
-        <Image
-          src="/images/herobg.webp"
-          alt="A2Z Solar Solutions Karachi Background"
-          fill
-          priority
-          sizes="100vw"
-          className="hidden md:block object-cover object-right"
+          className="object-cover object-[82%_center] md:object-right"
         />
         <div className="absolute inset-0 bg-linear-to-r from-white via-white/90 to-transparent md:via-white/80" />
         <div className="absolute inset-0 bg-linear-to-b from-transparent via-white/20 to-white md:hidden" />
