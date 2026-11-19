@@ -8,9 +8,17 @@ import {
 } from "react-icons/fa6";
 
 export const metadata = {
-  title: "Contact Us | Solar Consultation & Free Site Survey in Karachi & Lahore",
+  title: "Contact Solar Company Karachi & Lahore | Free Survey & Quotes",
   description:
-    "Get in touch with A2Z Solar Solutions for solar consultation, site inspections, and hybrid solar system installations in Karachi and Lahore. Call or WhatsApp +92 321 4189298.",
+    "Get in touch with A2Z Solar Solutions for solar consultation, free site inspection & customized solar proposals in Karachi & Lahore. Call 0321-4189298.",
+  keywords: [
+    "Solar Company Karachi Contact",
+    "Solar Installation Karachi",
+    "Solar Consultation Karachi",
+    "Solar Site Survey Karachi",
+    "Solar Company Lahore Contact",
+    "Solar Karachi Phone Number",
+  ],
   alternates: {
     canonical: "https://a2zsolarsolutions.com/contact",
   },

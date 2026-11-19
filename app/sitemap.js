@@ -13,16 +13,26 @@ export default async function sitemap() {
   let latestProjectDate = now;
   let latestDocDate = now;
   let productUrls = [];
+  let projectUrls = [];
 
   try {
     if (process.env.MONGODB_URI) {
       await connectDB();
-      const latestProject = await Project.findOne()
+
+      // Fetch all projects for dynamic project portfolio URLs
+      const projects = await Project.find({})
+        .select("_id updatedAt createdAt")
         .sort({ updatedAt: -1 })
-        .select("updatedAt")
         .lean();
-      if (latestProject?.updatedAt) {
-        latestProjectDate = new Date(latestProject.updatedAt);
+
+      if (projects.length > 0) {
+        if (projects[0].updatedAt) latestProjectDate = new Date(projects[0].updatedAt);
+        projectUrls = projects.map((p) => ({
+          url: `${baseUrl}/projects/${p._id}`,
+          lastModified: p.updatedAt ? new Date(p.updatedAt) : p.createdAt ? new Date(p.createdAt) : now,
+          changeFrequency: "weekly",
+          priority: 0.8,
+        }));
       }
 
       const latestDoc = await Document.findOne()
@@ -35,14 +45,14 @@ export default async function sitemap() {
 
       // Fetch all products for dynamic product URLs
       const products = await Product.find({})
-        .select("slug updatedAt")
+        .select("slug updatedAt createdAt")
         .lean();
 
       productUrls = products.map((p) => ({
         url: `${baseUrl}/products/${p.slug}`,
-        lastModified: p.updatedAt ? new Date(p.updatedAt) : now,
+        lastModified: p.updatedAt ? new Date(p.updatedAt) : p.createdAt ? new Date(p.createdAt) : now,
         changeFrequency: "weekly",
-        priority: 0.7,
+        priority: 0.85,
       }));
     }
   } catch (error) {
@@ -54,7 +64,7 @@ export default async function sitemap() {
     {
       url: baseUrl,
       lastModified: latestProjectDate,
-      changeFrequency: "weekly",
+      changeFrequency: "daily",
       priority: 1.0,
     },
     {
@@ -79,21 +89,21 @@ export default async function sitemap() {
       url: `${baseUrl}/documents`,
       lastModified: latestDocDate,
       changeFrequency: "weekly",
-      priority: 0.8,
+      priority: 0.75,
     },
     {
       url: `${baseUrl}/privacy-policy`,
-      lastModified: new Date("2026-10-01"),
+      lastModified: new Date("2026-11-01"),
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${baseUrl}/terms-and-conditions`,
-      lastModified: new Date("2026-10-01"),
+      lastModified: new Date("2026-11-01"),
       changeFrequency: "yearly",
       priority: 0.3,
     },
   ];
 
-  return [...staticRoutes, ...productUrls];
+  return [...staticRoutes, ...productUrls, ...projectUrls];
 }

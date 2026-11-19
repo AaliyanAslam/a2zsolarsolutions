@@ -23,7 +23,7 @@ const Hero = () => {
           <h1 className="hero-animate-title text-2xl xs:text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-black leading-[1.18] sm:leading-[1.1] tracking-tight mb-3 sm:mb-6">
             <span className="mb-2 sm:mb-4 inline-flex items-center gap-2 rounded-full bg-[#0fa353]/10 px-3 py-1 text-[11px] sm:text-sm font-bold uppercase tracking-[0.12em] text-[#0fa353]">
               A2Z Solar Solutions
-              <span className="sr-only"> — Solar Energy Company in Karachi:</span>
+              <span className="sr-only"> — Solar Karachi | Best Solar Energy Company in Karachi &amp; Lahore:</span>
             </span>
             <br />
             <span className="text-[#1a1c29]">Sustainable Power</span>{" "}
@@ -38,7 +38,7 @@ const Hero = () => {
             <span className="font-bold text-[#0fa353]">
               90% of your K-Electric bills
             </span>{" "}
-            with premium On-Grid, Hybrid &amp; Custom Solar Systems.
+            with premium On-Grid, Hybrid &amp; Custom Solar Systems in Karachi &amp; Lahore.
           </p>
 
           <div className="hero-animate-buttons flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">

@@ -19,9 +19,17 @@ import {
 } from "react-icons/fa6";
 
 export const metadata = {
-  title: "About Us | A2Z Solar Solutions - FBR Registered Solar Company",
+  title: "About Us | A2Z Solar Solutions — Top Solar Company in Karachi & Lahore",
   description:
     "Founded in 2015, A2Z Solar Solutions is an FBR registered renewable energy company headquartered in Karachi, delivering complete turnkey solar power solutions across Karachi and Lahore.",
+  keywords: [
+    "About A2Z Solar Solutions",
+    "Solar Company Karachi History",
+    "FBR Registered Solar Company Karachi",
+    "Best Solar Installers Karachi",
+    "Solar Engineering Firm Karachi",
+    "Solar Company in Lahore",
+  ],
   alternates: {
     canonical: "https://a2zsolarsolutions.com/about",
   },

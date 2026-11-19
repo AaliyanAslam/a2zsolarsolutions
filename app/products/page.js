@@ -4,9 +4,20 @@ import Product from "@/models/Product";
 import ProductsPageClient from "./ProductsPageClient";
 
 export const metadata = {
-  title: "Solar Products | Inverters, Batteries, Panels & Accessories",
+  title: "Solar Products Karachi & Lahore | Inverters, Panels & Batteries Price",
   description:
-    "Browse A2Z Solar Solutions' complete product catalog: Tier-1 hybrid inverters, lithium batteries, tubular batteries, solar panels, MPPT charge controllers, EV charging stations, and electrical accessories in Karachi & Lahore.",
+    "Buy Tier-1 hybrid solar inverters, lithium batteries, bifacial solar panels & accessories at competitive market prices in Karachi & Lahore. Verified warranties & same-day delivery.",
+  keywords: [
+    "Solar Panels Karachi",
+    "Solar Inverter Price Karachi",
+    "Lithium Battery Karachi",
+    "Solar Panel Price in Pakistan",
+    "Inverex Inverter Karachi",
+    "Longi Solar Panels Karachi",
+    "Jinko Solar Karachi",
+    "Dyness Lithium Battery Pakistan",
+    "Solar Accessories Karachi",
+  ],
   alternates: {
     canonical: "https://a2zsolarsolutions.com/products",
   },
