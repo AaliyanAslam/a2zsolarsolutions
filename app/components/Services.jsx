@@ -152,40 +152,90 @@ export default function Services() {
 
         <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-6">
           {/* Featured service */}
-          <article className="flex flex-col gap-8 rounded-sm bg-[#122116] p-6 text-white sm:p-10 md:col-span-2 lg:col-span-6 lg:flex-row lg:items-center lg:gap-14">
-            <div className="lg:w-1/2">
-              <div className="mb-5 flex items-center gap-3">
-                <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-white/10 text-[#a3e635]">
-                  <FeaturedIcon size={26} aria-hidden="true" />
-                </span>
-                <span className="text-sm font-semibold text-emerald-200">
-                  {featured.label}
-                </span>
+          <article className="flex flex-col gap-6 rounded-sm bg-[#122116] p-6 text-white sm:p-8 md:p-10 md:col-span-2 lg:col-span-6">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:gap-14">
+              <div className="lg:w-1/2">
+                <div className="mb-5 flex items-center gap-3">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-sm bg-white/10 text-[#a3e635]">
+                    <FeaturedIcon size={26} aria-hidden="true" />
+                  </span>
+                  <span className="text-sm font-semibold text-emerald-200">
+                    {featured.label}
+                  </span>
+                </div>
+                <h3 className="text-2xl font-bold leading-tight sm:text-3xl">
+                  {featured.title}
+                </h3>
+                <p className="mt-3 max-w-lg text-sm leading-relaxed text-emerald-100/80 sm:text-base">
+                  {featured.description}
+                </p>
+                <div className="mt-6">
+                  <InquireButton title={featured.title} dark />
+                </div>
               </div>
-              <h3 className="text-2xl font-bold leading-tight sm:text-3xl">
-                {featured.title}
-              </h3>
-              <p className="mt-3 max-w-lg text-sm leading-relaxed text-emerald-100/80 sm:text-base">
-                {featured.description}
-              </p>
-              <div className="mt-6">
-                <InquireButton title={featured.title} dark />
-              </div>
+
+              <ul className="space-y-3 lg:w-1/2 mt-6 lg:mt-0">
+                {featured.bullets.map((bullet) => (
+                  <li key={bullet} className="flex items-start gap-3">
+                    <FaCheckCircle
+                      className="mt-0.5 shrink-0 text-[#a3e635]"
+                      aria-hidden="true"
+                    />
+                    <span className="text-sm leading-snug text-emerald-50 sm:text-base">
+                      {bullet}
+                    </span>
+                  </li>
+                ))}
+              </ul>
             </div>
 
-            <ul className="space-y-3 lg:w-1/2">
-              {featured.bullets.map((bullet) => (
-                <li key={bullet} className="flex items-start gap-3">
-                  <FaCheckCircle
-                    className="mt-0.5 shrink-0 text-[#a3e635]"
-                    aria-hidden="true"
-                  />
-                  <span className="text-sm leading-snug text-emerald-50 sm:text-base">
-                    {bullet}
+            {/* Transparent Residential Installation Rates Strip */}
+            <div className="mt-4 pt-6 border-t border-emerald-900/80">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 mb-3.5">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-[#a3e635] block">
+                    Professional Installation — Residential Starting Rates
                   </span>
-                </li>
-              ))}
-            </ul>
+                  <span className="text-[11px] text-emerald-200/70">
+                    Upfront labor &amp; mounting charges across Karachi &amp; Lahore
+                  </span>
+                </div>
+                <span className="text-[11px] font-semibold text-emerald-300 bg-white/10 px-2.5 py-0.5 rounded-full self-start sm:self-auto">
+                  Residential Use
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 lg:grid-cols-7 gap-2">
+                <div className="bg-white/5 border border-white/10 rounded-sm p-2.5 text-center hover:bg-white/10 transition-colors">
+                  <span className="text-[11px] text-emerald-200 font-bold block">3 kW</span>
+                  <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">Rs 15,000</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-sm p-2.5 text-center hover:bg-white/10 transition-colors">
+                  <span className="text-[11px] text-emerald-200 font-bold block">4 kW</span>
+                  <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">Rs 20,000</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-sm p-2.5 text-center hover:bg-white/10 transition-colors">
+                  <span className="text-[11px] text-emerald-200 font-bold block">6 kW</span>
+                  <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">Rs 25,000</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-sm p-2.5 text-center hover:bg-white/10 transition-colors">
+                  <span className="text-[11px] text-emerald-200 font-bold block">8 kW</span>
+                  <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">Rs 30,000</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-sm p-2.5 text-center hover:bg-white/10 transition-colors">
+                  <span className="text-[11px] text-emerald-200 font-bold block">10 kW</span>
+                  <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">Rs 35,000</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-sm p-2.5 text-center hover:bg-white/10 transition-colors">
+                  <span className="text-[11px] text-emerald-200 font-bold block">12 kW SP</span>
+                  <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">Rs 40,000</span>
+                </div>
+                <div className="bg-white/5 border border-white/10 rounded-sm p-2.5 text-center hover:bg-white/10 transition-colors col-span-2 xs:col-span-1">
+                  <span className="text-[11px] text-emerald-200 font-bold block">15 kW 3Phase</span>
+                  <span className="text-xs sm:text-sm font-black text-white mt-0.5 block">Rs 50,000</span>
+                </div>
+              </div>
+            </div>
           </article>
 
           {/* Other services: 3 on the first row, 2 wider on the second (desktop) */}

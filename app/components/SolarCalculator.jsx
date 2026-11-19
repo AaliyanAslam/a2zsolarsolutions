@@ -23,6 +23,26 @@ const PRESET_APPLIANCES = [
   { name: "Other (custom)", watts: 0, hours: 0 },
 ];
 
+const INSTALLATION_RATES = [
+  { kw: 3, label: "3 kW", phase: "Single Phase", price: 15000, formatted: "Rs 15,000" },
+  { kw: 4, label: "4 kW", phase: "Single Phase", price: 20000, formatted: "Rs 20,000" },
+  { kw: 6, label: "6 kW", phase: "Single Phase", price: 25000, formatted: "Rs 25,000" },
+  { kw: 8, label: "8 kW", phase: "Single Phase", price: 30000, formatted: "Rs 30,000" },
+  { kw: 10, label: "10 kW", phase: "Single Phase", price: 35000, formatted: "Rs 35,000" },
+  { kw: 12, label: "12 kW SP", phase: "Single Phase", price: 40000, formatted: "Rs 40,000" },
+  { kw: 15, label: "15 kW", phase: "3-Phase", price: 50000, formatted: "Rs 50,000" },
+];
+
+function getInstallationEstimate(kw, phase) {
+  if (kw <= 3) return { rate: 15000, label: "Rs 15,000", tier: "3 kW" };
+  if (kw <= 4) return { rate: 20000, label: "Rs 20,000", tier: "4 kW" };
+  if (kw <= 6) return { rate: 25000, label: "Rs 25,000", tier: "6 kW" };
+  if (kw <= 8) return { rate: 30000, label: "Rs 30,000", tier: "8 kW" };
+  if (kw <= 10) return { rate: 35000, label: "Rs 35,000", tier: "10 kW" };
+  if (kw <= 12) return { rate: 40000, label: "Rs 40,000", tier: phase === "three" ? "12 kW (3-Phase)" : "12 kW SP" };
+  return { rate: 50000, label: "Rs 50,000", tier: "15 kW 3Phase" };
+}
+
 function DonutChart({ percentage, size = 160, strokeWidth = 14 }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -31,7 +51,7 @@ function DonutChart({ percentage, size = 160, strokeWidth = 14 }) {
 
   return (
     <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="block">
-      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#2a3038" strokeWidth={strokeWidth} />
+      <circle cx={size / 2} cy={size / 2} r={radius} fill="none" stroke="#e5e7eb" strokeWidth={strokeWidth} />
       <circle
         cx={size / 2} cy={size / 2} r={radius} fill="none"
         stroke="url(#donutGradient)" strokeWidth={strokeWidth} strokeLinecap="round"
@@ -40,8 +60,8 @@ function DonutChart({ percentage, size = 160, strokeWidth = 14 }) {
       />
       <defs>
         <linearGradient id="donutGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#a3e635" />
-          <stop offset="100%" stopColor="#22c55e" />
+          <stop offset="0%" stopColor="#10b981" />
+          <stop offset="100%" stopColor="#0fa353" />
         </linearGradient>
       </defs>
     </svg>
@@ -52,19 +72,19 @@ function EnergyBar({ label, units, maxUnits, color }) {
   const pct = maxUnits > 0 ? Math.min((units / maxUnits) * 100, 100) : 0;
   return (
     <div className="flex items-center gap-2 sm:gap-3">
-      <span className="text-[11px] sm:text-xs text-gray-400 w-20 sm:w-28 truncate shrink-0 text-right">{label}</span>
-      <div className="flex-1 h-2 sm:h-2.5 bg-[#2a3038] rounded-md overflow-hidden">
+      <span className="text-[11px] sm:text-xs text-gray-600 font-medium w-20 sm:w-28 truncate shrink-0 text-right">{label}</span>
+      <div className="flex-1 h-2 sm:h-2.5 bg-gray-100 rounded-full overflow-hidden">
         <div
           className="h-full"
           style={{
             width: `${pct}%`,
             background: color,
-            borderRadius: "6px",
+            borderRadius: "9999px",
             transition: "width 0.5s cubic-bezier(0.16,1,0.3,1)",
           }}
         />
       </div>
-      <span className="text-[11px] sm:text-xs text-gray-300 font-semibold w-12 sm:w-14 text-right">{units.toFixed(1)} u</span>
+      <span className="text-[11px] sm:text-xs text-gray-800 font-bold w-12 sm:w-14 text-right">{units.toFixed(1)} u</span>
     </div>
   );
 }
@@ -100,7 +120,7 @@ export default function SolarCalculator() {
   const yearlySavings = monthlySavings * 12;
   const co2SavedTons = (systemSizeKW * 1.5).toFixed(1);
 
-  const barColors = ["#a3e635", "#22c55e", "#4ade80", "#86efac", "#bbf7d0"];
+  const barColors = ["#0fa353", "#16a34a", "#22c55e", "#4ade80", "#86efac"];
   const applianceBreakdown = useMemo(() => {
     const merged = {};
     appliances.forEach((app) => {
@@ -179,6 +199,7 @@ export default function SolarCalculator() {
   };
 
   const buildWhatsAppUrl = () => {
+    const installEst = getInstallationEstimate(systemSizeKW, phase);
     let msg = `🌞 *Solar Load Calculator — Quote Request*\n\n`;
     msg += `📋 *Appliances Added:*\n`;
     appliances.forEach((app, i) => {
@@ -193,6 +214,8 @@ export default function SolarCalculator() {
     msg += `• System Size: ${systemSizeKW} kW\n`;
     msg += `• Panels Needed: ${panelsNeeded} × 550W\n`;
     msg += `• Capacity Used: ${utilizationPct}%\n`;
+    msg += `\n🔧 *Professional Installation (Residential):*\n`;
+    msg += `• Starting From: ${installEst.label} (${installEst.tier})\n`;
     msg += `\n💰 *Estimated Savings:*\n`;
     msg += `• Monthly: Rs ${monthlySavings.toLocaleString()}\n`;
     msg += `• Yearly: Rs ${yearlySavings.toLocaleString()}\n`;
@@ -201,100 +224,142 @@ export default function SolarCalculator() {
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   };
 
-  const ResultsPanel = ({ className = "" }) => (
-    <div className={`bg-[#1a1f22] rounded-md text-white shadow-xl relative overflow-hidden ${className}`}>
-      <div className="absolute top-0 right-0 w-48 h-48 bg-green-500 opacity-[0.04] rounded-full blur-3xl pointer-events-none" />
+  const ResultsPanel = ({ className = "" }) => {
+    const installEst = getInstallationEstimate(systemSizeKW, phase);
 
-      <div className="flex items-center gap-4 mb-4">
-        <div className="relative shrink-0">
-          <DonutChart percentage={utilizationPct} size={80} strokeWidth={8} />
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-xl font-black text-[#a3e635] leading-none">{systemSizeKW}</span>
-            <span className="text-[9px] font-bold text-gray-400 mt-0.5">kW</span>
+    return (
+      <div className={`bg-white rounded-2xl text-gray-900 border border-gray-200/90 shadow-md relative overflow-hidden ${className}`}>
+        {/* Soft decorative background glow */}
+        <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+
+        {/* Recommended Header & Donut */}
+        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-100">
+          <div className="relative shrink-0">
+            <DonutChart percentage={utilizationPct} size={84} strokeWidth={8} />
+            <div className="absolute inset-0 flex flex-col items-center justify-center">
+              <span className="text-xl font-black text-gray-900 leading-none">{systemSizeKW}</span>
+              <span className="text-[10px] font-bold text-gray-400 mt-0.5">kW</span>
+            </div>
+          </div>
+          <div className="min-w-0">
+            <span className="text-[10px] font-bold text-[#0fa353] uppercase tracking-wider block">
+              Recommended System
+            </span>
+            <p className="text-lg sm:text-xl font-black text-gray-900 leading-tight mt-0.5">
+              {systemSizeKW} kW Setup
+            </p>
+            <p className="text-xs text-gray-500 mt-0.5">
+              {panelsNeeded} × 550W Tier-1 panels
+            </p>
+            <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200/60 mt-1.5">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#0fa353]" />
+              <span className="text-[10px] font-semibold text-emerald-800">
+                {utilizationPct}% capacity utilized
+              </span>
+            </div>
           </div>
         </div>
-        <div>
-          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-0.5">Recommended</p>
-          <p className="text-lg font-bold leading-tight">{systemSizeKW} kW System</p>
-          <p className="text-xs text-gray-400 mt-0.5">{panelsNeeded} × 550W panels</p>
-          <div className="flex items-center gap-1.5 mt-1">
-            <span className="inline-block w-1.5 h-1.5 rounded-full bg-[#a3e635]" />
-            <span className="text-[10px] text-gray-400">{utilizationPct}% capacity used</span>
+
+        {/* Top Energy Consumers */}
+        <div className="bg-gray-50/80 border border-gray-100 rounded-xl p-3 mb-3">
+          <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <FaBolt className="text-amber-500" size={11} />
+            Top Energy Consumers
+          </p>
+          <div className="space-y-2">
+            {applianceBreakdown.length > 0 ? (
+              applianceBreakdown.map((item, i) => (
+                <EnergyBar
+                  key={item.name}
+                  label={item.name}
+                  units={item.units}
+                  maxUnits={maxBarUnits}
+                  color={barColors[i] || barColors[barColors.length - 1]}
+                />
+              ))
+            ) : (
+              <p className="text-[10px] text-gray-400 text-center py-1">Add appliances to see breakdown</p>
+            )}
           </div>
         </div>
-      </div>
 
-      <div className="bg-[#222930] rounded-md p-3 mb-3">
-        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 flex items-center gap-1.5">
-          <FaBolt className="text-yellow-400" size={10} />
-          Top Energy Consumers
+        {/* 4-Metric Grid */}
+        <div className="grid grid-cols-2 gap-2 mb-3">
+          <div className="bg-gray-50/80 border border-gray-100 rounded-xl p-2.5">
+            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Daily Energy</p>
+            <p className="text-sm sm:text-base font-black text-gray-900">{totalDailyUnits.toFixed(1)}</p>
+            <p className="text-[10px] text-gray-500">units/day</p>
+          </div>
+          <div className="bg-gray-50/80 border border-gray-100 rounded-xl p-2.5">
+            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Peak Load</p>
+            <p className="text-sm sm:text-base font-black text-gray-900">{totalLoadW.toLocaleString()}</p>
+            <p className="text-[10px] text-gray-500">watts</p>
+          </div>
+          <div className="bg-emerald-50/50 border border-emerald-100 rounded-xl p-2.5">
+            <p className="text-[10px] text-emerald-800 font-semibold uppercase tracking-wider mb-0.5">Monthly Savings</p>
+            <p className="text-sm sm:text-base font-black text-[#0fa353]">Rs {monthlySavings.toLocaleString()}</p>
+            <p className="text-[10px] text-emerald-700/80">estimated</p>
+          </div>
+          <div className="bg-gray-50/80 border border-gray-100 rounded-xl p-2.5">
+            <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">CO₂ Saved</p>
+            <p className="text-sm sm:text-base font-black text-gray-900">{co2SavedTons}</p>
+            <p className="text-[10px] text-gray-500">tons/year</p>
+          </div>
+        </div>
+
+        {/* Estimated Yearly Savings */}
+        <div className="bg-linear-to-r from-emerald-50 to-green-50/80 border border-emerald-200/80 rounded-xl p-3 mb-3 flex items-center gap-3">
+          <div className="w-9 h-9 rounded-lg bg-emerald-100/60 flex items-center justify-center shrink-0">
+            <Image src="/images/pkr.webp" alt="PKR" width={52} height={26} className="object-contain" />
+          </div>
+          <div>
+            <p className="text-[10px] font-bold text-emerald-900 uppercase tracking-wider">Estimated Yearly Savings</p>
+            <p className="text-base sm:text-lg font-black text-[#0fa353]">Rs {yearlySavings.toLocaleString()}</p>
+          </div>
+        </div>
+
+        {/* Professional Installation Estimate */}
+        <div className="bg-gray-50/90 border border-gray-200/90 rounded-xl p-3 mb-3 flex items-center justify-between gap-2">
+          <div className="min-w-0">
+            <p className="text-[10px] text-gray-500 font-bold uppercase tracking-wider">
+              Professional Installation
+            </p>
+            <p className="text-xs text-gray-800 font-semibold truncate mt-0.5">
+              Residential ({installEst.tier})
+            </p>
+          </div>
+          <div className="text-right shrink-0">
+            <p className="text-[10px] text-gray-400 font-medium leading-none">Starting from</p>
+            <p className="text-sm sm:text-base font-black text-[#0fa353] mt-0.5">
+              {installEst.label}
+            </p>
+          </div>
+        </div>
+
+        {/* Inverter Phase Note */}
+        <div className="flex gap-2 items-start mb-3 px-0.5">
+          <FaCheck className="text-[#0fa353] mt-0.5 shrink-0" size={11} />
+          <p className="text-[11px] sm:text-xs text-gray-600 leading-relaxed">
+            A <strong className="text-gray-900 font-semibold">{phase === "single" ? "single" : "3"}-phase</strong> inverter comfortably handles this load.
+          </p>
+        </div>
+
+        {/* WhatsApp Quote Button */}
+        <a
+          href={buildWhatsAppUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full bg-[#0fa353] hover:bg-[#0c8a45] text-white font-bold py-3 rounded-xl transition-all shadow-sm hover:shadow flex items-center justify-center gap-2 text-xs sm:text-sm"
+        >
+          <FaWhatsapp size={16} />
+          <span>Get A Free Quote</span>
+        </a>
+        <p className="text-[10px] text-center text-gray-400 leading-relaxed mt-2">
+          An indicative estimate. Your engineered quote follows a free site survey.
         </p>
-        <div className="space-y-2">
-          {applianceBreakdown.length > 0 ? (
-            applianceBreakdown.map((item, i) => (
-              <EnergyBar key={item.name} label={item.name} units={item.units}
-                maxUnits={maxBarUnits} color={barColors[i] || barColors[barColors.length - 1]} />
-            ))
-          ) : (
-            <p className="text-[10px] text-gray-500 text-center py-1">Add appliances to see breakdown</p>
-          )}
-        </div>
       </div>
-
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        <div className="bg-[#222930] rounded-md p-2.5">
-          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Daily Energy</p>
-          <p className="text-sm sm:text-base font-bold text-[#a3e635]">{totalDailyUnits.toFixed(1)}</p>
-          <p className="text-[10px] text-gray-500">units/day</p>
-        </div>
-        <div className="bg-[#222930] rounded-md p-2.5">
-          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Peak Load</p>
-          <p className="text-sm sm:text-base font-bold">{totalLoadW.toLocaleString()}</p>
-          <p className="text-[10px] text-gray-500">watts</p>
-        </div>
-        <div className="bg-[#222930] rounded-md p-2.5">
-          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">Monthly Savings</p>
-          <p className="text-sm sm:text-base font-bold text-[#a3e635]">Rs {monthlySavings.toLocaleString()}</p>
-          <p className="text-[10px] text-gray-500">estimated</p>
-        </div>
-        <div className="bg-[#222930] rounded-md p-2.5">
-          <p className="text-[10px] text-gray-400 font-semibold uppercase tracking-wider mb-0.5">CO₂ Saved</p>
-          <p className="text-sm sm:text-base font-bold">{co2SavedTons}</p>
-          <p className="text-[10px] text-gray-500">tons/year</p>
-        </div>
-      </div>
-
-      <div className="bg-linear-to-r from-[#a3e635]/10 to-[#22c55e]/10 border border-[#a3e635]/10 rounded-md p-2.5 sm:p-3 mb-3 flex items-center gap-2.5 sm:gap-3">
-        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-md flex items-center justify-center shrink-0">
-          <Image src="/images/pkr.webp" alt="PKR" width={58} height={28} className="object-contain" />
-        </div>
-        <div>
-          <p className="text-[10px] text-gray-400 font-medium">Estimated Yearly Savings</p>
-          <p className="text-base sm:text-lg font-black text-[#a3e635]">Rs {yearlySavings.toLocaleString()}</p>
-        </div>
-      </div>
-
-      <div className="flex gap-2 items-start mb-3 px-0.5">
-        <FaCheck className="text-[#a3e635] mt-0.5 shrink-0" size={11} />
-        <p className="text-[11px] sm:text-xs text-gray-400 leading-relaxed">
-          A <strong className="text-gray-200">{phase === "single" ? "single" : "3"}-phase</strong> inverter comfortably handles this load.
-        </p>
-      </div>
-
-      <a
-        href={buildWhatsAppUrl()}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="w-full bg-[#a3e635] hover:bg-[#b0f244] text-[#1a1f22] font-bold py-2.5 sm:py-3 rounded-md transition-all duration-300 shadow-[0_0_24px_rgba(163,230,53,0.25)] hover:shadow-[0_0_32px_rgba(163,230,53,0.4)] hover:-translate-y-0.5 mb-1.5 text-xs sm:text-sm flex items-center justify-center gap-2"
-      >
-        <FaWhatsapp size={15} />
-        Get A Free Quote
-      </a>
-      <p className="text-[10px] text-center text-gray-600 leading-relaxed">
-        An indicative estimate. Your engineered quote follows a free site survey.
-      </p>
-    </div>
-  );
+    );
+  };
 
   if (!mounted) {
     return (
@@ -337,7 +402,7 @@ export default function SolarCalculator() {
                 <button
                   onClick={() => setPhase("single")}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                    phase === "single" ? "bg-green-900 text-white" : "text-gray-600 hover:text-gray-900"
+                    phase === "single" ? "bg-[#0fa353] text-white shadow-2xs" : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
                   Single-phase
@@ -345,7 +410,7 @@ export default function SolarCalculator() {
                 <button
                   onClick={() => setPhase("three")}
                   className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
-                    phase === "three" ? "bg-green-900 text-white" : "text-gray-600 hover:text-gray-900"
+                    phase === "three" ? "bg-[#0fa353] text-white shadow-2xs" : "text-gray-600 hover:text-gray-900"
                   }`}
                 >
                   3-phase
@@ -472,7 +537,7 @@ export default function SolarCalculator() {
                 <button
                   onClick={handleCalculate}
                   disabled={isCalculating}
-                  className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold text-xs md:text-sm px-4 md:px-6 py-2 rounded-md transition-colors disabled:opacity-60"
+                  className="flex items-center gap-2 bg-[#0fa353] hover:bg-[#0c8a45] text-white font-semibold text-xs md:text-sm px-4 md:px-6 py-2 rounded-md transition-colors disabled:opacity-60 shadow-xs hover:shadow"
                 >
                   {isCalculating ? (
                     <>
@@ -514,6 +579,87 @@ export default function SolarCalculator() {
             <ResultsPanel className="p-4" />
           </div>
         )}
+
+        {/* ── Transparent Residential Installation Rates Card ── */}
+        <div className="mt-12 sm:mt-16 bg-white rounded-2xl border border-gray-200/90 shadow-xs p-5 sm:p-7 md:p-8">
+          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-6 pb-6 border-b border-gray-100">
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold uppercase tracking-wider mb-2">
+                <FaBolt size={10} className="text-[#0fa353]" />
+                Transparent Labor Rates
+              </div>
+              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
+                Professional Installation — Residential Starting Rates
+              </h3>
+              <p className="text-xs sm:text-sm text-gray-500 mt-1 max-w-2xl">
+                Fixed, upfront technician and civil mounting charges for residential solar setups across Karachi &amp; Lahore.
+              </p>
+            </div>
+            <a
+              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                "Salam A2Z Solar, I need a professional solar installation team for my home. Please share availability."
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs sm:text-sm font-bold transition-all shrink-0 shadow-xs hover:shadow-sm"
+            >
+              <FaWhatsapp size={15} />
+              <span>Book Installation Team</span>
+            </a>
+          </div>
+
+          {/* Rates Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2.5 sm:gap-3.5">
+            {INSTALLATION_RATES.map((item) => {
+              const isRecommended = showResult && item.kw === systemSizeKW;
+              return (
+                <div
+                  key={item.label}
+                  className={`relative flex flex-col justify-between p-3 sm:p-3.5 rounded-xl border transition-all ${
+                    isRecommended
+                      ? "bg-emerald-50/80 border-emerald-500 ring-2 ring-emerald-500/20 shadow-xs"
+                      : "bg-gray-50/70 border-gray-200/80 hover:bg-white hover:border-gray-300 hover:shadow-xs"
+                  }`}
+                >
+                  {isRecommended && (
+                    <span className="absolute -top-2 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-[#0fa353] text-[9px] font-bold text-white uppercase tracking-wider shadow-2xs whitespace-nowrap">
+                      Your Load
+                    </span>
+                  )}
+                  <div>
+                    <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
+                      {item.phase}
+                    </span>
+                    <h4 className="text-sm sm:text-base font-black text-gray-900 mt-0.5">
+                      {item.label}
+                    </h4>
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-gray-200/60">
+                    <span className="text-[10px] font-medium text-gray-400 block leading-tight">
+                      Starting from
+                    </span>
+                    <span className="text-xs sm:text-sm font-black text-[#0fa353] mt-0.5 block">
+                      {item.formatted}
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Scope Note */}
+          <div className="mt-5 pt-4 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 text-xs text-gray-500">
+            <div className="flex items-center gap-2 flex-wrap text-[11px] sm:text-xs">
+              <span className="font-semibold text-gray-700">Scope includes:</span>
+              <span>• Certified technician mounting</span>
+              <span>• DC/AC DB box &amp; breaker wiring</span>
+              <span>• Inverter testing &amp; app setup</span>
+            </div>
+            <span className="text-[10px] sm:text-[11px] text-gray-400 italic">
+              * Structure elevation, civil footing &amp; cabling materials quoted separately based on site audit.
+            </span>
+          </div>
+        </div>
       </div>
     </section>
   );
