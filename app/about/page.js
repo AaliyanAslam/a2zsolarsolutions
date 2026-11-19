@@ -140,14 +140,17 @@ const LOCATIONS = [
   {
     city: "Karachi",
     role: "Headquarters and central warehouse",
+    address:
+      "D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi, Karachi 78400",
     coverage:
       "DHA, Clifton, Gulshan, North Nazimabad, Korangi, Bahria Town and industrial estates (SITE, Korangi, FB Area).",
   },
   {
     city: "Lahore",
     role: "Regional operations and project office",
+    address: "House: 31, Lane 1, Muslimabad, Station Road, Mughalpura, Lahore",
     coverage:
-      "DHA, Bahria Town, Gulberg, Johar Town, Model Town, Raiwind Road and Sundar Industrial Estate.",
+      "DHA, Bahria Town, Gulberg, Johar Town, Model Town, Mughalpura, Raiwind Road and Sundar Industrial Estate.",
   },
 ];
 
@@ -387,6 +390,12 @@ export default function AboutPage() {
                 <p className="mt-4 text-base font-semibold text-emerald-800">
                   {loc.role}
                 </p>
+                {loc.address && (
+                  <p className="mt-1 text-xs sm:text-sm text-gray-500">
+                    <strong className="font-semibold text-gray-700">Address: </strong>
+                    {loc.address}
+                  </p>
+                )}
                 <p className="mt-2 text-sm leading-relaxed text-gray-600 sm:text-base">
                   <strong className="font-bold text-gray-800">
                     Coverage:{" "}

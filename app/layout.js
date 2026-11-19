@@ -170,6 +170,15 @@ export default function RootLayout({ children }) {
     addressCountry: "PK",
   };
 
+  const lahoreAddress = {
+    "@type": "PostalAddress",
+    streetAddress: "House: 31, Lane 1, Muslimabad, Station Road, Mughalpura",
+    addressLocality: "Lahore",
+    addressRegion: "Punjab",
+    postalCode: "54840",
+    addressCountry: "PK",
+  };
+
   const sameAs = [
     "https://www.facebook.com/share/18PCFJQaZC/",
     "https://www.tiktok.com/@a2z.solar.solutions",
@@ -218,7 +227,7 @@ export default function RootLayout({ children }) {
         foundingDate: "2015",
         telephone: "+92-321-4189298",
         email: "info@a2zsolarsolutions.com",
-        address: karachiAddress,
+        address: [karachiAddress, lahoreAddress],
         contactPoint: {
           "@type": "ContactPoint",
           telephone: "+92-321-4189298",
@@ -240,7 +249,7 @@ export default function RootLayout({ children }) {
           "Solar energy company in Karachi — solar panel installation, hybrid inverters, lithium batteries and complete solar systems for homes, businesses and industries.",
         telephone: "+92-321-4189298",
         email: "info@a2zsolarsolutions.com",
-        address: karachiAddress,
+        address: [karachiAddress, lahoreAddress],
         hasMap:
           "https://www.google.com/maps/search/?api=1&query=A2Z+Solar+Solutions+Korangi+Karachi",
         priceRange: "$$",

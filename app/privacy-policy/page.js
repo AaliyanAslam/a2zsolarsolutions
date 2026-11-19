@@ -462,10 +462,13 @@ export default function PrivacyPolicyPage() {
                 <div className="flex items-start gap-3">
                   <FaLocationDot className="text-[#0fa353] mt-1 shrink-0" />
                   <div>
-                    <strong className="text-gray-900 block">Office:</strong>
-                    <span className="text-gray-600">
-                      D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi, Karachi 78400, Pakistan
-                    </span>
+                    <strong className="text-gray-900 block">Offices:</strong>
+                    <p className="text-gray-600">
+                      <strong className="text-gray-800">Karachi HQ:</strong> D-164, Korangi No. 6, Sector 51-A, Hasrat Mohani Colony, Korangi, Karachi 78400, Pakistan
+                    </p>
+                    <p className="text-gray-600 mt-1">
+                      <strong className="text-gray-800">Lahore Office:</strong> House: 31, Lane 1, Muslimabad, Station Road, Mughalpura, Lahore, Pakistan
+                    </p>
                   </div>
                 </div>
               </div>

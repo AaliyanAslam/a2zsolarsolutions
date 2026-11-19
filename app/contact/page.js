@@ -89,7 +89,7 @@ const LOCATIONS = [
   },
   {
     city: "Lahore regional office",
-    address: "Model Town / DHA Phase 5, Lahore, Punjab",
+    address: "House: 31, Lane 1, Muslimabad, Station Road, Mughalpura, Lahore",
     timing: "Mon - Sat, 9:00 AM - 6:00 PM",
   },
 ];

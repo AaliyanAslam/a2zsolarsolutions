@@ -294,7 +294,7 @@ export default function Footer() {
               <li className="flex items-start gap-2 pt-0.5">
                 <FaLocationDot className="text-[#0fa353] text-xs shrink-0 mt-0.5" />
                 <span className="text-[11px] leading-relaxed text-gray-600">
-                  <strong className="text-gray-800 font-semibold">Lahore Office:</strong> Active Branch Operations
+                  <strong className="text-gray-800 font-semibold">Lahore Office:</strong> House: 31, Lane 1, Muslimabad, Station Road, Mughalpura, Lahore
                 </span>
               </li>
               <li className="pt-1">
