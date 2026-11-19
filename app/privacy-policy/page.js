@@ -435,10 +435,10 @@ export default function PrivacyPolicyPage() {
                   <div>
                     <strong className="text-gray-900 block">Email:</strong>
                     <a
-                      href="mailto:a2zsolarsolutions.com@gmail.com"
+                      href="mailto:info@a2zsolarsolutions.com"
                       className="text-[#0fa353] font-semibold hover:underline"
                     >
-                      a2zsolarsolutions.com@gmail.com
+                      info@a2zsolarsolutions.com
                     </a>
                   </div>
                 </div>

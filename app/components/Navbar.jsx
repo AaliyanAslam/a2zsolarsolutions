@@ -170,8 +170,8 @@ const Navbar = () => {
             </div>
             <div className="flex items-center gap-2 text-gray-300">
               <FaEnvelope className="text-[#0fa353]" />
-              <a href="mailto:a2zsolarsolutions.com@gmail.com" className="hover:text-white transition-colors">
-                a2zsolarsolutions.com@gmail.com
+              <a href="mailto:info@a2zsolarsolutions.com" className="hover:text-white transition-colors">
+                info@a2zsolarsolutions.com
               </a>
             </div>
           </div>

@@ -281,8 +281,8 @@ export default function Footer() {
               </li>
               <li className="flex items-center gap-2">
                 <FaEnvelope className="text-[#0fa353] text-xs shrink-0" />
-                <a href="mailto:a2zsolarsolutions.com@gmail.com" className="hover:text-gray-900 transition-colors truncate">
-                  a2zsolarsolutions.com@gmail.com
+                <a href="mailto:info@a2zsolarsolutions.com" className="hover:text-gray-900 transition-colors truncate">
+                  info@a2zsolarsolutions.com
                 </a>
               </li>
               <li className="flex items-start gap-2 pt-0.5">

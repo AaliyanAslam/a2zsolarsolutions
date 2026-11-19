@@ -217,7 +217,7 @@ export default function RootLayout({ children }) {
           "A2Z Solar Solutions is a Karachi-based solar energy company (est. 2015) providing hybrid, on-grid and off-grid solar systems, Tier-1 panels, inverters and lithium battery storage across Pakistan.",
         foundingDate: "2015",
         telephone: "+92-321-4189298",
-        email: "a2zsolarsolutions.com@gmail.com",
+        email: "info@a2zsolarsolutions.com",
         address: karachiAddress,
         contactPoint: {
           "@type": "ContactPoint",
@@ -239,7 +239,7 @@ export default function RootLayout({ children }) {
         description:
           "Solar energy company in Karachi — solar panel installation, hybrid inverters, lithium batteries and complete solar systems for homes, businesses and industries.",
         telephone: "+92-321-4189298",
-        email: "a2zsolarsolutions.com@gmail.com",
+        email: "info@a2zsolarsolutions.com",
         address: karachiAddress,
         hasMap:
           "https://www.google.com/maps/search/?api=1&query=A2Z+Solar+Solutions+Korangi+Karachi",

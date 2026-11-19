@@ -42,7 +42,7 @@ export const metadata = {
 
 const PHONE_DISPLAY = "+92 321 4189298";
 const PHONE_TEL = "+923214189298";
-const EMAIL = "a2zsolarsolutions.com@gmail.com";
+const EMAIL = "info@a2zsolarsolutions.com";
 const WHATSAPP_URL = `https://wa.me/923214189298?text=${encodeURIComponent(
   "Salam A2Z Solar, I would like to get a solar quote.",
 )}`;
