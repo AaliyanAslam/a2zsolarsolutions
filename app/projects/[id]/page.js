@@ -129,6 +129,7 @@ export default async function ProjectDetailPage({ params }) {
     <main className="min-h-screen bg-gray-50/60 pt-24 sm:pt-28 md:pt-32 pb-12 sm:pb-16 text-gray-900">
       <script
         type="application/ld+json"
+        suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 

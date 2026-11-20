@@ -74,7 +74,7 @@ export default async function ProductPage({ params }) {
     const serialized = JSON.parse(JSON.stringify(product));
     const serializedRelated = JSON.parse(JSON.stringify(related));
 
-    // JSON-LD Product schema for SEO
+    // JSON-LD Product schema for SEO (Merchant Listings compliant)
     const productSchema = {
       "@context": "https://schema.org",
       "@type": "Product",
@@ -96,6 +96,41 @@ export default async function ProductPage({ params }) {
         seller: {
           "@type": "Organization",
           name: "A2Z Solar Solutions",
+        },
+        shippingDetails: {
+          "@type": "OfferShippingDetails",
+          shippingRate: {
+            "@type": "MonetaryAmount",
+            value: 0,
+            currency: "PKR",
+          },
+          shippingDestination: {
+            "@type": "DefinedRegion",
+            addressCountry: "PK",
+          },
+          deliveryTime: {
+            "@type": "ShippingDeliveryTime",
+            handlingTime: {
+              "@type": "QuantitativeValue",
+              minValue: 1,
+              maxValue: 2,
+              unitCode: "DAY",
+            },
+            transitTime: {
+              "@type": "QuantitativeValue",
+              minValue: 2,
+              maxValue: 5,
+              unitCode: "DAY",
+            },
+          },
+        },
+        hasMerchantReturnPolicy: {
+          "@type": "MerchantReturnPolicy",
+          applicableCountry: "PK",
+          returnPolicyCategory:
+            "https://schema.org/MerchantReturnNotPermitted",
+          merchantReturnLink:
+            "https://a2zsolarsolutions.com/terms-and-conditions",
         },
       },
     };

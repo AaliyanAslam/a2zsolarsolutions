@@ -328,7 +328,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${font.variable} font-sans h-full antialiased overflow-x-hidden`}
     >
-      <head>
+      <head suppressHydrationWarning>
         {/* Favicons, verification & app name are emitted via `metadata` above */}
         <meta name="apple-mobile-web-app-title" content="A2Z Solar Solutions" />
         <link rel="preconnect" href="https://res.cloudinary.com" />
@@ -341,12 +341,14 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
         />
         <script
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var b={'bis_skin_checked':1,'cz-shortcut-listen':1,'data-new-gr-c-s-check-loaded':1,'data-gr-ext-installed':1};var o=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){if(b[n])return;return o.apply(this,arguments);};}catch(e){}})();`,
+            __html: `(function(){try{var b={'bis_skin_checked':1,'bis_use':1,'cz-shortcut-listen':1,'data-new-gr-c-s-check-loaded':1,'data-gr-ext-installed':1,'data-dynamic-id':1};var o=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){if(b[n])return;return o.apply(this,arguments);};}catch(e){}})();`,
           }}
         />
         <script
           type="application/ld+json"
+          suppressHydrationWarning
           dangerouslySetInnerHTML={{
             __html: JSON.stringify(schemaGraph).replace(/</g, "\\u003c"),
           }}
