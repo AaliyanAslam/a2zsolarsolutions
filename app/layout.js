@@ -12,12 +12,12 @@ export const metadata = {
   metadataBase: new URL("https://a2zsolarsolutions.com"),
 
   title: {
-    default: "A2Z Solar Solutions | Best Solar Energy Company in Karachi & Lahore",
+    default: "A2Z Solar Solutions | Solar Company Karachi & Lahore",
     template: "%s | A2Z Solar Solutions",
   },
 
   description:
-    "A2Z Solar Solutions is Pakistan's leading renewable energy company specializing in Tier-1 hybrid solar systems, advanced lithium battery storage, and turnkey rooftop installations across Karachi and Lahore.",
+    "A2Z Solar Solutions installs Tier-1 solar panels & hybrid systems in Karachi & Lahore. Cut bills up to 90%. Call 0321-4189298 for a free quote.",
 
   keywords: [
     // ── High-Intent Local Searches (Karachi & Lahore) ──
@@ -133,9 +133,9 @@ export const metadata = {
   },
 
   openGraph: {
-    title: "A2Z Solar Solutions | Best Solar Energy Company in Karachi & Lahore",
+    title: "A2Z Solar Solutions | Solar Company Karachi & Lahore",
     description:
-      "Cut your electricity bills up to 90% and secure 24/7 power backup with Tier-1 solar panels, smart hybrid inverters, and lithium battery storage by A2Z Solar Solutions.",
+      "A2Z Solar Solutions installs Tier-1 solar panels & hybrid systems in Karachi & Lahore. Cut bills up to 90%. Call 0321-4189298 for a free quote.",
     url: "https://a2zsolarsolutions.com",
     siteName: "A2Z Solar Solutions",
     images: [

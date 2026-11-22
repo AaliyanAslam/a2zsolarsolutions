@@ -162,9 +162,9 @@ export default function DocumentsSection() {
           </div>
         ) : filteredDocs.length === 0 ? (
           <div className="rounded-sm border border-gray-200 bg-white p-8 text-center sm:p-12">
-            <h3 className="text-base font-bold text-[#1a1c29]">
+            <p className="text-base font-bold text-[#1a1c29]">
               No {selectedCategory.toLowerCase()} documents yet
-            </h3>
+            </p>
             <button
               type="button"
               onClick={() => setSelectedCategory("All")}
@@ -210,9 +210,9 @@ export default function DocumentsSection() {
                     </button>
                   </div>
 
-                  <h3 className="mt-4 line-clamp-2 text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
+                  <p className="mt-4 line-clamp-2 text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
                     {doc.title}
-                  </h3>
+                  </p>
 
                   {doc.description && (
                     <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-gray-600">
@@ -261,7 +261,7 @@ export default function DocumentsSection() {
               href="/documents"
               className={`font-bold text-[#0fa353] underline underline-offset-4 ${FOCUS}`}
             >
-              See all downloads
+              View AEDB &amp; PEC Certifications
             </Link>
           </p>
         )}

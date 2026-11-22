@@ -78,9 +78,9 @@ export default function Footer() {
 
           {/* ── Banner Content (Right Side) ── */}
           <div className="md:ml-auto md:w-7/12 lg:w-3/5 xl:w-3/5 space-y-3 sm:space-y-4 relative z-10 text-left">
-            <h3 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug">
+            <p className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-snug">
               Subscribe to our newsletter to get updates to our latest solar installations
-            </h3>
+            </p>
 
             <p className="text-xs sm:text-sm text-green-100/90 leading-relaxed max-w-xl">
               Get 20% off on your initial system survey &amp; instant WhatsApp solar load calculations.
@@ -177,9 +177,9 @@ export default function Footer() {
 
           {/* Column 2: Quick Links */}
           <div className="lg:col-span-2 space-y-3">
-            <h4 className="text-sm font-bold text-gray-900 tracking-tight">
+            <p className="text-sm font-bold text-gray-900 tracking-tight">
               Company
-            </h4>
+            </p>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-600">
               <li>
                 <Link href="/" className="hover:text-[#0fa353] transition-colors">
@@ -231,9 +231,9 @@ export default function Footer() {
 
           {/* Column 3: Solar Tools & Info */}
           <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-sm font-bold text-gray-900 tracking-tight">
+            <p className="text-sm font-bold text-gray-900 tracking-tight">
               Solar Tools &amp; Solutions
-            </h4>
+            </p>
             <ul className="space-y-2 text-xs sm:text-sm text-gray-600">
               <li>
                 <Link href="/#calculator" className="hover:text-[#0fa353] transition-colors">
@@ -270,9 +270,9 @@ export default function Footer() {
 
           {/* Column 4: Contact Us & Offices */}
           <div className="lg:col-span-3 space-y-3">
-            <h4 className="text-sm font-bold text-gray-900 tracking-tight">
+            <p className="text-sm font-bold text-gray-900 tracking-tight">
               Contact &amp; Offices
-            </h4>
+            </p>
             <ul className="space-y-2.5 text-xs sm:text-sm text-gray-600">
               <li className="flex items-center gap-2">
                 <FaPhone className="text-[#0fa353] text-xs shrink-0" />
@@ -323,19 +323,19 @@ export default function Footer() {
 
           <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3 sm:gap-4 font-medium text-gray-600">
             <Link href="/" className="hover:text-[#0fa353] transition-colors">
-              Home
+              Main Site
             </Link>
             <Link href="/about" className="hover:text-[#0fa353] transition-colors">
-              About Us
+              Company Profile
             </Link>
             <Link href="/privacy-policy" className="hover:text-[#0fa353] transition-colors">
-              Privacy Policy
+              Privacy Notice
             </Link>
             <Link href="/terms-and-conditions" className="hover:text-[#0fa353] transition-colors">
-              Terms &amp; Conditions
+              Terms of Service
             </Link>
             <Link href="/contact" className="hover:text-[#0fa353] transition-colors">
-              Contact
+              Support &amp; Offices
             </Link>
             <span className="text-gray-300 hidden sm:inline">|</span>
             <span className="text-emerald-700 font-semibold bg-emerald-50 px-2.5 py-0.5 rounded-sm border border-emerald-200/60">

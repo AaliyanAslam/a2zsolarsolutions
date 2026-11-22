@@ -231,9 +231,9 @@ export default function RecentProjects() {
                       <p className="text-[10px] sm:text-[11px] font-semibold text-emerald-700 uppercase tracking-wider mb-0.5">
                         Turnkey Setup
                       </p>
-                      <h3 className="text-xs sm:text-sm font-semibold text-gray-900 group-hover:text-[#0fa353] transition-colors line-clamp-1">
+                      <p className="text-xs sm:text-sm font-semibold text-gray-900 group-hover:text-[#0fa353] transition-colors line-clamp-1">
                         {proj.location}
-                      </h3>
+                      </p>
 
                       <div className="mt-1.5 flex items-center justify-between text-[11px] text-gray-400 font-medium">
                         <span className="flex items-center gap-1 truncate">
@@ -264,9 +264,9 @@ export default function RecentProjects() {
             role="alert"
             className="rounded-2xl border border-gray-100 bg-gray-50/70 p-8 text-center sm:p-12 mt-8"
           >
-            <h3 className="text-base font-semibold text-gray-900">
+            <p className="text-base font-semibold text-gray-900">
               Projects could not be loaded
-            </h3>
+            </p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">
               Please check your connection and refresh the page.
             </p>
@@ -275,9 +275,9 @@ export default function RecentProjects() {
 
         {showEmpty && (
           <div className="rounded-2xl border border-gray-100 bg-gray-50/70 p-8 text-center sm:p-12 mt-8">
-            <h3 className="text-base font-semibold text-gray-900">
+            <p className="text-base font-semibold text-gray-900">
               New installations are being added
-            </h3>
+            </p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-gray-500">
               Recent turnkey solar sites will appear here shortly.
             </p>

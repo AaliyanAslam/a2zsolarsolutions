@@ -679,9 +679,9 @@ const ClientsFeedback = () => {
                   )}
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-base font-bold text-[#1a1c29] leading-tight truncate">
+                  <p className="text-base font-bold text-[#1a1c29] leading-tight truncate">
                     {activeReview.name}
-                  </h3>
+                  </p>
                   <div className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
                     <FaMapMarkerAlt className="text-[#0fa353] text-[10px]" />
                     <span>{activeReview.address}</span>

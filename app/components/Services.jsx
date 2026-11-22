@@ -206,9 +206,9 @@ export default function Services() {
                   </span>
                 </div>
 
-                <h3 className="text-lg font-bold leading-snug text-[#1a1c29] sm:text-xl">
+                <p className="text-lg font-bold leading-snug text-[#1a1c29] sm:text-xl">
                   {service.title}
-                </h3>
+                </p>
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">
                   {service.description}
                 </p>

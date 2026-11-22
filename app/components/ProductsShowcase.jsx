@@ -80,9 +80,9 @@ function ProductCard({ product }) {
         )}
 
         {/* Title */}
-        <h3 className="text-[13px] sm:text-sm font-semibold text-gray-900 leading-snug line-clamp-2 group-hover:text-[#0fa353] transition-colors mb-auto">
+        <p className="text-[13px] sm:text-sm font-semibold text-gray-900 leading-snug line-clamp-2 group-hover:text-[#0fa353] transition-colors mb-auto">
           {product.title}
-        </h3>
+        </p>
 
         {/* Price */}
         <div className="mt-2.5 flex items-baseline gap-2">

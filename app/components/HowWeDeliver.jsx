@@ -83,9 +83,9 @@ export default function HowWeDeliver() {
               </div>
 
               <div className="lg:mt-6">
-                <h3 className="text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
+                <p className="text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
                   {title}
-                </h3>
+                </p>
                 <p className="mt-2 text-sm leading-relaxed text-gray-600">
                   {desc}
                 </p>

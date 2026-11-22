@@ -12,10 +12,10 @@ import DocumentsSection from "./components/DocumentsSection";
 
 export const metadata = {
   title: {
-    absolute: "A2Z Solar Solutions | Solar Karachi & Lahore — Best Solar Company & Installation",
+    absolute: "A2Z Solar Solutions | Solar Company Karachi & Lahore",
   },
   description:
-    "Looking for Solar in Karachi or Lahore? A2Z Solar Solutions (est. 2015) provides Tier-1 solar panels, hybrid inverters, lithium batteries & turnkey solar installations. Cut K-Electric bills up to 90%. Call 0321-4189298.",
+    "A2Z Solar Solutions installs Tier-1 solar panels & hybrid systems in Karachi & Lahore. Cut bills up to 90%. Call 0321-4189298 for a free quote.",
   keywords: [
     "Solar Karachi",
     "Solar Panel Karachi",
@@ -40,9 +40,9 @@ export const metadata = {
     canonical: "https://a2zsolarsolutions.com",
   },
   openGraph: {
-    title: "A2Z Solar Solutions | Solar Karachi & Lahore — Turnkey Solar Systems",
+    title: "A2Z Solar Solutions | Solar Company Karachi & Lahore",
     description:
-      "Cut K-Electric electricity bills by up to 90% and ensure 24/7 power backup with Tier-1 solar panels and smart hybrid systems in Karachi & Lahore.",
+      "A2Z Solar Solutions installs Tier-1 solar panels & hybrid systems in Karachi & Lahore. Cut bills up to 90%. Call 0321-4189298 for a free quote.",
     url: "https://a2zsolarsolutions.com",
     siteName: "A2Z Solar Solutions",
     images: [
@@ -58,9 +58,9 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "A2Z Solar Solutions | Solar Karachi & Lahore",
+    title: "A2Z Solar Solutions | Solar Company Karachi & Lahore",
     description:
-      "Cut electricity bills by up to 90% and ensure 24/7 power backup with Tier-1 solar panels and smart hybrid systems in Karachi & Lahore.",
+      "A2Z Solar Solutions installs Tier-1 solar panels & hybrid systems in Karachi & Lahore. Cut bills up to 90%. Call 0321-4189298 for a free quote.",
     images: ["/images/solar-image.webp"],
   },
 };

@@ -108,9 +108,9 @@ export default function WhySolar() {
                   <Icon className="text-lg sm:text-xl" aria-hidden="true" />
                 </span>
                 <div className="min-w-0">
-                  <h3 className="text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
+                  <p className="text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
                     {title}
-                  </h3>
+                  </p>
                   <p className="mt-1.5 text-sm leading-relaxed text-gray-600 sm:text-base">
                     {desc}
                   </p>

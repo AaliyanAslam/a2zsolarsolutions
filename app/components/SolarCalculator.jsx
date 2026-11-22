@@ -395,7 +395,7 @@ export default function SolarCalculator() {
           <div suppressHydrationWarning className="bg-white rounded-md shadow-sm border border-gray-200 p-3.5 sm:p-6 md:p-8 w-full lg:w-[58%]">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 sm:mb-6 md:mb-8 gap-2.5 sm:gap-3">
               <div>
-                <h3 className="text-base sm:text-xl font-bold text-gray-900">Your appliances</h3>
+                <p className="text-base sm:text-xl font-bold text-gray-900">Your appliances</p>
                 <p className="text-[11px] sm:text-sm text-gray-500 mt-0.5">Pick a preset or enter custom watts &amp; hours.</p>
               </div>
               <div className="flex items-center bg-gray-100 rounded-full p-0.5 self-start sm:self-auto shrink-0">
@@ -588,9 +588,9 @@ export default function SolarCalculator() {
                 <FaBolt size={10} className="text-[#0fa353]" />
                 Transparent Labor Rates
               </div>
-              <h3 className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">
                 Professional Installation — Residential Starting Rates
-              </h3>
+              </p>
               <p className="text-xs sm:text-sm text-gray-500 mt-1 max-w-2xl">
                 Fixed, upfront technician and civil mounting charges for residential solar setups across Karachi &amp; Lahore.
               </p>
@@ -630,9 +630,9 @@ export default function SolarCalculator() {
                     <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
                       {item.phase}
                     </span>
-                    <h4 className="text-sm sm:text-base font-black text-gray-900 mt-0.5">
+                    <p className="text-sm sm:text-base font-black text-gray-900 mt-0.5">
                       {item.label}
-                    </h4>
+                    </p>
                   </div>
                   <div className="mt-3 pt-2 border-t border-gray-200/60">
                     <span className="text-[10px] font-medium text-gray-400 block leading-tight">

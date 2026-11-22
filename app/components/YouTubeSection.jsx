@@ -473,9 +473,9 @@ export default function YouTubeSection() {
             role="alert"
             className="rounded-sm border border-gray-200 bg-gray-50 p-8 text-center sm:p-12"
           >
-            <h3 className="text-base font-bold text-[#1a1c29]">
+            <p className="text-base font-bold text-[#1a1c29]">
               Videos could not be loaded
-            </h3>
+            </p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-gray-600">
               Please refresh the page, or watch them directly on our YouTube
               channel.
@@ -485,9 +485,9 @@ export default function YouTubeSection() {
       ) : videos.length === 0 ? (
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="rounded-sm border border-gray-200 bg-gray-50 p-8 text-center sm:p-12">
-            <h3 className="text-base font-bold text-[#1a1c29]">
+            <p className="text-base font-bold text-[#1a1c29]">
               New videos are coming soon
-            </h3>
+            </p>
             <p className="mx-auto mt-1 max-w-sm text-sm text-gray-600">
               Check our YouTube channel in the meantime.
             </p>
@@ -608,9 +608,9 @@ export default function YouTubeSection() {
             </div>
 
             <div className="flex flex-col gap-4 bg-gray-50 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
-              <h3 className="text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
+              <p className="text-base font-bold leading-snug text-[#1a1c29] sm:text-lg">
                 {activeVideo.title}
-              </h3>
+              </p>
 
               <div className="flex flex-wrap items-center gap-2.5">
                 <SocialShareButton
