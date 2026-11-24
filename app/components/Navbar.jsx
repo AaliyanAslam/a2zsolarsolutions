@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -27,28 +27,63 @@ import {
   FaCertificate,
   FaFilePdf,
   FaChevronRight,
+  FaClock,
 } from "react-icons/fa6";
-import { HiOutlineSparkles } from "react-icons/hi2";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 
 const NAV_LINKS = [
   { label: "Home", href: "/", icon: FaHouse },
   { label: "Products", href: "/products", icon: FaBoxOpen },
   { label: "Solar Solutions", href: "/#services", icon: FaSolarPanel },
-  { label: "Recent Projects", href: "/#projects", icon: FaBriefcase },
+  { label: "Projects", href: "/#projects", icon: FaBriefcase },
   { label: "About Us", href: "/about", icon: FaUsers },
   {
     label: "More",
     href: "#",
     icon: FaCompass,
     dropdownItems: [
-      { label: "Clients Feedback", href: "/#reviews", icon: FaStar, color: "text-amber-500" },
-      { label: "Solar Calculator", href: "/#calculator", icon: FaCalculator, color: "text-emerald-500" },
-      { label: "Why Solar?", href: "/#why-solar", icon: FaLeaf, color: "text-emerald-600" },
-      { label: "How We Deliver", href: "/#process", icon: FaTruck, color: "text-blue-500" },
-      { label: "Video Showcase", href: "/#videos", icon: FaYoutube, color: "text-red-500" },
-      { label: "Certifications", href: "/#certifications", icon: FaCertificate, color: "text-purple-500" },
-      { label: "Downloads & PDFs", href: "/documents", icon: FaFilePdf, color: "text-rose-500" },
+      {
+        label: "Solar Calculator",
+        desc: "Size your kW system & savings",
+        href: "/#calculator",
+        icon: FaCalculator,
+      },
+      {
+        label: "Downloads & PDFs",
+        desc: "Inverter & panel datasheets",
+        href: "/documents",
+        icon: FaFilePdf,
+      },
+      {
+        label: "Why Solar?",
+        desc: "ROI, net metering & benefits",
+        href: "/#why-solar",
+        icon: FaLeaf,
+      },
+      {
+        label: "How We Deliver",
+        desc: "4-step engineering process",
+        href: "/#process",
+        icon: FaTruck,
+      },
+      {
+        label: "Clients Feedback",
+        desc: "Verified customer reviews",
+        href: "/#reviews",
+        icon: FaStar,
+      },
+      {
+        label: "Video Showcase",
+        desc: "Site walkthroughs on YouTube",
+        href: "/#videos",
+        icon: FaYoutube,
+      },
+      {
+        label: "Certifications",
+        desc: "PEC, AEDB & Tier-1 partners",
+        href: "/#certifications",
+        icon: FaCertificate,
+      },
     ],
   },
   { label: "Contact", href: "/contact", icon: FaPhoneAlt },
@@ -57,14 +92,20 @@ const NAV_LINKS = [
 const WHATSAPP_NUMBER = "923214189298";
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=Hi%2C%20I%27m%20interested%20in%20solar%20solutions`;
 
+const FOCUS_RING =
+  "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#0fa353]";
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMoreOpen, setIsMoreOpen] = useState(false);
+  const [desktopMoreOpen, setDesktopMoreOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
 
-  // NOTE: admin check moved AFTER all hooks to comply with React Rules of Hooks.
-  // Returning early before hooks causes crashes and hydration mismatches.
+  const dropdownRef = useRef(null);
+  const closeTimeoutRef = useRef(null);
+
+  // Admin check placed after all hooks to comply with React Rules of Hooks.
   const isAdminPage = pathname?.startsWith("/admin");
 
   useEffect(() => {
@@ -78,6 +119,7 @@ const Navbar = () => {
         ticking = true;
       }
     };
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -95,6 +137,7 @@ const Navbar = () => {
   useEffect(() => {
     return () => {
       document.body.style.overflow = "";
+      clearTimeout(closeTimeoutRef.current);
     };
   }, []);
 
@@ -103,9 +146,34 @@ const Navbar = () => {
       // eslint-disable-next-line
       closeDrawer();
     }
+    setDesktopMoreOpen(false);
   }, [pathname]);
 
-  // Handle smooth scroll when navigating to hash from another page
+  // Close desktop dropdown on Escape key or outside click
+  useEffect(() => {
+    if (!desktopMoreOpen) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setDesktopMoreOpen(false);
+      }
+    };
+
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setDesktopMoreOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [desktopMoreOpen]);
+
+  // Smooth scroll when navigating to hash from another page
   useEffect(() => {
     if (typeof window !== "undefined" && window.location.hash) {
       const id = window.location.hash.replace("#", "");
@@ -123,6 +191,7 @@ const Navbar = () => {
     if (isOpen) {
       closeDrawer();
     }
+    setDesktopMoreOpen(false);
 
     if (href === "#") {
       e.preventDefault();
@@ -144,71 +213,106 @@ const Navbar = () => {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
       window.history.pushState(null, "", "/");
-      return;
     }
   };
 
-  const isActive = (href) => {
-    if (href === "/") return pathname === "/";
-    if (href.startsWith("/#") || href === "#") return false;
-    return pathname.startsWith(href);
+  const handleDropdownEnter = () => {
+    clearTimeout(closeTimeoutRef.current);
+    setDesktopMoreOpen(true);
   };
 
-  // Early return for admin pages — placed AFTER all hooks
+  const handleDropdownLeave = () => {
+    clearTimeout(closeTimeoutRef.current);
+    closeTimeoutRef.current = setTimeout(() => {
+      setDesktopMoreOpen(false);
+    }, 120);
+  };
+
+  const isActive = (link) => {
+    if (link.dropdownItems) {
+      return link.dropdownItems.some(
+        (item) => !item.href.startsWith("/#") && pathname?.startsWith(item.href)
+      );
+    }
+    if (link.href === "/") return pathname === "/";
+    if (link.href.startsWith("/#") || link.href === "#") return false;
+    return pathname?.startsWith(link.href);
+  };
+
+  // Early return for admin pages — placed after all hooks
   if (isAdminPage) return null;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full">
+      {/* ── Top Utility Bar (Desktop Only, Smooth Collapse on Scroll) ── */}
       <div
-        className={`hidden lg:block w-full bg-[#2A3439] py-2.5 transition-all duration-300 ${isScrolled ? "-translate-y-full absolute opacity-0 pointer-events-none" : "translate-y-0 relative opacity-100 shadow-md"}`}
+        className={`hidden lg:block w-full bg-[#122116] text-emerald-100/90 transition-all duration-200 overflow-hidden ${
+          isScrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100 border-b border-emerald-900/60"
+        }`}
       >
-        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center text-[13px] font-medium tracking-wide">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2 text-[#0fa353]">
-              <FaMapMarkerAlt className="text-[#F47C20]" />
-              <span>D-164, Korangi No. 6, Sector 51-A, Karachi 78400</span>
-            </div>
-            <div className="flex items-center gap-2 text-gray-300">
-              <FaEnvelope className="text-[#0fa353]" />
-              <a href="mailto:info@a2zsolarsolutions.com" className="hover:text-white transition-colors">
-                info@a2zsolarsolutions.com
-              </a>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-9 flex justify-between items-center text-[12px] font-medium">
+          <div className="flex items-center gap-4">
+            <span className="inline-flex items-center gap-1.5 text-emerald-50">
+              <FaMapMarkerAlt className="text-[#0fa353] text-[11px] shrink-0" />
+              <span>D-164, Korangi No. 6, Karachi 78400</span>
+            </span>
+            <span className="text-emerald-700" aria-hidden="true">
+              |
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-emerald-200/80">
+              <FaClock className="text-[#0fa353] text-[11px] shrink-0" />
+              <span>Mon &ndash; Sat, 9:00 AM &ndash; 7:00 PM</span>
+            </span>
           </div>
-          <div className="flex items-center gap-5">
+
+          <div className="flex items-center gap-4">
+            <a
+              href="mailto:info@a2zsolarsolutions.com"
+              className="inline-flex items-center gap-1.5 text-emerald-100/90 hover:text-white transition-colors"
+            >
+              <FaEnvelope className="text-[#0fa353] text-[11px]" />
+              <span>info@a2zsolarsolutions.com</span>
+            </a>
+            <span className="w-px h-3.5 bg-emerald-800/80" aria-hidden="true" />
             <a
               href="https://youtube.com/@A2ZSolarSolutions"
               target="_blank"
               rel="noreferrer"
-              className="flex items-center gap-2 text-[#FF0000] hover:opacity-80 transition-opacity"
+              className="inline-flex items-center gap-1.5 text-emerald-100/90 hover:text-white transition-colors group"
             >
-              <FaYoutube className="text-base" />
+              <FaYoutube className="text-sm text-emerald-300/80 group-hover:text-red-400 transition-colors" />
               <span>@A2ZSolarSolutions</span>
             </a>
-            <div className="w-px h-4 bg-gray-500" />
-            <div className="flex items-center gap-2 text-[#0fa353]">
-              <FaPhoneAlt className="text-[#F47C20]" />
-              <span>Uzair Khan: +92-321-4189298</span>
-            </div>
+            <span className="w-px h-3.5 bg-emerald-800/80" aria-hidden="true" />
+            <a
+              href="tel:+923214189298"
+              className="inline-flex items-center gap-1.5 text-white hover:text-[#a3e635] font-semibold transition-colors"
+            >
+              <FaPhoneAlt className="text-[#0fa353] text-[10px]" />
+              <span>+92 321 4189298</span>
+            </a>
           </div>
         </div>
       </div>
 
+      {/* ── Main Navigation Bar ── */}
       <nav
-        className={`w-full transition-all duration-300 bg-white/95 backdrop-blur-md border-b border-gray-100/80 lg:backdrop-blur-none ${
+        aria-label="Primary Navigation"
+        className={`w-full bg-white/95 backdrop-blur-md border-b transition-shadow duration-200 ${
           isScrolled
-            ? "shadow-sm border-b border-gray-100 bg-white"
-            : "lg:bg-transparent lg:border-transparent"
+            ? "border-gray-200 shadow-xs"
+            : "border-gray-200/80"
         }`}
       >
-        <div className="max-w-400 mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-14 sm:h-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-14 sm:h-16 lg:h-[68px] gap-4">
+            {/* Brand Logo */}
             <Link
               href="/"
               onClick={(e) => handleNavClick(e, "/")}
-              className="flex items-center gap-2 shrink-0 group"
+              className={`flex items-center shrink-0 rounded-sm ${FOCUS_RING}`}
             >
-              <div className="relative w-27.5 sm:w-40 h-9 sm:h-12 flex items-center">
+              <div className="relative w-28 sm:w-36 lg:w-40 h-9 sm:h-10 lg:h-11 flex items-center">
                 <Image
                   src="/logo/a2zlogo.webp"
                   alt="A to Z Solar Solutions Logo"
@@ -219,83 +323,172 @@ const Navbar = () => {
               </div>
             </Link>
 
-            <div className="hidden lg:flex items-center gap-3 xl:gap-5">
-              {NAV_LINKS.map((link) => (
-                <div key={link.label} className="relative group py-2">
-                  <Link
-                    href={link.href}
-                    onClick={(e) => handleNavClick(e, link.href)}
-                    className={`
-                      flex items-center gap-1 text-[14px] xl:text-[15px] font-semibold transition-colors duration-200
-                      ${
-                        isActive(link.href)
-                          ? "text-[#0fa353]"
-                          : "text-gray-800 group-hover:text-[#0fa353]"
-                      }
-                    `}
-                  >
-                    {link.label}
-                    {link.dropdownItems && (
-                      <FaChevronDown className="text-[10px] opacity-70 mt-0.5 group-hover:rotate-180 transition-transform duration-200" />
-                    )}
-                  </Link>
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center gap-0.5 xl:gap-1">
+              {NAV_LINKS.map((link) => {
+                const active = isActive(link);
 
-                  {link.dropdownItems && (
-                    <div className="absolute top-full left-0 pt-2 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300">
-                      <div className="w-56 bg-white shadow-xl rounded-xl border border-gray-100 py-2 flex flex-col">
-                        {link.dropdownItems.map((item) => {
-                          const SubIcon = item.icon;
-                          return (
+                if (link.dropdownItems) {
+                  return (
+                    <div
+                      key={link.label}
+                      ref={dropdownRef}
+                      className="relative"
+                      onMouseEnter={handleDropdownEnter}
+                      onMouseLeave={handleDropdownLeave}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => setDesktopMoreOpen((prev) => !prev)}
+                        aria-expanded={desktopMoreOpen}
+                        aria-haspopup="menu"
+                        className={`relative inline-flex items-center gap-1.5 px-2.5 xl:px-3 py-2 text-[13px] xl:text-[14px] font-semibold whitespace-nowrap rounded-sm transition-colors cursor-pointer ${FOCUS_RING} ${
+                          active || desktopMoreOpen
+                            ? "text-[#0fa353] bg-gray-50"
+                            : "text-[#1a1c29] hover:text-[#0fa353] hover:bg-gray-50"
+                        }`}
+                      >
+                        <span>{link.label}</span>
+                        <FaChevronDown
+                          className={`text-[10px] opacity-70 transition-transform duration-150 ${
+                            desktopMoreOpen ? "rotate-180 text-[#0fa353]" : ""
+                          }`}
+                        />
+                        {active && (
+                          <span
+                            aria-hidden="true"
+                            className="absolute bottom-0 left-2.5 right-2.5 h-0.5 bg-[#0fa353]"
+                          />
+                        )}
+                      </button>
+
+                      {/* Clean 2-Column Corporate Dropdown Panel */}
+                      <div
+                        role="menu"
+                        className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-150 ${
+                          desktopMoreOpen
+                            ? "opacity-100 translate-y-0 pointer-events-auto visible"
+                            : "opacity-0 translate-y-1 pointer-events-none invisible"
+                        }`}
+                      >
+                        <div className="w-[460px] bg-white border border-gray-200 rounded-md shadow-lg overflow-hidden">
+                          <div className="p-2 grid grid-cols-2 gap-1">
+                            {link.dropdownItems.map((item) => {
+                              const SubIcon = item.icon;
+                              const itemActive =
+                                !item.href.startsWith("/#") &&
+                                pathname?.startsWith(item.href);
+
+                              return (
+                                <Link
+                                  key={item.label}
+                                  href={item.href}
+                                  role="menuitem"
+                                  onClick={(e) => handleNavClick(e, item.href)}
+                                  className={`flex items-start gap-2.5 p-2.5 rounded-sm transition-colors group/item ${FOCUS_RING} ${
+                                    itemActive
+                                      ? "bg-emerald-50/70"
+                                      : "hover:bg-gray-50"
+                                  }`}
+                                >
+                                  <span
+                                    className={`mt-0.5 w-7 h-7 rounded-sm flex items-center justify-center shrink-0 transition-colors ${
+                                      itemActive
+                                        ? "bg-[#0fa353] text-white"
+                                        : "bg-gray-100 text-gray-600 group-hover/item:bg-[#0fa353]/10 group-hover/item:text-[#0fa353]"
+                                    }`}
+                                  >
+                                    {SubIcon && <SubIcon className="text-xs" />}
+                                  </span>
+                                  <span className="min-w-0">
+                                    <span
+                                      className={`block text-[13px] font-semibold leading-snug transition-colors ${
+                                        itemActive
+                                          ? "text-[#0fa353]"
+                                          : "text-[#1a1c29] group-hover/item:text-[#0fa353]"
+                                      }`}
+                                    >
+                                      {item.label}
+                                    </span>
+                                    <span className="block text-[11px] text-gray-500 leading-snug mt-0.5">
+                                      {item.desc}
+                                    </span>
+                                  </span>
+                                </Link>
+                              );
+                            })}
+                          </div>
+
+                          <div className="bg-gray-50 border-t border-gray-200 px-3.5 py-2.5 flex items-center justify-between text-xs">
+                            <span className="text-gray-600 font-medium">
+                              Need custom system sizing?
+                            </span>
                             <Link
-                              key={item.label}
-                              href={item.href}
-                              onClick={(e) => handleNavClick(e, item.href)}
-                              className="flex items-center gap-2.5 px-4 py-2.5 text-[14px] font-medium text-gray-700 hover:bg-emerald-50 hover:text-[#0fa353] transition-colors group/item"
+                              href="/contact"
+                              onClick={() => setDesktopMoreOpen(false)}
+                              className="font-semibold text-[#0fa353] hover:text-[#0c8a45] inline-flex items-center gap-1 transition-colors"
                             >
-                              {SubIcon && (
-                                <SubIcon
-                                  className={`text-xs ${
-                                    item.color || "text-gray-400"
-                                  } group-hover/item:scale-110 transition-transform`}
-                                />
-                              )}
-                              <span>{item.label}</span>
+                              <span>Book Free Site Survey</span>
+                              <span aria-hidden="true">&rarr;</span>
                             </Link>
-                          );
-                        })}
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  )}
-                </div>
-              ))}
+                  );
+                }
+
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={(e) => handleNavClick(e, link.href)}
+                    className={`relative inline-flex items-center px-2.5 xl:px-3 py-2 text-[13px] xl:text-[14px] font-semibold whitespace-nowrap rounded-sm transition-colors ${FOCUS_RING} ${
+                      active
+                        ? "text-[#0fa353]"
+                        : "text-[#1a1c29] hover:text-[#0fa353] hover:bg-gray-50"
+                    }`}
+                  >
+                    <span>{link.label}</span>
+                    {active && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute bottom-0 left-2.5 right-2.5 h-0.5 bg-[#0fa353]"
+                      />
+                    )}
+                  </Link>
+                );
+              })}
             </div>
 
-            <div className="hidden lg:flex items-center gap-3">
+            {/* Desktop Action Buttons */}
+            <div className="hidden lg:flex items-center gap-2.5 shrink-0">
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 text-[14px] font-bold text-[#0fa353] bg-emerald-50 hover:bg-emerald-100 border border-[#0fa353]/30 rounded-md transition-colors"
+                className={`inline-flex items-center gap-1.5 px-3.5 py-2 text-[13px] font-semibold text-[#1a1c29] bg-white hover:bg-gray-50 border border-gray-300 hover:border-[#0fa353] hover:text-[#0fa353] rounded-sm transition-colors whitespace-nowrap ${FOCUS_RING}`}
               >
-                <FaWhatsapp className="text-base" />
-                WhatsApp
+                <FaWhatsapp className="text-sm text-[#0fa353]" />
+                <span>WhatsApp</span>
               </a>
               <Link
                 href="/#calculator"
                 onClick={(e) => handleNavClick(e, "/#calculator")}
-                className="flex items-center gap-2 px-5 py-2 text-[14px] font-bold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-md shadow-md shadow-green-600/20 transition-all active:scale-95 cursor-pointer"
+                className={`inline-flex items-center gap-1.5 px-4 py-2 text-[13px] font-semibold text-white bg-[#0fa353] hover:bg-[#0c8a45] border border-[#0fa353] rounded-sm transition-colors whitespace-nowrap cursor-pointer ${FOCUS_RING}`}
               >
-                <HiOutlineSparkles className="text-yellow-300" />
-                Get Free Quote
+                <span>Get Free Quote</span>
+                <span aria-hidden="true">&rarr;</span>
               </Link>
             </div>
 
-            <div className="flex items-center gap-3 lg:hidden">
+            {/* Mobile Controls */}
+            <div className="flex items-center gap-2.5 lg:hidden">
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-9 h-9 rounded-md bg-[#0fa353] text-white shadow-sm hover:opacity-90 active:scale-95 transition-all"
+                className="flex items-center justify-center w-9 h-9 rounded-sm bg-[#0fa353] text-white hover:bg-[#0c8a45] transition-colors"
                 aria-label="WhatsApp Us"
               >
                 <FaWhatsapp className="text-lg" />
@@ -303,7 +496,7 @@ const Navbar = () => {
 
               <button
                 onClick={openDrawer}
-                className="flex items-center justify-center w-9 h-9 rounded-md text-gray-800 hover:bg-gray-100 active:bg-gray-200 transition-colors"
+                className="flex items-center justify-center w-9 h-9 rounded-sm text-gray-800 hover:bg-gray-100 active:bg-gray-200 transition-colors cursor-pointer"
                 aria-label="Open menu"
                 aria-expanded={isOpen}
               >
@@ -329,12 +522,12 @@ const Navbar = () => {
         />
 
         <div
-          className={`absolute top-0 right-0 h-full w-[min(86vw,340px)] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out border-l border-gray-100 ${
+          className={`absolute top-0 right-0 h-full w-[min(86vw,340px)] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out border-l border-gray-200 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
           {/* Header */}
-          <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-gray-100 shrink-0 bg-white">
+          <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-gray-200 shrink-0 bg-white">
             <Link
               href="/"
               onClick={(e) => handleNavClick(e, "/")}
@@ -351,7 +544,7 @@ const Navbar = () => {
             </Link>
             <button
               onClick={closeDrawer}
-              className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:text-gray-900 hover:bg-gray-200 transition-colors cursor-pointer"
+              className="flex items-center justify-center w-8 h-8 rounded-sm bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors cursor-pointer"
               aria-label="Close menu"
             >
               <HiOutlineX className="text-lg" />
@@ -367,24 +560,24 @@ const Navbar = () => {
               </p>
               <ul className="space-y-1">
                 {NAV_LINKS.filter((l) => !l.dropdownItems).map((link) => {
-                  const active = isActive(link.href);
+                  const active = isActive(link);
                   const Icon = link.icon;
                   return (
                     <li key={link.label}>
                       <Link
                         href={link.href}
                         onClick={(e) => handleNavClick(e, link.href)}
-                        className={`flex items-center justify-between px-3 py-2.5 rounded-xl transition-all duration-200 group cursor-pointer ${
+                        className={`flex items-center justify-between px-3 py-2.5 rounded-sm transition-colors group cursor-pointer ${
                           active
-                            ? "bg-emerald-50 text-[#0fa353] font-bold shadow-xs border border-emerald-200/50"
+                            ? "bg-emerald-50 text-[#0fa353] font-bold border border-emerald-200/70"
                             : "text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium"
                         }`}
                       >
                         <div className="flex items-center gap-3">
                           <span
-                            className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm transition-colors ${
+                            className={`w-8 h-8 rounded-sm flex items-center justify-center text-sm transition-colors ${
                               active
-                                ? "bg-[#0fa353] text-white shadow-xs"
+                                ? "bg-[#0fa353] text-white"
                                 : "bg-gray-100 text-gray-500 group-hover:bg-emerald-50 group-hover:text-[#0fa353]"
                             }`}
                           >
@@ -395,7 +588,7 @@ const Navbar = () => {
                         {active ? (
                           <span className="w-1.5 h-1.5 rounded-full bg-[#0fa353]" />
                         ) : (
-                          <FaChevronRight className="text-[10px] text-gray-300 group-hover:text-gray-400 group-hover:translate-x-0.5 transition-all" />
+                          <FaChevronRight className="text-[10px] text-gray-300 group-hover:text-gray-500 transition-colors" />
                         )}
                       </Link>
                     </li>
@@ -407,7 +600,7 @@ const Navbar = () => {
             {/* Explore & Tools Section (Accordion) */}
             <div className="pt-2 border-t border-gray-100">
               <p className="px-2.5 pb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest select-none">
-                Explore & Tools
+                Explore &amp; Tools
               </p>
 
               {NAV_LINKS.filter((l) => l.dropdownItems).map((link) => (
@@ -415,32 +608,32 @@ const Navbar = () => {
                   <button
                     type="button"
                     onClick={() => setIsMoreOpen((prev) => !prev)}
-                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors group cursor-pointer"
+                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors group cursor-pointer"
                     aria-expanded={isMoreOpen}
                   >
                     <div className="flex items-center gap-3">
-                      <span className="w-8 h-8 rounded-lg bg-gray-100 text-gray-500 group-hover:bg-emerald-50 group-hover:text-[#0fa353] flex items-center justify-center text-sm transition-colors">
+                      <span className="w-8 h-8 rounded-sm bg-gray-100 text-gray-500 group-hover:bg-emerald-50 group-hover:text-[#0fa353] flex items-center justify-center text-sm transition-colors">
                         <FaCompass />
                       </span>
                       <span className="text-[14px] font-semibold text-gray-800">
-                        More Pages & Tools
+                        More Pages &amp; Tools
                       </span>
                     </div>
                     <FaChevronDown
-                      className={`text-xs text-gray-400 transition-transform duration-300 ${
+                      className={`text-xs text-gray-400 transition-transform duration-200 ${
                         isMoreOpen ? "rotate-180 text-[#0fa353]" : ""
                       }`}
                     />
                   </button>
 
                   <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                    className={`overflow-hidden transition-all duration-200 ease-in-out ${
                       isMoreOpen
                         ? "max-h-[500px] opacity-100 mt-1"
                         : "max-h-0 opacity-0"
                     }`}
                   >
-                    <ul className="pl-3 pr-1 py-1 space-y-1 border-l-2 border-emerald-100 ml-4 my-1">
+                    <ul className="pl-3 pr-1 py-1 space-y-1 border-l-2 border-gray-200 ml-4 my-1">
                       {link.dropdownItems.map((item) => {
                         const Icon = item.icon;
                         return (
@@ -448,19 +641,15 @@ const Navbar = () => {
                             <Link
                               href={item.href}
                               onClick={(e) => handleNavClick(e, item.href)}
-                              className="flex items-center justify-between px-3 py-2 text-[13px] font-medium text-gray-600 rounded-lg hover:text-[#0fa353] hover:bg-emerald-50/60 transition-colors group cursor-pointer"
+                              className="flex items-center justify-between px-3 py-2 text-[13px] font-medium text-gray-600 rounded-sm hover:text-[#0fa353] hover:bg-gray-50 transition-colors group cursor-pointer"
                             >
                               <div className="flex items-center gap-2.5">
-                                <span
-                                  className={`text-xs ${
-                                    item.color || "text-gray-400"
-                                  } group-hover:scale-110 transition-transform`}
-                                >
+                                <span className="text-xs text-gray-400 group-hover:text-[#0fa353] transition-colors">
                                   {Icon && <Icon />}
                                 </span>
                                 <span>{item.label}</span>
                               </div>
-                              <FaChevronRight className="text-[9px] text-gray-300 group-hover:text-[#0fa353] group-hover:translate-x-0.5 transition-all" />
+                              <FaChevronRight className="text-[9px] text-gray-300 group-hover:text-[#0fa353] transition-colors" />
                             </Link>
                           </li>
                         );
@@ -473,14 +662,14 @@ const Navbar = () => {
           </nav>
 
           {/* Footer CTAs */}
-          <div className="px-4 py-4 border-t border-gray-100 bg-gray-50/60 shrink-0 space-y-2.5">
+          <div className="px-4 py-4 border-t border-gray-200 bg-gray-50/70 shrink-0 space-y-2.5">
             <Link
               href="/#calculator"
               onClick={(e) => handleNavClick(e, "/#calculator")}
-              className="flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-bold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-xl shadow-md shadow-green-600/20 active:scale-[0.98] transition-all cursor-pointer"
+              className="flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-semibold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-sm transition-colors cursor-pointer"
             >
-              <HiOutlineSparkles className="text-yellow-300 text-base" />
               <span>Get Free Quote</span>
+              <span aria-hidden="true">&rarr;</span>
             </Link>
 
             <a
@@ -488,14 +677,14 @@ const Navbar = () => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeDrawer}
-              className="flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-bold text-[#0fa353] bg-white border border-[#0fa353]/30 hover:bg-emerald-50/50 rounded-xl shadow-2xs active:scale-[0.98] transition-all"
+              className="flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-semibold text-[#1a1c29] bg-white border border-gray-300 hover:border-[#0fa353] hover:text-[#0fa353] rounded-sm transition-colors"
             >
               <FaWhatsapp className="text-base text-[#0fa353]" />
               <span>WhatsApp Us</span>
             </a>
 
             <div className="pt-1 flex items-center justify-center gap-2 text-xs font-semibold text-gray-500">
-              <FaPhoneAlt className="text-[10px] text-[#F47C20]" />
+              <FaPhoneAlt className="text-[10px] text-[#0fa353]" />
               <a
                 href="tel:+923214189298"
                 className="hover:text-[#0fa353] transition-colors"
