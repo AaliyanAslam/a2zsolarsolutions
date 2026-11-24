@@ -14,33 +14,44 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import {
-  FaHouse,
-  FaBoxOpen,
-  FaSolarPanel,
-  FaBriefcase,
-  FaUsers,
-  FaCompass,
   FaStar,
   FaCalculator,
   FaLeaf,
   FaTruck,
   FaCertificate,
   FaFilePdf,
-  FaChevronRight,
   FaClock,
 } from "react-icons/fa6";
 import { HiOutlineMenuAlt3, HiOutlineX } from "react-icons/hi";
 
+// Strip browser-extension injected DOM attributes synchronously before React hydrates
+if (typeof document !== "undefined") {
+  try {
+    const extAttrs = [
+      "bis_skin_checked",
+      "bis_use",
+      "cz-shortcut-listen",
+      "data-new-gr-c-s-check-loaded",
+      "data-gr-ext-installed",
+      "data-dynamic-id",
+    ];
+    document
+      .querySelectorAll(`[${extAttrs.join("],[")}]`)
+      .forEach((el) => extAttrs.forEach((attr) => el.removeAttribute(attr)));
+  } catch {
+    // ignore DOM access errors
+  }
+}
+
 const NAV_LINKS = [
-  { label: "Home", href: "/", icon: FaHouse },
-  { label: "Products", href: "/products", icon: FaBoxOpen },
-  { label: "Solar Solutions", href: "/#services", icon: FaSolarPanel },
-  { label: "Projects", href: "/#projects", icon: FaBriefcase },
-  { label: "About Us", href: "/about", icon: FaUsers },
+  { label: "Home", href: "/" },
+  { label: "Products", href: "/products" },
+  { label: "Solar Solutions", href: "/#services" },
+  { label: "Projects", href: "/#projects" },
+  { label: "About Us", href: "/about" },
   {
     label: "More",
     href: "#",
-    icon: FaCompass,
     dropdownItems: [
       {
         label: "Solar Calculator",
@@ -142,12 +153,24 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
-      // eslint-disable-next-line
-      closeDrawer();
-    }
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsOpen(false);
+    document.body.style.overflow = "";
     setDesktopMoreOpen(false);
   }, [pathname]);
+
+  // Close mobile drawer on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e) => {
+      if (e.key === "Escape") {
+        setIsOpen(false);
+        document.body.style.overflow = "";
+      }
+    };
+    document.addEventListener("keydown", handleEsc);
+    return () => document.removeEventListener("keydown", handleEsc);
+  }, [isOpen]);
 
   // Close desktop dropdown on Escape key or outside click
   useEffect(() => {
@@ -482,56 +505,69 @@ const Navbar = () => {
               </Link>
             </div>
 
-            {/* Mobile Controls */}
-            <div className="flex items-center gap-2.5 lg:hidden">
+            {/* Mobile & Tablet Controls */}
+            <div className="flex items-center gap-2 sm:gap-2.5 lg:hidden">
+              <Link
+                href="/#calculator"
+                onClick={(e) => handleNavClick(e, "/#calculator")}
+                className={`hidden sm:inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-sm transition-colors whitespace-nowrap ${FOCUS_RING}`}
+              >
+                <span>Free Quote</span>
+                <span aria-hidden="true">&rarr;</span>
+              </Link>
+
               <a
                 href={WHATSAPP_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center w-9 h-9 rounded-sm bg-[#0fa353] text-white hover:bg-[#0c8a45] transition-colors"
+                className={`flex items-center justify-center w-9 h-9 sm:w-auto sm:px-3 sm:gap-1.5 rounded-sm bg-[#0fa353] sm:bg-white sm:border sm:border-gray-300 text-white sm:text-[#1a1c29] hover:bg-[#0c8a45] sm:hover:border-[#0fa353] sm:hover:text-[#0fa353] sm:hover:bg-gray-50 transition-colors ${FOCUS_RING}`}
                 aria-label="WhatsApp Us"
               >
-                <FaWhatsapp className="text-lg" />
+                <FaWhatsapp className="text-lg sm:text-sm sm:text-[#0fa353]" />
+                <span className="hidden sm:inline text-xs font-semibold">WhatsApp</span>
               </a>
 
               <button
+                type="button"
                 onClick={openDrawer}
-                className="flex items-center justify-center w-9 h-9 rounded-sm text-gray-800 hover:bg-gray-100 active:bg-gray-200 transition-colors cursor-pointer"
+                className={`flex items-center justify-center gap-1.5 h-9 px-2 sm:px-3 rounded-sm text-[#1a1c29] border border-gray-200 sm:border-gray-300 bg-white hover:bg-gray-50 transition-colors cursor-pointer ${FOCUS_RING}`}
                 aria-label="Open menu"
                 aria-expanded={isOpen}
               >
-                <HiOutlineMenuAlt3 className="text-2xl" />
+                <HiOutlineMenuAlt3 className="text-xl" />
+                <span className="hidden sm:inline text-xs font-semibold">Menu</span>
               </button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Mobile Drawer (Sidebar) */}
+      {/* Mobile & Tablet Drawer (Clean Corporate Sidebar) */}
       <div
-        className={`fixed inset-0 z-60 lg:hidden overflow-hidden transition-all duration-300 ${
+        className={`fixed inset-0 z-60 lg:hidden overflow-hidden transition-all duration-200 ${
           isOpen ? "pointer-events-auto visible" : "pointer-events-none invisible"
         }`}
       >
         <div
-          className={`absolute inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300 ${
+          className={`absolute inset-0 bg-black/45 transition-opacity duration-200 ${
             isOpen ? "opacity-100" : "opacity-0"
           }`}
           onClick={closeDrawer}
           aria-hidden="true"
         />
 
-        <div
-          className={`absolute top-0 right-0 h-full w-[min(86vw,340px)] bg-white shadow-2xl flex flex-col transition-transform duration-300 ease-out border-l border-gray-200 ${
+        <aside
+          aria-label="Mobile Navigation"
+          className={`absolute top-0 right-0 h-full w-[min(86vw,360px)] sm:w-[380px] bg-white shadow-xl flex flex-col transition-transform duration-200 ease-out border-l border-gray-200 ${
             isOpen ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {/* Header */}
-          <div className="flex items-center justify-between px-4 sm:px-5 py-3.5 border-b border-gray-200 shrink-0 bg-white">
+          {/* Drawer Top Bar */}
+          <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-200 shrink-0 bg-white">
             <Link
               href="/"
               onClick={(e) => handleNavClick(e, "/")}
-              className="flex items-center gap-2"
+              className={`flex items-center rounded-sm ${FOCUS_RING}`}
             >
               <div className="relative w-28 h-8 flex items-center">
                 <Image
@@ -543,130 +579,127 @@ const Navbar = () => {
               </div>
             </Link>
             <button
+              type="button"
               onClick={closeDrawer}
-              className="flex items-center justify-center w-8 h-8 rounded-sm bg-gray-100 text-gray-600 hover:text-gray-900 hover:bg-gray-200 transition-colors cursor-pointer"
+              className={`flex items-center justify-center w-9 h-9 rounded-sm border border-gray-200 text-gray-600 hover:text-[#1a1c29] hover:bg-gray-50 transition-colors cursor-pointer ${FOCUS_RING}`}
               aria-label="Close menu"
             >
               <HiOutlineX className="text-lg" />
             </button>
           </div>
 
-          {/* Navigation Links List */}
-          <nav className="flex-1 overflow-y-auto px-3.5 py-3 space-y-4">
-            {/* Main Navigation */}
-            <div>
-              <p className="px-2.5 pb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest select-none">
-                Main Menu
-              </p>
-              <ul className="space-y-1">
-                {NAV_LINKS.filter((l) => !l.dropdownItems).map((link) => {
-                  const active = isActive(link);
-                  const Icon = link.icon;
-                  return (
-                    <li key={link.label}>
-                      <Link
-                        href={link.href}
-                        onClick={(e) => handleNavClick(e, link.href)}
-                        className={`flex items-center justify-between px-3 py-2.5 rounded-sm transition-colors group cursor-pointer ${
-                          active
-                            ? "bg-emerald-50 text-[#0fa353] font-bold border border-emerald-200/70"
-                            : "text-gray-700 hover:text-gray-900 hover:bg-gray-50 font-medium"
-                        }`}
-                      >
-                        <div className="flex items-center gap-3">
-                          <span
-                            className={`w-8 h-8 rounded-sm flex items-center justify-center text-sm transition-colors ${
-                              active
-                                ? "bg-[#0fa353] text-white"
-                                : "bg-gray-100 text-gray-500 group-hover:bg-emerald-50 group-hover:text-[#0fa353]"
-                            }`}
-                          >
-                            {Icon && <Icon />}
-                          </span>
-                          <span className="text-[14px]">{link.label}</span>
-                        </div>
-                        {active ? (
-                          <span className="w-1.5 h-1.5 rounded-full bg-[#0fa353]" />
-                        ) : (
-                          <FaChevronRight className="text-[10px] text-gray-300 group-hover:text-gray-500 transition-colors" />
-                        )}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
+          {/* Slim Theme Info Strip */}
+          <div className="bg-[#122116] text-emerald-100/90 px-5 py-2 border-b border-emerald-900/60 flex items-center justify-between text-[11px] font-medium shrink-0">
+            <span className="inline-flex items-center gap-1.5 text-emerald-200/85">
+              <FaClock className="text-[#0fa353] text-[10px] shrink-0" />
+              <span>Mon &ndash; Sat, 9 AM &ndash; 7 PM</span>
+            </span>
+            <a
+              href="tel:+923214189298"
+              className="inline-flex items-center gap-1 text-white hover:text-[#a3e635] font-semibold transition-colors"
+            >
+              <FaPhoneAlt className="text-[#0fa353] text-[9px]" />
+              <span>0321-4189298</span>
+            </a>
+          </div>
 
-            {/* Explore & Tools Section (Accordion) */}
-            <div className="pt-2 border-t border-gray-100">
-              <p className="px-2.5 pb-2 text-[10px] font-bold text-gray-400 uppercase tracking-widest select-none">
-                Explore &amp; Tools
-              </p>
-
-              {NAV_LINKS.filter((l) => l.dropdownItems).map((link) => (
-                <div key={link.label}>
-                  <button
-                    type="button"
-                    onClick={() => setIsMoreOpen((prev) => !prev)}
-                    className="w-full flex items-center justify-between px-3 py-2.5 rounded-sm text-gray-700 hover:text-gray-900 hover:bg-gray-50 transition-colors group cursor-pointer"
-                    aria-expanded={isMoreOpen}
-                  >
-                    <div className="flex items-center gap-3">
-                      <span className="w-8 h-8 rounded-sm bg-gray-100 text-gray-500 group-hover:bg-emerald-50 group-hover:text-[#0fa353] flex items-center justify-center text-sm transition-colors">
-                        <FaCompass />
-                      </span>
-                      <span className="text-[14px] font-semibold text-gray-800">
-                        More Pages &amp; Tools
-                      </span>
-                    </div>
-                    <FaChevronDown
-                      className={`text-xs text-gray-400 transition-transform duration-200 ${
-                        isMoreOpen ? "rotate-180 text-[#0fa353]" : ""
+          {/* Scrollable Navigation Links */}
+          <nav className="flex-1 overflow-y-auto overscroll-contain bg-white">
+            <ul className="divide-y divide-gray-100">
+              {NAV_LINKS.filter((l) => !l.dropdownItems).map((link) => {
+                const active = isActive(link);
+                return (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      onClick={(e) => handleNavClick(e, link.href)}
+                      className={`block py-3.5 px-5 text-[15px] transition-colors cursor-pointer ${FOCUS_RING} ${
+                        active
+                          ? "text-[#0fa353] font-semibold bg-emerald-50/35 border-l-[3px] border-l-[#0fa353] pl-[17px]"
+                          : "text-[#1a1c29] font-medium hover:text-[#0fa353] hover:bg-gray-50"
                       }`}
-                    />
-                  </button>
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                );
+              })}
 
-                  <div
-                    className={`overflow-hidden transition-all duration-200 ease-in-out ${
-                      isMoreOpen
-                        ? "max-h-[500px] opacity-100 mt-1"
-                        : "max-h-0 opacity-0"
-                    }`}
-                  >
-                    <ul className="pl-3 pr-1 py-1 space-y-1 border-l-2 border-gray-200 ml-4 my-1">
-                      {link.dropdownItems.map((item) => {
-                        const Icon = item.icon;
-                        return (
-                          <li key={item.label}>
-                            <Link
-                              href={item.href}
-                              onClick={(e) => handleNavClick(e, item.href)}
-                              className="flex items-center justify-between px-3 py-2 text-[13px] font-medium text-gray-600 rounded-sm hover:text-[#0fa353] hover:bg-gray-50 transition-colors group cursor-pointer"
-                            >
-                              <div className="flex items-center gap-2.5">
-                                <span className="text-xs text-gray-400 group-hover:text-[#0fa353] transition-colors">
-                                  {Icon && <Icon />}
+              {/* Collapsible More & Tools Section */}
+              {NAV_LINKS.filter((l) => l.dropdownItems).map((link) => {
+                const moreActive = isActive(link);
+                return (
+                  <li key={link.label}>
+                    <button
+                      type="button"
+                      onClick={() => setIsMoreOpen((prev) => !prev)}
+                      aria-expanded={isMoreOpen}
+                      className={`w-full flex items-center justify-between py-3.5 px-5 text-[15px] transition-colors cursor-pointer ${FOCUS_RING} ${
+                        moreActive
+                          ? "text-[#0fa353] font-semibold bg-emerald-50/35 border-l-[3px] border-l-[#0fa353] pl-[17px]"
+                          : isMoreOpen
+                          ? "text-[#0fa353] font-semibold bg-gray-50/70"
+                          : "text-[#1a1c29] font-medium hover:text-[#0fa353] hover:bg-gray-50"
+                      }`}
+                    >
+                      <span>More &amp; Tools</span>
+                      <FaChevronDown
+                        className={`text-xs text-gray-400 transition-transform duration-200 ${
+                          isMoreOpen ? "rotate-180 text-[#0fa353]" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <div
+                      className={`overflow-hidden transition-all duration-200 ease-in-out ${
+                        isMoreOpen ? "max-h-[520px] opacity-100" : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <ul className="bg-gray-50/70 border-t border-gray-100 divide-y divide-gray-100/80">
+                        {link.dropdownItems.map((item) => {
+                          const itemActive =
+                            !item.href.startsWith("/#") &&
+                            pathname?.startsWith(item.href);
+
+                          return (
+                            <li key={item.label}>
+                              <Link
+                                href={item.href}
+                                onClick={(e) => handleNavClick(e, item.href)}
+                                className={`block px-6 py-2.5 transition-colors cursor-pointer ${FOCUS_RING} ${
+                                  itemActive
+                                    ? "bg-white text-[#0fa353] border-l-2 border-l-[#0fa353] pl-[22px]"
+                                    : "text-gray-700 hover:bg-white hover:text-[#0fa353]"
+                                }`}
+                              >
+                                <span
+                                  className={`block text-[13.5px] leading-snug ${
+                                    itemActive ? "font-semibold" : "font-medium"
+                                  }`}
+                                >
+                                  {item.label}
                                 </span>
-                                <span>{item.label}</span>
-                              </div>
-                              <FaChevronRight className="text-[9px] text-gray-300 group-hover:text-[#0fa353] transition-colors" />
-                            </Link>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                </div>
-              ))}
-            </div>
+                                <span className="block text-[11px] text-gray-500 font-normal mt-0.5">
+                                  {item.desc}
+                                </span>
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </nav>
 
-          {/* Footer CTAs */}
-          <div className="px-4 py-4 border-t border-gray-200 bg-gray-50/70 shrink-0 space-y-2.5">
+          {/* Drawer Footer */}
+          <div className="px-5 py-4 border-t border-gray-200 bg-gray-50 shrink-0 space-y-2.5">
             <Link
               href="/#calculator"
               onClick={(e) => handleNavClick(e, "/#calculator")}
-              className="flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-semibold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-sm transition-colors cursor-pointer"
+              className={`flex items-center justify-center gap-1.5 w-full py-2.5 text-[14px] font-semibold text-white bg-[#0fa353] hover:bg-[#0c8a45] rounded-sm transition-colors cursor-pointer ${FOCUS_RING}`}
             >
               <span>Get Free Quote</span>
               <span aria-hidden="true">&rarr;</span>
@@ -677,23 +710,17 @@ const Navbar = () => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={closeDrawer}
-              className="flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-semibold text-[#1a1c29] bg-white border border-gray-300 hover:border-[#0fa353] hover:text-[#0fa353] rounded-sm transition-colors"
+              className={`flex items-center justify-center gap-2 w-full py-2.5 text-[14px] font-semibold text-[#1a1c29] bg-white border border-gray-300 hover:border-[#0fa353] hover:text-[#0fa353] rounded-sm transition-colors ${FOCUS_RING}`}
             >
               <FaWhatsapp className="text-base text-[#0fa353]" />
-              <span>WhatsApp Us</span>
+              <span>Chat on WhatsApp</span>
             </a>
 
-            <div className="pt-1 flex items-center justify-center gap-2 text-xs font-semibold text-gray-500">
-              <FaPhoneAlt className="text-[10px] text-[#0fa353]" />
-              <a
-                href="tel:+923214189298"
-                className="hover:text-[#0fa353] transition-colors"
-              >
-                Call: +92 321 4189298
-              </a>
-            </div>
+            <p className="pt-1 text-center text-[11px] text-gray-500">
+              Karachi (Korangi) &amp; Lahore (Mughalpura)
+            </p>
           </div>
-        </div>
+        </aside>
       </div>
     </header>
   );
