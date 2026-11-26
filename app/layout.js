@@ -176,6 +176,54 @@ export const metadata = {
   },
 };
 
+// Strips browser-extension attributes (e.g. bis_skin_checked) before React hydrates
+// and isolates third-party extension-only crashes (e.g. chrome-extension://) in capture phase
+// so they do not pollute Next.js dev overlay or terminal logs while keeping app errors intact.
+const HEAD_EXTENSION_GUARD_SCRIPT = `(function(){try{
+  var a=['bis_skin_checked','bis_use','cz-shortcut-listen','data-new-gr-c-s-check-loaded','data-gr-ext-installed','data-dynamic-id'];
+  var s='['+a.join('],[')+']';
+  var m={};
+  for(var i=0;i<a.length;i++)m[a[i]]=1;
+  function clean(r){
+    if(!r||!r.querySelectorAll)return;
+    if(r.nodeType===1){for(var i=0;i<a.length;i++){if(r.hasAttribute(a[i]))r.removeAttribute(a[i]);}}
+    var els=r.querySelectorAll(s);
+    for(var j=0;j<els.length;j++){for(var k=0;k<a.length;k++){if(els[j].hasAttribute(a[k]))els[j].removeAttribute(a[k]);}}
+  }
+  var o=Element.prototype.setAttribute;
+  Element.prototype.setAttribute=function(n,v){if(m[n])return;return o.apply(this,arguments);};
+  clean(document.documentElement);
+  if(typeof MutationObserver!=='undefined'){
+    var obs=new MutationObserver(function(l){
+      for(var i=0;i<l.length;i++){
+        var t=l[i];
+        if(t.type==='attributes'&&t.target&&t.target.removeAttribute){t.target.removeAttribute(t.attributeName);}
+        else if(t.type==='childList'){for(var j=0;j<t.addedNodes.length;j++)clean(t.addedNodes[j]);}
+      }
+    });
+    obs.observe(document.documentElement,{attributes:true,childList:true,subtree:true,attributeFilter:a});
+    setTimeout(function(){obs.disconnect();},5000);
+  }
+  function isExtOnly(stack,file){
+    var text=(stack||'')+' '+(file||'');
+    if(!/(?:chrome|moz|safari-web|safari)-extension:/i.test(text))return false;
+    if(text.indexOf('/_next/')!==-1)return false;
+    if(typeof location!=='undefined'&&location.origin&&text.indexOf(location.origin)!==-1)return false;
+    return true;
+  }
+  window.addEventListener('unhandledrejection',function(e){
+    var r=e&&e.reason;
+    var stack=r&&typeof r==='object'&&r.stack?String(r.stack):String(r||'');
+    if(isExtOnly(stack,'')){e.preventDefault();e.stopImmediatePropagation();}
+  },true);
+  window.addEventListener('error',function(e){
+    var err=e&&e.error;
+    var stack=err&&typeof err==='object'&&err.stack?String(err.stack):'';
+    var file=e&&e.filename?String(e.filename):'';
+    if(isExtOnly(stack,file)){e.preventDefault();e.stopImmediatePropagation();}
+  },true);
+}catch(e){}})();`;
+
 export default function RootLayout({ children }) {
   const SITE_URL = "https://a2zsolarsolutions.com/";
   const BRAND = "A2Z Solar Solutions";
@@ -343,7 +391,7 @@ export default function RootLayout({ children }) {
         <script
           suppressHydrationWarning
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var a=['bis_skin_checked','bis_use','cz-shortcut-listen','data-new-gr-c-s-check-loaded','data-gr-ext-installed','data-dynamic-id'];var s='['+a.join('],[')+']';var m={};for(var i=0;i<a.length;i++)m[a[i]]=1;function clean(r){if(!r||!r.querySelectorAll)return;if(r.nodeType===1){for(var i=0;i<a.length;i++){if(r.hasAttribute(a[i]))r.removeAttribute(a[i]);}}var els=r.querySelectorAll(s);for(var j=0;j<els.length;j++){for(var k=0;k<a.length;k++){if(els[j].hasAttribute(a[k]))els[j].removeAttribute(a[k]);}}}var o=Element.prototype.setAttribute;Element.prototype.setAttribute=function(n,v){if(m[n])return;return o.apply(this,arguments);};clean(document.documentElement);if(typeof MutationObserver!=='undefined'){var obs=new MutationObserver(function(l){for(var i=0;i<l.length;i++){var t=l[i];if(t.type==='attributes'&&t.target&&t.target.removeAttribute){t.target.removeAttribute(t.attributeName);}else if(t.type==='childList'){for(var j=0;j<t.addedNodes.length;j++)clean(t.addedNodes[j]);}}});obs.observe(document.documentElement,{attributes:true,childList:true,subtree:true,attributeFilter:a});setTimeout(function(){obs.disconnect();},5000);}}catch(e){}})();`,
+            __html: HEAD_EXTENSION_GUARD_SCRIPT,
           }}
         />
         <script
