@@ -580,149 +580,140 @@ export default function SolarCalculator() {
           </div>
         )}
 
-        {/* ── Transparent Residential Installation Rates (Clean Engineering Schedule) ── */}
-        <div className="mt-12 sm:mt-16 bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-xs">
-          {/* Header Row */}
-          <div className="p-5 sm:p-6 md:p-8 border-b border-gray-200 bg-gray-50/50 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        {/* ── Transparent Residential Installation Rates (Architectural Brand Split) ── */}
+        <div className="mt-12 sm:mt-16 rounded-sm border border-gray-200 bg-white overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+          {/* Top-Left (Mobile Top): Header & Primary CTA */}
+          <div className="lg:col-span-5 lg:row-start-1 bg-[#122116] text-white p-5 sm:p-7 lg:p-8 flex flex-col justify-between">
             <div>
-              <span className="text-xs font-bold text-[#0fa353] uppercase tracking-wider block mb-1">
+              <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[#a3e635] block mb-2">
                 Transparent Labor Rates
               </span>
-              <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 tracking-tight">
+              <p className="text-xl sm:text-2xl font-black tracking-tight leading-snug text-white">
                 Professional Installation — Residential Starting Rates
               </p>
-              <p className="text-xs sm:text-sm text-gray-600 mt-1 max-w-2xl">
+              <p className="text-xs sm:text-sm text-emerald-100/80 mt-2.5 leading-relaxed">
                 Fixed, upfront technician and civil mounting charges for residential solar setups across Karachi &amp; Lahore.
               </p>
             </div>
 
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                "Salam A2Z Solar, I need a professional solar installation team for my home. Please share availability."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs sm:text-sm font-semibold transition-colors shrink-0 shadow-xs"
-            >
-              <FaWhatsapp size={16} />
-              <span>Book Installation Team</span>
-            </a>
+            <div className="mt-6">
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                  "Salam A2Z Solar, I need a professional solar installation team for my home. Please share availability."
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-sm bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs sm:text-sm font-bold transition-colors"
+              >
+                <FaWhatsapp size={16} />
+                <span>Book Installation Team</span>
+              </a>
+            </div>
           </div>
 
-          {/* Desktop & Tablet Table */}
-          <div className="hidden sm:block overflow-x-auto">
-            <table className="w-full text-left text-xs sm:text-sm">
-              <thead>
-                <tr className="border-b border-gray-200 bg-gray-50/80 text-[11px] sm:text-xs font-semibold text-gray-500 uppercase tracking-wider">
-                  <th scope="col" className="py-3 px-5">System Capacity</th>
-                  <th scope="col" className="py-3 px-4">Electrical Phase</th>
-                  <th scope="col" className="py-3 px-4">Standard Starting Labor</th>
-                  <th scope="col" className="py-3 px-4">Core Scope</th>
-                  <th scope="col" className="py-3 px-5 text-right">Inquire / Book</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100 font-normal">
-                {INSTALLATION_RATES.map((item) => {
-                  const isRecommended = showResult && item.kw === systemSizeKW;
-                  const rowWhatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                    `Salam A2Z Solar, I am interested in your ${item.label} (${item.phase}) residential installation package starting from ${item.formatted}. Please share technician availability.`
-                  )}`;
+          {/* Right Column (Mobile Middle): Clean 7-Tier Rate Ledger */}
+          <div className="lg:col-span-7 lg:col-start-6 lg:row-span-2 bg-white border-t lg:border-t-0 lg:border-l border-gray-200 flex flex-col">
+            {/* Table Column Header */}
+            <div className="px-4 sm:px-6 py-3 bg-[#fafbfa] border-b border-gray-200 flex items-center justify-between text-[11px] font-bold uppercase tracking-wider text-gray-500">
+              <span>System Capacity &amp; Phase</span>
+              <div className="flex items-center gap-6 sm:gap-10">
+                <span>Starting Labor</span>
+                <span className="w-16 text-right">Booking</span>
+              </div>
+            </div>
 
-                  return (
-                    <tr
-                      key={item.label}
-                      className={`transition-colors hover:bg-gray-50/80 ${
-                        isRecommended ? "bg-emerald-50/40" : ""
-                      }`}
-                    >
-                      <td className="py-3.5 px-5 font-semibold text-gray-900">
-                        {item.label}
+            {/* Rate Rows */}
+            <div className="divide-y divide-gray-200 flex-1 flex flex-col justify-between">
+              {INSTALLATION_RATES.map((item) => {
+                const isRecommended = showResult && item.kw === systemSizeKW;
+                const isThreePhase = item.phase === "3-Phase";
+                const rowWhatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                  `Salam A2Z Solar, I am interested in your ${item.label} (${item.phase}) residential installation package starting from ${item.formatted}. Please share technician availability.`
+                )}`;
+
+                return (
+                  <div
+                    key={item.label}
+                    className={`px-4 sm:px-6 py-3.5 flex items-center justify-between gap-3 transition-colors ${
+                      isRecommended
+                        ? "bg-emerald-50/60 border-l-[3px] border-l-[#0fa353] pl-[13px] sm:pl-[21px]"
+                        : "hover:bg-[#fafbfa]"
+                    }`}
+                  >
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                        <span className="text-sm sm:text-base font-extrabold text-[#1a1c29]">
+                          {item.label}
+                        </span>
+                        <span
+                          className={`text-[11px] font-semibold ${
+                            isThreePhase
+                              ? "bg-gray-100 text-gray-800 px-2 py-0.5 rounded-sm"
+                              : "text-gray-500"
+                          }`}
+                        >
+                          {item.phase}
+                        </span>
                         {isRecommended && (
-                          <span className="ml-2 inline-block px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-100 text-emerald-800">
-                            Your Match
+                          <span className="text-[11px] font-bold text-[#0fa353]">
+                            • Calculator Match
                           </span>
                         )}
-                      </td>
-                      <td className="py-3.5 px-4 text-gray-600">
-                        {item.phase}
-                      </td>
-                      <td className="py-3.5 px-4 font-semibold text-gray-900">
-                        {item.formatted}
-                      </td>
-                      <td className="py-3.5 px-4 text-xs text-gray-500">
-                        Mounting, DB wiring &amp; testing
-                      </td>
-                      <td className="py-3.5 px-5 text-right">
-                        <a
-                          href={rowWhatsappUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-[#0fa353] hover:text-[#0c8a45] transition-colors"
-                        >
-                          <span>Book</span>
-                          <span aria-hidden="true">&rarr;</span>
-                        </a>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Mobile Clean Ledger List */}
-          <div className="sm:hidden divide-y divide-gray-100">
-            {INSTALLATION_RATES.map((item) => {
-              const isRecommended = showResult && item.kw === systemSizeKW;
-              const rowWhatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                `Salam A2Z Solar, I am interested in your ${item.label} (${item.phase}) residential installation package starting from ${item.formatted}. Please share technician availability.`
-              )}`;
-
-              return (
-                <div
-                  key={item.label}
-                  className={`p-4 flex items-center justify-between gap-3 ${
-                    isRecommended ? "bg-emerald-50/40" : ""
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-sm font-bold text-gray-900">{item.label}</span>
-                      <span className="text-[11px] text-gray-500">({item.phase})</span>
-                      {isRecommended && (
-                        <span className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-emerald-100 text-emerald-800">
-                          Matched
-                        </span>
-                      )}
+                      </div>
                     </div>
-                    <span className="text-xs text-gray-400 mt-0.5 block">Starting labor</span>
-                  </div>
 
-                  <div className="flex items-center gap-3">
-                    <span className="text-sm font-bold text-gray-900">{item.formatted}</span>
-                    <a
-                      href={rowWhatsappUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-2.5 py-1 rounded bg-gray-100 hover:bg-[#0fa353] hover:text-white text-gray-700 text-xs font-medium transition-colors"
-                    >
-                      Book
-                    </a>
+                    <div className="flex items-center gap-4 sm:gap-8 shrink-0">
+                      <div className="text-right">
+                        <span className="text-[10px] text-gray-400 font-medium block leading-none sm:hidden">
+                          Starting from
+                        </span>
+                        <span className="text-sm sm:text-[15px] font-extrabold text-[#0fa353] tabular-nums">
+                          {item.formatted}
+                        </span>
+                      </div>
+
+                      <a
+                        href={rowWhatsappUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`w-16 py-1.5 rounded-sm text-center text-xs font-semibold transition-colors ${
+                          isRecommended
+                            ? "bg-[#0fa353] hover:bg-[#0c8a45] text-white"
+                            : "border border-gray-300 bg-white text-[#1a1c29] hover:border-[#0fa353] hover:bg-[#0fa353] hover:text-white"
+                        }`}
+                      >
+                        Book
+                      </a>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
 
-          {/* Scope Includes & Site Audit Footnote */}
-          <div className="p-4 sm:p-5 bg-gray-50/70 border-t border-gray-200 text-xs text-gray-600">
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-              <span className="font-semibold text-gray-800">Scope includes:</span>
-              <span>• Certified technician mounting</span>
-              <span>• DC/AC DB box &amp; breaker wiring</span>
-              <span>• Inverter testing &amp; app setup</span>
+          {/* Bottom-Left (Mobile Bottom): Scope Checklist & Site Audit Note */}
+          <div className="lg:col-span-5 lg:row-start-2 bg-[#0e1b12] text-emerald-50 p-5 sm:p-7 lg:px-8 lg:py-6 border-t border-emerald-900/60 flex flex-col justify-between gap-4">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-emerald-200/90 mb-3">
+                Scope includes
+              </p>
+              <ul className="space-y-2 text-xs sm:text-[13px] text-emerald-50/90">
+                <li className="flex items-center gap-2.5">
+                  <FaCheck className="text-[#a3e635] shrink-0 text-[11px]" />
+                  <span>Certified technician mounting</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <FaCheck className="text-[#a3e635] shrink-0 text-[11px]" />
+                  <span>DC/AC DB box &amp; breaker wiring</span>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <FaCheck className="text-[#a3e635] shrink-0 text-[11px]" />
+                  <span>Inverter testing &amp; app setup</span>
+                </li>
+              </ul>
             </div>
-            <p className="mt-2 text-[11px] text-gray-500 border-t border-gray-200/60 pt-2">
+
+            <p className="text-[11px] sm:text-xs text-emerald-100/70 leading-relaxed border-t border-white/10 pt-3">
               * Structure elevation, civil footing &amp; cabling materials quoted separately based on site audit.
             </p>
           </div>
