@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import {
   FaPlus,
   FaTrash,
@@ -13,26 +14,15 @@ import {
   FaRotate,
   FaChevronDown,
   FaBoxOpen,
-  FaTag,
   FaStar,
   FaCircleXmark,
+  FaLayerGroup,
+  FaHashtag,
 } from "react-icons/fa6";
-
-const CATEGORIES = [
-  "Inverters",
-  "Tubular Batteries",
-  "Lithium Batteries",
-  "Energy Storage",
-  "Solar Panels",
-  "MPPT Charge Controllers",
-  "EV Charging Solutions",
-  "Electrical DB Accessories",
-  "DB Accessories",
-  "Tools",
-];
 
 export default function AdminProductsPage() {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -40,7 +30,7 @@ export default function AdminProductsPage() {
 
   // Form state
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState("Inverters");
+  const [category, setCategory] = useState("");
   const [shortDescription, setShortDescription] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
@@ -52,22 +42,44 @@ export default function AdminProductsPage() {
   const [isFeatured, setIsFeatured] = useState(false);
   const [specifications, setSpecifications] = useState([{ label: "", value: "" }]);
   const [features, setFeatures] = useState([""]);
+  const [tags, setTags] = useState([]);
+  const [tagInput, setTagInput] = useState("");
   const [imageFiles, setImageFiles] = useState([]);
   const [imagePreviews, setImagePreviews] = useState([]);
   const [existingImages, setExistingImages] = useState([]);
   const [deletedImageIds, setDeletedImageIds] = useState([]);
+
+  // Inline quick-create category state
+  const [showQuickCategory, setShowQuickCategory] = useState(false);
+  const [quickCatName, setQuickCatName] = useState("");
+  const [quickCatLoading, setQuickCatLoading] = useState(false);
+  const [quickCatError, setQuickCatError] = useState("");
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deletingId, setDeletingId] = useState(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [successMsg, setSuccessMsg] = useState("");
 
+  const fetchCategories = useCallback(async () => {
+    try {
+      const res = await fetch("/api/categories?all=true", { cache: "no-store" });
+      const data = await res.json();
+      if (data.success && Array.isArray(data.categories)) {
+        setCategories(data.categories);
+        setCategory((prev) => prev || data.categories[0]?.name || "");
+      }
+    } catch {
+      // silent fallback
+    }
+  }, []);
+
   const fetchProducts = useCallback(async () => {
     try {
       setIsLoading(true);
       setErrorMsg("");
-      const params = filterCategory !== "All" ? `?category=${encodeURIComponent(filterCategory)}` : "";
-      const res = await fetch(`/api/products${params}`);
+      const qp = new URLSearchParams({ fresh: "true" });
+      if (filterCategory !== "All") qp.set("category", filterCategory);
+      const res = await fetch(`/api/products?${qp.toString()}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success) {
         setProducts(data.products || []);
@@ -82,12 +94,50 @@ export default function AdminProductsPage() {
   }, [filterCategory]);
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    let cancelled = false;
+    fetch("/api/categories?all=true", { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (data.success && Array.isArray(data.categories)) {
+          setCategories(data.categories);
+          setCategory((prev) => prev || data.categories[0]?.name || "");
+        }
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const qp = new URLSearchParams({ fresh: "true" });
+    if (filterCategory !== "All") qp.set("category", filterCategory);
+    fetch(`/api/products?${qp.toString()}`, { cache: "no-store" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (cancelled) return;
+        if (data.success) {
+          setProducts(data.products || []);
+        } else {
+          setErrorMsg(data.error || "Failed to load products.");
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setErrorMsg("Network error loading products.");
+      })
+      .finally(() => {
+        if (!cancelled) setIsLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [filterCategory]);
 
   const resetForm = () => {
     setTitle("");
-    setCategory("Inverters");
+    setCategory(categories[0]?.name || "");
     setShortDescription("");
     setDescription("");
     setPrice("");
@@ -99,10 +149,15 @@ export default function AdminProductsPage() {
     setIsFeatured(false);
     setSpecifications([{ label: "", value: "" }]);
     setFeatures([""]);
+    setTags([]);
+    setTagInput("");
     setImageFiles([]);
     setImagePreviews([]);
     setExistingImages([]);
     setDeletedImageIds([]);
+    setShowQuickCategory(false);
+    setQuickCatName("");
+    setQuickCatError("");
     setEditingProduct(null);
     setErrorMsg("");
   };
@@ -116,13 +171,13 @@ export default function AdminProductsPage() {
     resetForm();
     // Fetch full product details with slug
     try {
-      const res = await fetch(`/api/products?slug=${product.slug}`);
+      const res = await fetch(`/api/products?slug=${product.slug}`, { cache: "no-store" });
       const data = await res.json();
       if (data.success && data.product) {
         const p = data.product;
         setEditingProduct(p);
         setTitle(p.title || "");
-        setCategory(p.category || "Inverters");
+        setCategory(p.category || categories[0]?.name || "");
         setShortDescription(p.shortDescription || "");
         setDescription(p.description || "");
         setPrice(p.price ? String(p.price) : "");
@@ -138,6 +193,7 @@ export default function AdminProductsPage() {
             : [{ label: "", value: "" }]
         );
         setFeatures(p.features?.length > 0 ? p.features : [""]);
+        setTags(Array.isArray(p.tags) ? p.tags : []);
         setExistingImages(p.images || []);
         setShowModal(true);
       }
@@ -182,6 +238,74 @@ export default function AdminProductsPage() {
   const updateFeature = (idx, val) =>
     setFeatures((prev) => prev.map((f, i) => (i === idx ? val : f)));
 
+  // SEO Tags helpers
+  const commitTagsFromText = (rawText, currentTags = tags) => {
+    const parts = String(rawText || "")
+      .split(",")
+      .map((t) => t.trim().replace(/\s+/g, " "))
+      .filter(Boolean);
+    if (parts.length === 0) return currentTags;
+
+    const existingLower = new Set(currentTags.map((t) => t.toLowerCase()));
+    const next = [...currentTags];
+    for (const part of parts) {
+      const key = part.toLowerCase();
+      if (!existingLower.has(key) && next.length < 25) {
+        existingLower.add(key);
+        next.push(part.slice(0, 60));
+      }
+    }
+    return next;
+  };
+
+  const handleAddTag = () => {
+    if (!tagInput.trim()) return;
+    setTags((prev) => commitTagsFromText(tagInput, prev));
+    setTagInput("");
+  };
+
+  const handleTagKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === ",") {
+      e.preventDefault();
+      handleAddTag();
+    } else if (e.key === "Backspace" && !tagInput && tags.length > 0) {
+      setTags((prev) => prev.slice(0, -1));
+    }
+  };
+
+  const removeTag = (idx) =>
+    setTags((prev) => prev.filter((_, i) => i !== idx));
+
+  const handleQuickCreateCategory = async () => {
+    const trimmed = quickCatName.trim();
+    if (!trimmed) {
+      setQuickCatError("Enter a category name.");
+      return;
+    }
+    setQuickCatLoading(true);
+    setQuickCatError("");
+    try {
+      const res = await fetch("/api/categories", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: trimmed, isActive: true }),
+      });
+      const data = await res.json();
+      if (data.success && data.category) {
+        await fetchCategories();
+        setCategory(data.category.name);
+        setQuickCatName("");
+        setShowQuickCategory(false);
+      } else {
+        setQuickCatError(data.error || "Failed to create category.");
+      }
+    } catch {
+      setQuickCatError("Network error creating category.");
+    } finally {
+      setQuickCatLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
@@ -189,6 +313,10 @@ export default function AdminProductsPage() {
 
     if (!title.trim()) {
       setErrorMsg("Product title is required.");
+      return;
+    }
+    if (!category.trim()) {
+      setErrorMsg("Product category is required.");
       return;
     }
     if (!editingProduct && imageFiles.length === 0) {
@@ -203,10 +331,12 @@ export default function AdminProductsPage() {
     setIsSubmitting(true);
 
     try {
+      const finalTags = tagInput.trim() ? commitTagsFromText(tagInput, tags) : tags;
+
       const formData = new FormData();
       if (editingProduct) formData.append("id", editingProduct._id);
       formData.append("title", title.trim());
-      formData.append("category", category);
+      formData.append("category", category.trim());
       formData.append("shortDescription", shortDescription.trim());
       formData.append("description", description.trim());
       formData.append("price", price || "0");
@@ -223,6 +353,8 @@ export default function AdminProductsPage() {
       const validFeatures = features.filter((f) => f.trim());
       formData.append("features", JSON.stringify(validFeatures));
 
+      formData.append("tags", JSON.stringify(finalTags));
+
       if (deletedImageIds.length > 0) {
         formData.append("deletedImages", JSON.stringify(deletedImageIds));
       }
@@ -238,6 +370,7 @@ export default function AdminProductsPage() {
         resetForm();
         setSuccessMsg(editingProduct ? "Product updated!" : "Product created!");
         fetchProducts();
+        fetchCategories();
         setTimeout(() => setSuccessMsg(""), 3500);
       } else {
         setErrorMsg(data.error || "Failed to save product.");
@@ -306,15 +439,29 @@ export default function AdminProductsPage() {
               className="appearance-none text-xs font-medium bg-white border border-gray-200 rounded-sm px-3 py-2 pr-8 focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353] outline-none cursor-pointer"
             >
               <option value="All">All Categories</option>
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>{c}</option>
+              {categories.map((c) => (
+                <option key={c._id || c.name} value={c.name}>
+                  {c.name}
+                </option>
               ))}
             </select>
             <FaChevronDown className="absolute right-2.5 top-2.5 text-gray-400 text-[10px] pointer-events-none" />
           </div>
 
+          <Link
+            href="/admin/categories"
+            className="inline-flex items-center gap-1.5 px-3 py-2 rounded-sm border border-gray-200 bg-white hover:bg-gray-50 text-xs font-semibold text-gray-700 transition-colors"
+            title="Manage Categories"
+          >
+            <FaLayerGroup size={12} className="text-[#0fa353]" />
+            <span>Categories</span>
+          </Link>
+
           <button
-            onClick={fetchProducts}
+            onClick={() => {
+              fetchCategories();
+              fetchProducts();
+            }}
             className="p-2.5 rounded-sm border border-gray-200 bg-white hover:bg-gray-50 text-gray-600 transition-colors shadow-2xs"
             title="Refresh"
           >
@@ -550,19 +697,74 @@ export default function AdminProductsPage() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-1.5">
-                    Category <span className="text-red-500">*</span>
-                  </label>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                      Category <span className="text-red-500">*</span>
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setShowQuickCategory((prev) => !prev);
+                        setQuickCatError("");
+                      }}
+                      className="text-[11px] font-bold text-[#0fa353] hover:underline cursor-pointer"
+                    >
+                      {showQuickCategory ? "Cancel" : "+ New Category"}
+                    </button>
+                  </div>
                   <select
                     required
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     className="w-full bg-gray-50 border border-gray-200 rounded-sm px-3.5 py-2 text-xs sm:text-sm text-gray-900 focus:bg-white focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353] outline-none"
                   >
-                    {CATEGORIES.map((c) => (
-                      <option key={c} value={c}>{c}</option>
+                    {categories.length === 0 && (
+                      <option value="">Loading categories...</option>
+                    )}
+                    {category &&
+                      !categories.some((c) => c.name === category) && (
+                        <option value={category}>{category}</option>
+                      )}
+                    {categories.map((c) => (
+                      <option key={c._id || c.name} value={c.name}>
+                        {c.name}
+                        {c.isActive === false ? " (Hidden)" : ""}
+                      </option>
                     ))}
                   </select>
+
+                  {showQuickCategory && (
+                    <div className="mt-2 p-2.5 bg-emerald-50/70 border border-emerald-200 rounded-sm space-y-1.5">
+                      <div className="flex gap-1.5">
+                        <input
+                          type="text"
+                          value={quickCatName}
+                          onChange={(e) => setQuickCatName(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              handleQuickCreateCategory();
+                            }
+                          }}
+                          placeholder="New category name..."
+                          className="flex-1 bg-white border border-gray-200 rounded-sm px-2.5 py-1.5 text-xs text-gray-900 focus:border-[#0fa353] outline-none"
+                        />
+                        <button
+                          type="button"
+                          onClick={handleQuickCreateCategory}
+                          disabled={quickCatLoading}
+                          className="px-3 py-1.5 rounded-sm bg-[#0fa353] hover:bg-[#0c8a45] text-white text-xs font-bold disabled:opacity-60 cursor-pointer"
+                        >
+                          {quickCatLoading ? "..." : "Create"}
+                        </button>
+                      </div>
+                      {quickCatError && (
+                        <p className="text-[11px] font-semibold text-red-600">
+                          {quickCatError}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -745,6 +947,68 @@ export default function AdminProductsPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* SEO Tags */}
+              <div>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <FaHashtag className="text-[#0fa353]" size={11} />
+                    <span>SEO Tags &amp; Search Keywords</span>
+                  </label>
+                  <span className="text-[10px] font-semibold text-gray-400">
+                    {tags.length}/25 tags
+                  </span>
+                </div>
+
+                {tags.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 mb-2">
+                    {tags.map((tag, idx) => (
+                      <span
+                        key={`${tag}-${idx}`}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs font-medium"
+                      >
+                        <span>{tag}</span>
+                        <button
+                          type="button"
+                          onClick={() => removeTag(idx)}
+                          aria-label={`Remove tag ${tag}`}
+                          className="text-emerald-700 hover:text-red-600 cursor-pointer"
+                        >
+                          <FaXmark size={10} />
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={tagInput}
+                    onChange={(e) => setTagInput(e.target.value)}
+                    onKeyDown={handleTagKeyDown}
+                    onPaste={(e) => {
+                      const pasted = e.clipboardData.getData("text");
+                      if (pasted.includes(",")) {
+                        e.preventDefault();
+                        setTags((prev) => commitTagsFromText(pasted, prev));
+                      }
+                    }}
+                    placeholder="Type keyword and press Enter or comma (e.g. 625w bifacial panel, solar karachi)"
+                    className="flex-1 bg-gray-50 border border-gray-200 rounded-sm px-3 py-1.5 text-xs text-gray-900 focus:bg-white focus:border-[#0fa353] outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddTag}
+                    className="px-3 py-1.5 rounded-sm bg-gray-100 hover:bg-[#0fa353] hover:text-white text-gray-700 text-xs font-bold transition-colors cursor-pointer"
+                  >
+                    Add
+                  </button>
+                </div>
+                <p className="text-[11px] text-gray-400 mt-1">
+                  Recommended: 5–10 search keywords for meta tags, Google schema, and storefront search.
+                </p>
               </div>
 
               {/* Image Upload */}

@@ -7,19 +7,6 @@ import useSWR from "swr";
 import { fetcher, SWR_CACHE_CONFIG } from "@/lib/fetcher";
 import { FaArrowRight, FaChevronLeft, FaChevronRight, FaBoxOpen } from "react-icons/fa6";
 
-const CATEGORY_ORDER = [
-  "Inverters",
-  "Lithium Batteries",
-  "Tubular Batteries",
-  "Energy Storage",
-  "Solar Panels",
-  "MPPT Charge Controllers",
-  "EV Charging Solutions",
-  "Electrical DB Accessories",
-  "DB Accessories",
-  "Tools",
-];
-
 const formatPrice = (p) => {
   if (!p || Number(p) === 0) return "";
   const num = Math.round(Number(p));
@@ -200,7 +187,12 @@ function CategoryRow({ category, products }) {
 /* ── Main section ────────────────────────────────────────────────── */
 export default function ProductsShowcase() {
   const { data, isLoading } = useSWR(
-    "/api/products?limit=50",
+    "/api/products?limit=100",
+    fetcher,
+    SWR_CACHE_CONFIG,
+  );
+  const { data: catData } = useSWR(
+    "/api/categories",
     fetcher,
     SWR_CACHE_CONFIG,
   );
@@ -215,15 +207,19 @@ export default function ProductsShowcase() {
     return groups;
   }, [data]);
 
-  // Sort categories by defined order
+  // Sort categories by admin-configured order from MongoDB
   const categories = useMemo(() => {
     const keys = Object.keys(grouped);
-    return keys.sort(
-      (a, b) =>
-        (CATEGORY_ORDER.indexOf(a) === -1 ? 99 : CATEGORY_ORDER.indexOf(a)) -
-        (CATEGORY_ORDER.indexOf(b) === -1 ? 99 : CATEGORY_ORDER.indexOf(b)),
-    );
-  }, [grouped]);
+    const orderedNames = Array.isArray(catData?.categories)
+      ? catData.categories.map((c) => c.name)
+      : [];
+    if (orderedNames.length === 0) return keys;
+    return keys.sort((a, b) => {
+      const ia = orderedNames.indexOf(a);
+      const ib = orderedNames.indexOf(b);
+      return (ia === -1 ? 999 : ia) - (ib === -1 ? 999 : ib);
+    });
+  }, [grouped, catData]);
 
   if (isLoading || categories.length === 0) return null;
 

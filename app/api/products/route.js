@@ -1,7 +1,84 @@
 import { NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import connectDB from "@/lib/mongodb";
 import Product from "@/models/Product";
+import Category, {
+  ensureCategoriesSeeded,
+  slugifyCategory,
+} from "@/models/Category";
 import cloudinary from "@/lib/cloudinary";
+
+function escapeRegex(str) {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function sanitizeTags(raw) {
+  let list = [];
+  if (Array.isArray(raw)) {
+    list = raw;
+  } else if (typeof raw === "string" && raw.trim()) {
+    try {
+      const parsed = JSON.parse(raw);
+      list = Array.isArray(parsed) ? parsed : raw.split(",");
+    } catch {
+      list = raw.split(",");
+    }
+  }
+  const seen = new Set();
+  const clean = [];
+  for (const item of list) {
+    if (typeof item !== "string") continue;
+    const tag = item.trim().replace(/\s+/g, " ");
+    if (!tag) continue;
+    const key = tag.toLowerCase();
+    if (seen.has(key)) continue;
+    seen.add(key);
+    clean.push(tag.slice(0, 60));
+    if (clean.length >= 25) break;
+  }
+  return clean;
+}
+
+async function resolveOrCreateCategory(rawCategory) {
+  const cleanName = typeof rawCategory === "string" ? rawCategory.trim() : "";
+  if (!cleanName) return "";
+  await ensureCategoriesSeeded();
+
+  const slug = slugifyCategory(cleanName);
+  const existing = await Category.findOne({
+    $or: [
+      { slug },
+      { name: { $regex: new RegExp(`^${escapeRegex(cleanName)}$`, "i") } },
+    ],
+  }).lean();
+
+  if (existing) return existing.name;
+
+  const last = await Category.findOne({})
+    .sort({ order: -1 })
+    .select("order")
+    .lean();
+  const order = typeof last?.order === "number" ? last.order + 1 : 0;
+
+  const created = await Category.create({
+    name: cleanName,
+    slug,
+    order,
+    isActive: true,
+  });
+  return created.name;
+}
+
+function revalidateProductPaths(slug) {
+  try {
+    revalidatePath("/");
+    revalidatePath("/products");
+    revalidatePath("/sitemap.xml");
+    if (slug) revalidatePath(`/products/${slug}`);
+  } catch {
+    // ignore revalidation errors outside request context
+  }
+}
 
 // Helper: Upload a single image buffer to Cloudinary
 async function uploadImageToCloudinary(buffer, folder = "a2z_solar/products") {
@@ -35,6 +112,7 @@ export async function GET(req) {
     const slug = searchParams.get("slug");
     const limitParam = searchParams.get("limit");
     const skipParam = searchParams.get("skip");
+    const isFresh = searchParams.get("fresh") === "true";
 
     // Single product by slug
     if (slug) {
@@ -59,13 +137,14 @@ export async function GET(req) {
     }
 
     if (search && search.trim()) {
-      const regex = new RegExp(search.trim(), "i");
+      const regex = new RegExp(escapeRegex(search.trim()), "i");
       filter.$or = [
         { title: regex },
         { shortDescription: regex },
         { brand: regex },
         { model: regex },
         { category: regex },
+        { tags: regex },
       ];
     }
 
@@ -89,7 +168,9 @@ export async function GET(req) {
       total,
     }, {
       headers: {
-        "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+        "Cache-Control": isFresh
+          ? "no-store"
+          : "public, s-maxage=60, stale-while-revalidate=300",
       },
     });
   } catch (error) {
@@ -141,6 +222,9 @@ export async function POST(req) {
       }
     }
 
+    // Parse & sanitize SEO tags
+    const tags = sanitizeTags(formData.get("tags"));
+
     if (!title || !title.trim()) {
       return NextResponse.json(
         { success: false, error: "Product title is required." },
@@ -148,7 +232,8 @@ export async function POST(req) {
       );
     }
 
-    if (!category) {
+    const resolvedCategory = await resolveOrCreateCategory(category);
+    if (!resolvedCategory) {
       return NextResponse.json(
         { success: false, error: "Product category is required." },
         { status: 400 }
@@ -188,7 +273,8 @@ export async function POST(req) {
     const product = await Product.create({
       title: title.trim(),
       slug,
-      category,
+      category: resolvedCategory,
+      tags,
       shortDescription: shortDescription.trim(),
       description: description.trim(),
       price,
@@ -202,6 +288,8 @@ export async function POST(req) {
       features,
       images,
     });
+
+    revalidateProductPaths(product.slug);
 
     return NextResponse.json(
       { success: true, product, message: "Product created successfully!" },
@@ -244,7 +332,10 @@ export async function PUT(req) {
     if (title) existing.title = title.trim();
 
     const category = formData.get("category");
-    if (category) existing.category = category;
+    if (category) {
+      const resolvedCategory = await resolveOrCreateCategory(category);
+      if (resolvedCategory) existing.category = resolvedCategory;
+    }
 
     const shortDescription = formData.get("shortDescription");
     if (shortDescription !== null) existing.shortDescription = shortDescription.trim();
@@ -289,6 +380,12 @@ export async function PUT(req) {
       } catch { /* keep existing */ }
     }
 
+    // Parse & sanitize SEO tags
+    const tagsRaw = formData.get("tags");
+    if (tagsRaw !== null) {
+      existing.tags = sanitizeTags(tagsRaw);
+    }
+
     // Handle deleted images
     const deletedImagesRaw = formData.get("deletedImages");
     if (deletedImagesRaw) {
@@ -322,6 +419,8 @@ export async function PUT(req) {
     }
 
     await existing.save();
+
+    revalidateProductPaths(existing.slug);
 
     return NextResponse.json({
       success: true,
@@ -374,6 +473,8 @@ export async function DELETE(req) {
     }
 
     await Product.findByIdAndDelete(id);
+
+    revalidateProductPaths(product.slug);
 
     return NextResponse.json({
       success: true,

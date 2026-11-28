@@ -1,32 +1,15 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import {
   FaBoxOpen,
   FaMagnifyingGlass,
-  FaTag,
   FaStar,
   FaWhatsapp,
-  FaArrowRight,
 } from "react-icons/fa6";
 import SocialShareButton from "@/app/components/SocialShareButton";
-
-const CATEGORIES = [
-  "All",
-  "Inverters",
-  "Tubular Batteries",
-  "Lithium Batteries",
-  "Energy Storage",
-  "Solar Panels",
-  "MPPT Charge Controllers",
-  "EV Charging Solutions",
-  "Electrical DB Accessories",
-  "DB Accessories",
-  "Tools",
-];
 
 const formatPrice = (p) => {
   if (!p || Number(p) === 0) return "";
@@ -34,31 +17,55 @@ const formatPrice = (p) => {
   return `PKR ${num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
 };
 
-export default function ProductsPageClient({ initialProducts = [] }) {
-  const searchParams = useSearchParams();
-
+export default function ProductsPageClient({
+  initialProducts = [],
+  initialCategories = [],
+  initialCategory = "All",
+  initialSearch = "",
+}) {
   const [products, setProducts] = useState(initialProducts);
+  const [categories, setCategories] = useState(initialCategories);
   const [loading, setLoading] = useState(false);
-  // Default to "All" on mount to match SSR HTML exactly
-  const [category, setCategory] = useState("All");
-  const [search, setSearch] = useState("");
-  const [isMounted, setIsMounted] = useState(false);
+  const [category, setCategory] = useState(initialCategory || "All");
+  const [search, setSearch] = useState(initialSearch || "");
+  const searchTimerRef = useRef(null);
 
-  // Sync category from URL parameter after mount to prevent hydration mismatch
+  // Keep categories fresh on client mount if initialCategories was empty
   useEffect(() => {
-    const urlCategory = searchParams.get("category");
-    if (urlCategory && urlCategory !== "All") {
-      setCategory(urlCategory);
+    if (initialCategories.length === 0) {
+      let cancelled = false;
+      fetch("/api/categories")
+        .then((r) => r.json())
+        .then((d) => {
+          if (!cancelled && d.success && Array.isArray(d.categories)) {
+            setCategories(d.categories);
+          }
+        })
+        .catch(() => {});
+      return () => {
+        cancelled = true;
+      };
     }
-    setIsMounted(true);
-  }, [searchParams]);
+  }, [initialCategories.length]);
 
-  const fetchProducts = useCallback(async () => {
+  useEffect(() => () => clearTimeout(searchTimerRef.current), []);
+
+  const categoryOptions = useMemo(() => {
+    const names = categories.map((c) => c.name).filter(Boolean);
+    const seen = new Set(names);
+    if (category && category !== "All" && !seen.has(category)) {
+      names.push(category);
+      seen.add(category);
+    }
+    return ["All", ...names];
+  }, [categories, category]);
+
+  const fetchFilteredProducts = useCallback(async (nextCat, nextSearch) => {
     setLoading(true);
     try {
       const params = new URLSearchParams();
-      if (category !== "All") params.set("category", category);
-      if (search.trim()) params.set("search", search.trim());
+      if (nextCat && nextCat !== "All") params.set("category", nextCat);
+      if (nextSearch && nextSearch.trim()) params.set("search", nextSearch.trim());
       const res = await fetch(`/api/products?${params}`);
       const data = await res.json();
       if (data.success) setProducts(data.products || []);
@@ -67,14 +74,21 @@ export default function ProductsPageClient({ initialProducts = [] }) {
     } finally {
       setLoading(false);
     }
-  }, [category, search]);
+  }, []);
 
-  // Only fetch client-side when user changes filters after mount
-  useEffect(() => {
-    if (isMounted) {
-      fetchProducts();
-    }
-  }, [isMounted, category, search, fetchProducts]);
+  const handleCategoryChange = (nextCat) => {
+    setCategory(nextCat);
+    clearTimeout(searchTimerRef.current);
+    fetchFilteredProducts(nextCat, search);
+  };
+
+  const handleSearchChange = (nextVal) => {
+    setSearch(nextVal);
+    clearTimeout(searchTimerRef.current);
+    searchTimerRef.current = setTimeout(() => {
+      fetchFilteredProducts(category, nextVal);
+    }, 220);
+  };
 
   return (
     <main className="min-h-screen bg-white text-[#1a1c29] pt-24 sm:pt-28 pb-20">
@@ -107,18 +121,18 @@ export default function ProductsPageClient({ initialProducts = [] }) {
             <input
               type="text"
               value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search products..."
+              onChange={(e) => handleSearchChange(e.target.value)}
+              placeholder="Search products or tags..."
               className="w-full bg-gray-50 border border-gray-200 rounded-sm pl-9 pr-4 py-2 text-sm text-gray-900 focus:bg-white focus:border-[#0fa353] focus:ring-1 focus:ring-[#0fa353] outline-none"
             />
           </div>
 
           {/* Category Pills */}
           <div className="flex flex-wrap gap-1.5">
-            {CATEGORIES.map((c) => (
+            {categoryOptions.map((c) => (
               <button
                 key={c}
-                onClick={() => setCategory(c)}
+                onClick={() => handleCategoryChange(c)}
                 className={`px-3 py-1.5 rounded-sm text-xs font-bold transition-all ${
                   category === c
                     ? "bg-[#0fa353] text-white shadow-sm"

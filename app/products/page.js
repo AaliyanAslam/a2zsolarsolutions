@@ -1,7 +1,10 @@
 import { Suspense } from "react";
 import connectDB from "@/lib/mongodb";
 import Product from "@/models/Product";
+import Category, { ensureCategoriesSeeded } from "@/models/Category";
 import ProductsPageClient from "./ProductsPageClient";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = {
   title: "Solar Products Karachi & Lahore | Inverters, Panels & Batteries Price",
@@ -47,23 +50,65 @@ export const metadata = {
   },
 };
 
-async function getProducts() {
+function escapeRegex(str) {
+  return String(str).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+async function getCatalogData(initialCategory, initialSearch) {
   try {
     await connectDB();
-    const products = await Product.find({})
-      .sort({ order: 1, createdAt: -1 })
-      .select("-description -specifications -features")
-      .lean();
+    await ensureCategoriesSeeded();
+
+    const filter = {};
+    if (initialCategory && initialCategory !== "All") {
+      filter.category = initialCategory;
+    }
+    if (initialSearch && initialSearch.trim()) {
+      const regex = new RegExp(escapeRegex(initialSearch.trim()), "i");
+      filter.$or = [
+        { title: regex },
+        { shortDescription: regex },
+        { brand: regex },
+        { model: regex },
+        { category: regex },
+        { tags: regex },
+      ];
+    }
+
+    const [products, categories] = await Promise.all([
+      Product.find(filter)
+        .sort({ order: 1, createdAt: -1 })
+        .select("-description -specifications -features")
+        .lean(),
+      Category.find({ isActive: { $ne: false } })
+        .sort({ order: 1, name: 1 })
+        .select("name slug description order")
+        .lean(),
+    ]);
     // Serialize MongoDB ObjectIds and dates to plain JSON
-    return JSON.parse(JSON.stringify(products));
+    return {
+      initialProducts: JSON.parse(JSON.stringify(products)),
+      initialCategories: JSON.parse(JSON.stringify(categories)),
+    };
   } catch (error) {
     console.error("Failed to fetch products for SSR:", error?.message);
-    return [];
+    return { initialProducts: [], initialCategories: [] };
   }
 }
 
-export default async function ProductsPage() {
-  const initialProducts = await getProducts();
+export default async function ProductsPage({ searchParams }) {
+  const resolved = await searchParams;
+  const initialCategory =
+    typeof resolved?.category === "string" && resolved.category.trim()
+      ? resolved.category.trim()
+      : "All";
+  const initialSearch =
+    typeof resolved?.search === "string" ? resolved.search.trim() : "";
+
+  const { initialProducts, initialCategories } = await getCatalogData(
+    initialCategory,
+    initialSearch
+  );
 
   return (
     <Suspense
@@ -73,7 +118,13 @@ export default async function ProductsPage() {
         </div>
       }
     >
-      <ProductsPageClient initialProducts={initialProducts} />
+      <ProductsPageClient
+        key={`${initialCategory}:${initialSearch}`}
+        initialProducts={initialProducts}
+        initialCategories={initialCategories}
+        initialCategory={initialCategory}
+        initialSearch={initialSearch}
+      />
     </Suspense>
   );
 }

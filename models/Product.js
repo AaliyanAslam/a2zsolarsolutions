@@ -30,7 +30,11 @@ const ProductSchema = new mongoose.Schema(
     category: {
       type: String,
       required: [true, "Product category is required"],
-      enum: PRODUCT_CATEGORIES,
+      trim: true,
+    },
+    tags: {
+      type: [String],
+      default: [],
     },
     shortDescription: {
       type: String,
@@ -110,9 +114,9 @@ ProductSchema.pre("validate", function () {
   }
 });
 
-// Index for fast category and slug lookups
+// Index for fast category, tag, and featured lookups (slug already indexed via unique: true)
 ProductSchema.index({ category: 1, createdAt: -1 });
-ProductSchema.index({ slug: 1 }, { unique: true });
+ProductSchema.index({ tags: 1 });
 ProductSchema.index({ isFeatured: 1 });
 
 export { PRODUCT_CATEGORIES };

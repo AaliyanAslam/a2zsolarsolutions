@@ -75,7 +75,8 @@ export default function ProductDetailClient({ product, related }) {
   const hasDetailsSection =
     Boolean(product.description) ||
     (product.specifications?.length ?? 0) > 0 ||
-    (product.features?.length ?? 0) > 0;
+    (product.features?.length ?? 0) > 0 ||
+    (product.tags?.length ?? 0) > 0;
 
   const decQty = () => setQuantity((q) => (q > 1 ? q - 1 : 1));
   const incQty = () => setQuantity((q) => (q < 99 ? q + 1 : 99));
@@ -436,8 +437,14 @@ export default function ProductDetailClient({ product, related }) {
             className="scroll-mt-28 border-t border-gray-200 pt-10 sm:pt-14 mb-14 sm:mb-20"
           >
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-              {/* Left: Editorial Description & Key Features */}
-              <div className="lg:col-span-7 space-y-10">
+              {/* Left: Editorial Description, Key Features & SEO Tags */}
+              <div
+                className={`${
+                  product.specifications?.length > 0
+                    ? "lg:col-span-7"
+                    : "lg:col-span-12"
+                } space-y-10`}
+              >
                 {product.description && (
                   <div>
                     <h2 className="text-lg sm:text-xl font-bold text-[#1a1c29] tracking-tight mb-3.5">
@@ -468,6 +475,25 @@ export default function ProductDetailClient({ product, related }) {
                         </li>
                       ))}
                     </ul>
+                  </div>
+                )}
+
+                {product.tags?.length > 0 && (
+                  <div>
+                    <h2 className="text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">
+                      Related Tags
+                    </h2>
+                    <div className="flex flex-wrap gap-2">
+                      {product.tags.map((tag) => (
+                        <Link
+                          key={tag}
+                          href={`/products?search=${encodeURIComponent(tag)}`}
+                          className="px-3 py-1 rounded-full bg-[#f4f4f1] hover:bg-emerald-50 text-gray-700 hover:text-[#0fa353] border border-gray-200/70 hover:border-emerald-200 text-xs font-medium transition-colors"
+                        >
+                          {tag}
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 )}
               </div>

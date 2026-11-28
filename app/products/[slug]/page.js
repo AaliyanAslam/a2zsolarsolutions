@@ -16,10 +16,24 @@ export async function generateMetadata({ params }) {
       product.shortDescription ||
       `Buy ${product.title} from A2Z Solar Solutions. ${product.category} available in Karachi & Lahore with warranty and professional installation.`;
     const image = product.images?.[0]?.url || "/images/solar-image.webp";
+    const seoKeywords = Array.from(
+      new Set(
+        [
+          ...(Array.isArray(product.tags) ? product.tags : []),
+          product.brand,
+          product.model,
+          product.category,
+          `${product.category} Karachi`,
+          `${product.category} Pakistan`,
+          "A2Z Solar Solutions",
+        ].filter(Boolean)
+      )
+    );
 
     return {
       title,
       description,
+      keywords: seoKeywords,
       alternates: {
         canonical: `https://a2zsolarsolutions.com/products/${slug}`,
       },
@@ -54,100 +68,111 @@ export async function generateMetadata({ params }) {
 export default async function ProductPage({ params }) {
   const { slug } = await params;
 
+  let product = null;
+  let related = [];
+
   try {
     await connectDB();
-    const product = await Product.findOne({ slug }).lean();
+    product = await Product.findOne({ slug }).lean();
 
-    if (!product) notFound();
+    if (product) {
+      // Fetch related products (same category, exclude current)
+      related = await Product.find({
+        category: product.category,
+        _id: { $ne: product._id },
+      })
+        .sort({ createdAt: -1 })
+        .limit(6)
+        .select("title slug images price discountPrice brand category")
+        .lean();
+    }
+  } catch {
+    product = null;
+  }
 
-    // Fetch related products (same category, exclude current)
-    const related = await Product.find({
-      category: product.category,
-      _id: { $ne: product._id },
-    })
-      .sort({ createdAt: -1 })
-      .limit(6)
-      .select("title slug images price discountPrice brand category")
-      .lean();
+  if (!product) notFound();
 
-    // Serialize MongoDB dates and ObjectIds
-    const serialized = JSON.parse(JSON.stringify(product));
-    const serializedRelated = JSON.parse(JSON.stringify(related));
+  // Serialize MongoDB dates and ObjectIds
+  const serialized = JSON.parse(JSON.stringify(product));
+  const serializedRelated = JSON.parse(JSON.stringify(related));
 
-    // JSON-LD Product schema for SEO (Merchant Listings compliant)
-    const productSchema = {
-      "@context": "https://schema.org",
-      "@type": "Product",
-      name: product.title,
-      description: product.shortDescription || product.description || "",
-      brand: product.brand
-        ? { "@type": "Brand", name: product.brand }
+  // JSON-LD Product schema for SEO (Merchant Listings compliant)
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.title,
+    description: product.shortDescription || product.description || "",
+    sku: product.model || undefined,
+    mpn: product.model || undefined,
+    keywords:
+      Array.isArray(product.tags) && product.tags.length > 0
+        ? product.tags.join(", ")
         : undefined,
-      image: product.images?.map((img) => img.url) || [],
-      category: product.category,
-      offers: {
-        "@type": "Offer",
-        url: `https://a2zsolarsolutions.com/products/${slug}`,
-        priceCurrency: "PKR",
-        price: product.discountPrice || product.price || 0,
-        availability: product.inStock
-          ? "https://schema.org/InStock"
-          : "https://schema.org/OutOfStock",
-        seller: {
-          "@type": "Organization",
-          name: "A2Z Solar Solutions",
+    brand: product.brand
+      ? { "@type": "Brand", name: product.brand }
+      : undefined,
+    image: product.images?.map((img) => img.url) || [],
+    category: product.category,
+    offers: {
+      "@type": "Offer",
+      url: `https://a2zsolarsolutions.com/products/${slug}`,
+      priceCurrency: "PKR",
+      price: product.discountPrice || product.price || 0,
+      availability: product.inStock
+        ? "https://schema.org/InStock"
+        : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: "A2Z Solar Solutions",
+      },
+      shippingDetails: {
+        "@type": "OfferShippingDetails",
+        shippingRate: {
+          "@type": "MonetaryAmount",
+          value: 0,
+          currency: "PKR",
         },
-        shippingDetails: {
-          "@type": "OfferShippingDetails",
-          shippingRate: {
-            "@type": "MonetaryAmount",
-            value: 0,
-            currency: "PKR",
-          },
-          shippingDestination: {
-            "@type": "DefinedRegion",
-            addressCountry: "PK",
-          },
-          deliveryTime: {
-            "@type": "ShippingDeliveryTime",
-            handlingTime: {
-              "@type": "QuantitativeValue",
-              minValue: 1,
-              maxValue: 2,
-              unitCode: "DAY",
-            },
-            transitTime: {
-              "@type": "QuantitativeValue",
-              minValue: 2,
-              maxValue: 5,
-              unitCode: "DAY",
-            },
-          },
+        shippingDestination: {
+          "@type": "DefinedRegion",
+          addressCountry: "PK",
         },
-        hasMerchantReturnPolicy: {
-          "@type": "MerchantReturnPolicy",
-          applicableCountry: "PK",
-          returnPolicyCategory:
-            "https://schema.org/MerchantReturnNotPermitted",
-          merchantReturnLink:
-            "https://a2zsolarsolutions.com/terms-and-conditions",
+        deliveryTime: {
+          "@type": "ShippingDeliveryTime",
+          handlingTime: {
+            "@type": "QuantitativeValue",
+            minValue: 1,
+            maxValue: 2,
+            unitCode: "DAY",
+          },
+          transitTime: {
+            "@type": "QuantitativeValue",
+            minValue: 2,
+            maxValue: 5,
+            unitCode: "DAY",
+          },
         },
       },
-    };
+      hasMerchantReturnPolicy: {
+        "@type": "MerchantReturnPolicy",
+        applicableCountry: "PK",
+        returnPolicyCategory:
+          "https://schema.org/MerchantReturnNotPermitted",
+        merchantReturnLink:
+          "https://a2zsolarsolutions.com/terms-and-conditions",
+      },
+    },
+  };
 
-    return (
-      <>
-        <script
-          type="application/ld+json"
-          suppressHydrationWarning
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(productSchema).replace(/</g, "\\u003c"),
-          }}
-        />
-        <ProductDetailClient product={serialized} related={serializedRelated} />
-      </>
-    );
-  } catch {
-    notFound();
-  }
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(productSchema).replace(/</g, "\\u003c"),
+        }}
+      />
+      <ProductDetailClient product={serialized} related={serializedRelated} />
+    </>
+  );
 }
